@@ -1,0 +1,51 @@
+﻿@model AuraCinema.Web.ViewModels.Account.VerifyOtpViewModel
+@{ ViewData["Title"] = "Nhập mã OTP"; Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<div class="ac-auth-wrapper">
+    <div class="ac-auth-card">
+        <div class="ac-auth-logo">
+            <div style="font-size:2.5rem;">📬</div>
+            <h1 class="ac-auth-title mt-2">Nhập mã OTP</h1>
+            <p class="ac-auth-subtitle">
+                Mã 6 chữ số đã gửi đến<br/>
+                <strong style="color:var(--ac-primary);">@Model.Email</strong>
+            </p>
+        </div>
+        <div asp-validation-summary="ModelOnly" class="validation-summary-errors"></div>
+        <form asp-action="VerifyOtp" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Email" />
+            <div class="mb-4">
+                <label asp-for="Otp" class="ac-form-label text-center d-block">Mã OTP</label>
+                <input asp-for="Otp" type="text" maxlength="6"
+                       class="form-control ac-form-control ac-otp-input"
+                       placeholder="• • • • • •" autofocus
+                       inputmode="numeric" autocomplete="one-time-code" />
+                <span asp-validation-for="Otp" class="field-validation-error text-center d-block mt-1"></span>
+            </div>
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <small style="color:var(--ac-muted);">Mã hết hạn sau <span id="countdown" class="text-primary-ac fw-bold">15:00</span></small>
+                <a asp-action="ForgotPassword" class="small text-primary-ac text-decoration-none">Gửi lại mã</a>
+            </div>
+            <button type="submit" class="ac-btn-primary w-100 justify-content-center py-3 rounded-3">
+                <i class="bi bi-check-circle"></i>Xác nhận OTP
+            </button>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Countdown 15 min
+        let sec = 900;
+        const cd = document.getElementById('countdown');
+        const t = setInterval(() => {
+            if (--sec <= 0) { clearInterval(t); cd.textContent = 'Hết hạn'; cd.style.color='#ef4444'; return; }
+            cd.textContent = Math.floor(sec/60).toString().padStart(2,'0') + ':' + (sec%60).toString().padStart(2,'0');
+        }, 1000);
+        // Only digits
+        document.querySelector('[name="Otp"]').addEventListener('input', function(){
+            this.value = this.value.replace(/\D/g,'').slice(0,6);
+        });
+    </script>
+}

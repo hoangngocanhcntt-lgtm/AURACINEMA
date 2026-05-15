@@ -1,0 +1,92 @@
+﻿@model AuraCinema.Web.ViewModels.Movie.MovieListViewModel
+@{
+    ViewData["Title"] = "Danh sach phim";
+    ViewData["Description"] = "Danh sach phim dang chieu va sap chieu tai Aura Cinema";
+}
+
+<section class="ac-section pt-5">
+    <div class="container">
+        <!-- Header -->
+        <div class="mb-4">
+            <h1 class="ac-section-title">
+                <i class="bi bi-film me-2 text-primary-ac"></i>Danh sach phim
+            </h1>
+            <p class="ac-section-subtitle">Khám phá bộ sưu tập phim hấp dẫn</p>
+        </div>
+
+        <!-- Filter bar -->
+        <div class="ac-filter-bar mb-4">
+            <form method="get" asp-action="Index" class="d-flex flex-wrap gap-3 align-items-center">
+                <!-- Search -->
+                <div class="flex-grow-1" style="min-width:200px;max-width:400px;">
+                    <div class="position-relative">
+                        <i class="bi bi-search position-absolute start-0 top-50 translate-middle-y ms-3"
+                           style="color:var(--ac-muted);"></i>
+                        <input type="text" name="search" value="@Model.SearchTerm"
+                               class="form-control ac-form-control ps-5"
+                               placeholder="Tim kiem phim..." id="movieSearch" />
+                    </div>
+                </div>
+
+                <!-- Status filter -->
+                <div class="ac-tab-group">
+                    <a asp-action="Index" asp-route-search="@Model.SearchTerm"
+                       class="ac-tab @(string.IsNullOrEmpty(Model.StatusFilter) ? "active" : "")">
+                        Tat ca
+                    </a>
+                    <a asp-action="Index" asp-route-status="Dang chieu" asp-route-search="@Model.SearchTerm"
+                       class="ac-tab @(Model.StatusFilter == "Dang chieu" ? "active" : "")">
+                        <span class="ac-dot ac-dot-live small me-1"></span>Dang chieu
+                    </a>
+                    <a asp-action="Index" asp-route-status="Sap chieu" asp-route-search="@Model.SearchTerm"
+                       class="ac-tab @(Model.StatusFilter == "Sap chieu" ? "active" : "")">
+                        <span class="ac-dot ac-dot-soon small me-1"></span>Sap chieu
+                    </a>
+                </div>
+
+                <button type="submit" class="ac-btn-primary btn-sm px-4">
+                    <i class="bi bi-funnel"></i>Loc
+                </button>
+            </form>
+        </div>
+
+        <!-- Movie grid -->
+        @if (Model.Movies.Any())
+        {
+            <div class="row g-4">
+                @foreach (var movie in Model.Movies)
+                {
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <partial name="_MovieCard" model="movie" />
+                    </div>
+                }
+            </div>
+
+            <!-- Pagination -->
+            @if (Model.TotalPages > 1)
+            {
+                <nav class="mt-5 d-flex justify-content-center">
+                    <ul class="pagination ac-pagination">
+                        @for (int i = 1; i <= Model.TotalPages; i++)
+                        {
+                            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                <a class="page-link" asp-action="Index"
+                                   asp-route-page="@i"
+                                   asp-route-search="@Model.SearchTerm"
+                                   asp-route-status="@Model.StatusFilter">@i</a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            }
+        }
+        else
+        {
+            <div class="text-center py-5">
+                <div style="font-size:4rem;">🎬</div>
+                <h5 class="mt-3">Khong tim thay phim nao</h5>
+                <p style="color:var(--ac-muted);">Thu thay doi bo loc hoac tu khoa tim kiem.</p>
+            </div>
+        }
+    </div>
+</section>

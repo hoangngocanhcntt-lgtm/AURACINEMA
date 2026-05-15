@@ -1,0 +1,162 @@
+@model AuraCinema.Domain.Entities.Order
+@{
+    ViewData["Title"] = $"Chi tiết đơn hàng {Model.OrderCode}";
+}
+
+<div class="mb-4">
+    <a asp-action="Index" class="text-muted text-decoration-none">
+        <i class="bi bi-arrow-left me-2"></i>Quay lại danh sách
+    </a>
+    <div class="d-flex justify-content-between align-items-center mt-2">
+        <h2 class="h4 mb-0 text-dark fw-bold">Chi tiết đơn hàng: <span class="text-primary">@Model.OrderCode</span></h2>
+        <div class="d-flex gap-2">
+            @if (Model.Status == "Cho thanh toan")
+            {
+                <form asp-action="UpdateStatus" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@Model.OrderID" />
+                    <input type="hidden" name="status" value="Da huy" />
+                    <button type="submit" class="btn btn-outline-danger btn-sm shadow-sm" onclick="return confirm('Hủy đơn hàng này?')">Hủy đơn</button>
+                </form>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <!-- Ticket Information -->
+        <div class="ac-card p-4 mb-4 border-0 shadow-sm">
+            <h5 class="fw-bold mb-4 border-bottom pb-2">Thông tin vé</h5>
+            <div class="row g-4">
+                <div class="col-md-4 text-center">
+                    <img src="@Model.Showtime.Movie.Poster" class="rounded shadow-sm mb-3" style="width: 150px; height: 220px; object-fit: cover;" />
+                    <h6 class="fw-bold text-dark mb-0">@Model.Showtime.Movie.Title</h6>
+                </div>
+                <div class="col-md-8">
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <label class="text-muted extra-small text-uppercase fw-bold">Phòng chiếu</label>
+                            <p class="fw-bold text-dark mb-0">@Model.Showtime.Room.RoomName</p>
+                        </div>
+                        <div class="col-6">
+                            <label class="text-muted extra-small text-uppercase fw-bold">Suất chiếu</label>
+                            <p class="fw-bold text-dark mb-0">@Model.Showtime.StartTime.ToString("HH:mm - dd/MM/yyyy")</p>
+                        </div>
+                        <div class="col-12">
+                            <label class="text-muted extra-small text-uppercase fw-bold">Ghế đã chọn</label>
+                            <div class="d-flex flex-wrap gap-2 mt-1">
+                                @foreach (var os in Model.OrderSeats)
+                                {
+                                    <span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle">
+                                        @os.Seat.RowLabel@os.Seat.SeatNumber (@os.Seat.SeatType)
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                        @if (Model.OrderServices.Any())
+                        {
+                            <div class="col-12">
+                                <label class="text-muted extra-small text-uppercase fw-bold">Dịch vụ & Đồ ăn</label>
+                                <ul class="list-unstyled mb-0 mt-1">
+                                    @foreach (var os in Model.OrderServices)
+                                    {
+                                        <li class="small text-dark fw-medium">
+                                            <i class="bi bi-box-seam me-2 text-primary"></i>@os.Service.ServiceName x 1
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customer Information -->
+        <div class="ac-card p-4 border-0 shadow-sm">
+            <h5 class="fw-bold mb-3 border-bottom pb-2">Thông tin khách hàng</h5>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="text-muted extra-small text-uppercase fw-bold">Họ tên</label>
+                    <p class="text-dark fw-medium mb-0">@Model.User.FullName</p>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="text-muted extra-small text-uppercase fw-bold">Số điện thoại</label>
+                    <p class="text-dark fw-medium mb-0">@Model.User.Phone</p>
+                </div>
+                <div class="col-md-12">
+                    <label class="text-muted extra-small text-uppercase fw-bold">Email</label>
+                    <p class="text-dark fw-medium mb-0">@Model.User.Email</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <!-- Billing -->
+        <div class="ac-card p-4 mb-4 border-0 shadow-sm border-top border-4 border-primary">
+            <h5 class="fw-bold mb-4">Chi tiết thanh toán</h5>
+            <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Tạm tính:</span>
+                <span class="text-dark">@Model.TotalAmount.ToString("N0") VNĐ</span>
+            </div>
+            @if (Model.Promotion != null)
+            {
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Khuyến mãi (@Model.Promotion.Title):</span>
+                    <span class="text-success">-@Model.Promotion.DiscountValue.ToString("N0") VNĐ</span>
+                </div>
+            }
+            <hr>
+            <div class="d-flex justify-content-between mb-4">
+                <span class="h6 fw-bold mb-0">Tổng cộng:</span>
+                <span class="h6 fw-bold text-primary mb-0">@Model.FinalAmount.ToString("N0") VNĐ</span>
+            </div>
+            
+            <div class="bg-light p-3 rounded mb-4">
+                <label class="text-muted extra-small text-uppercase fw-bold d-block mb-1">Trạng thái thanh toán</label>
+                <div class="d-flex align-items-center">
+                    @switch (Model.Status)
+                    {
+                        case "Da thanh toan":
+                            <i class="bi bi-patch-check-fill text-success me-2 fs-5"></i>
+                            <span class="fw-bold text-success">Đã thanh toán</span>
+                            break;
+                        case "Cho thanh toan":
+                            <i class="bi bi-clock-history text-warning me-2 fs-5"></i>
+                            <span class="fw-bold text-warning">Chờ thanh toán</span>
+                            break;
+                        case "Da huy":
+                            <i class="bi bi-x-circle-fill text-danger me-2 fs-5"></i>
+                            <span class="fw-bold text-danger">Đã hủy</span>
+                            break;
+                    }
+                </div>
+            </div>
+
+            @if (Model.Status == "Da thanh toan" && !string.IsNullOrEmpty(Model.QrCode))
+            {
+                <div class="text-center p-3 border rounded">
+                    <label class="text-muted extra-small text-uppercase fw-bold d-block mb-2">Mã QR Check-in</label>
+                    <img src="@Model.QrCode" class="img-fluid" style="max-width: 150px;" />
+                </div>
+            }
+        </div>
+
+        @if (Model.Status == "Da thanh toan")
+        {
+            <div class="ac-card p-4 border-0 shadow-sm bg-primary text-white">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="bi bi-info-circle me-2"></i>
+                    <h6 class="fw-bold mb-0">Ghi chú</h6>
+                </div>
+                <p class="small mb-0 opacity-75">Khách hàng có thể sử dụng mã QR này để check-in trực tiếp tại quầy hoặc cửa rạp.</p>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .extra-small { font-size: 0.75rem; }
+</style>

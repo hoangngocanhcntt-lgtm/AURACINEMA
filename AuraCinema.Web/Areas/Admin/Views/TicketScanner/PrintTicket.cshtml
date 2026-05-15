@@ -1,0 +1,42 @@
+@model AuraCinema.Domain.Entities.Order
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>In Vé - @Model.OrderCode</title>
+    <style>
+        body { font-family: 'Courier New', Courier, monospace; width: 300px; margin: 0 auto; padding: 20px; border: 1px solid #000; }
+        .center { text-align: center; }
+        .line { border-bottom: 1px dashed #000; margin: 10px 0; }
+        .bold { font-weight: bold; }
+        .movie-title { font-size: 1.2rem; }
+        @@media print {
+            .no-print { display: none; }
+        }
+    </style>
+</head>
+<body onload="window.print()">
+    <div class="center">
+        <h2 style="margin:0;">AURA CINEMA</h2>
+        <p style="margin:5px 0;">Hóa đơn: @Model.OrderCode</p>
+    </div>
+    <div class="line"></div>
+    <div class="bold movie-title center">@Model.Showtime.Movie.Title</div>
+    <p><b>Phòng:</b> @Model.Showtime.Room.RoomName</p>
+    <p><b>Suất chiếu:</b> @Model.Showtime.StartTime.ToString("dd/MM/yyyy HH:mm")</p>
+    <p><b>Ghế:</b> @string.Join(", ", Model.OrderSeats.Select(s => s.Seat.SeatCode.Split('-').Last()))</p>
+    <div class="line"></div>
+    <p><b>Khách hàng:</b> @Model.User.FullName</p>
+    <p><b>Ngày in:</b> @DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")</p>
+    <div class="line"></div>
+    <div class="center">
+        <p>Chúc bạn xem phim vui vẻ!</p>
+        <p style="font-size: 0.8rem;">Vui lòng giữ vé để kiểm soát.</p>
+    </div>
+    <div class="center no-print" style="margin-top: 20px;">
+        <button onclick="window.close()">Đóng cửa sổ</button>
+    </div>
+</body>
+</html>

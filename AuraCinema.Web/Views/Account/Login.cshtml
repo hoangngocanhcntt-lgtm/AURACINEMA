@@ -1,0 +1,99 @@
+@model AuraCinema.Web.ViewModels.Account.LoginViewModel
+@{
+    ViewData["Title"] = "Đăng nhập";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="ac-auth-wrapper">
+    <div class="ac-auth-card">
+        <!-- Logo -->
+        <div class="ac-auth-logo">
+            <div style="font-size:2.5rem;">🎬</div>
+            <h1 class="ac-auth-title mt-2">Chào mừng trở lại</h1>
+            <p class="ac-auth-subtitle">Đăng nhập để tiếp tục trải nghiệm</p>
+        </div>
+
+        <!-- Validation Summary -->
+        <div asp-validation-summary="ModelOnly" class="validation-summary-errors"></div>
+
+        <form asp-action="Login" method="post" id="loginForm">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="ReturnUrl" />
+
+            <!-- Email -->
+            <div class="mb-4">
+                <label asp-for="Email" class="ac-form-label">
+                    <i class="bi bi-envelope me-1 text-primary-ac"></i>Email
+                </label>
+                <input asp-for="Email" type="email"
+                       class="form-control ac-form-control"
+                       placeholder="email@example.com"
+                       id="loginEmail" autocomplete="email" />
+                <span asp-validation-for="Email" class="field-validation-error"></span>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label asp-for="Password" class="ac-form-label mb-0">
+                        <i class="bi bi-lock me-1 text-primary-ac"></i>Mật khẩu
+                    </label>
+                    <a asp-action="ForgotPassword" class="text-primary-ac small text-decoration-none"
+                       style="font-size:0.82rem;">Quên mật khẩu?</a>
+                </div>
+                <div class="position-relative">
+                    <input asp-for="Password" type="password"
+                           class="form-control ac-form-control pe-5"
+                           placeholder="Nhập mật khẩu"
+                           id="loginPassword" autocomplete="current-password" />
+                    <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-1 p-2"
+                            id="togglePwd" tabindex="-1" style="color:var(--ac-muted);">
+                        <i class="bi bi-eye" id="eyeIcon"></i>
+                    </button>
+                </div>
+                <span asp-validation-for="Password" class="field-validation-error"></span>
+            </div>
+
+
+
+            <!-- Submit -->
+            <button type="submit" class="ac-btn-primary w-100 justify-content-center py-3 rounded-3"
+                    id="loginBtn">
+                <i class="bi bi-box-arrow-in-right"></i>Đăng nhập
+            </button>
+        </form>
+
+        <div class="ac-divider mt-4">hoặc</div>
+
+        <p class="text-center mb-0" style="color:var(--ac-muted);font-size:0.9rem;">
+            Chưa có tài khoản?
+            <a asp-action="Register" class="text-primary-ac fw-semibold text-decoration-none ms-1">
+                Đăng ký ngay
+            </a>
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Toggle password visibility
+        document.getElementById('togglePwd').addEventListener('click', function () {
+            const pwd = document.getElementById('loginPassword');
+            const icon = document.getElementById('eyeIcon');
+            if (pwd.type === 'password') {
+                pwd.type = 'text';
+                icon.className = 'bi bi-eye-slash';
+            } else {
+                pwd.type = 'password';
+                icon.className = 'bi bi-eye';
+            }
+        });
+        // Loading state
+        document.getElementById('loginForm').addEventListener('submit', function () {
+            const btn = document.getElementById('loginBtn');
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Đang đăng nhập...';
+            btn.disabled = true;
+        });
+    </script>
+}

@@ -1,0 +1,134 @@
+@model AuraCinema.Web.ViewModels.Booking.CheckoutViewModel
+@{
+    ViewData["Title"] = "Thanh toán";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container pt-5 pb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h3 class="mb-4 text-white"><i class="bi bi-wallet2 me-2 text-primary-ac"></i>Thanh toán đơn hàng</h3>
+
+            <div class="row g-4">
+                <!-- ORDER DETAILS -->
+                <div class="col-md-7">
+                    <div class="ac-card p-4 h-100">
+                        <h5 class="border-bottom border-ac pb-3 mb-3">Thông tin vé</h5>
+                        
+                        <div class="d-flex mb-4">
+                            <img src="@Model.MoviePoster" alt="@Model.MovieTitle" class="rounded" style="width: 80px; height: 120px; object-fit: cover;" onerror="this.src='/images/placeholder-movie.jpg'" />
+                            <div class="ms-3">
+                                <h5 class="fw-bold text-white mb-1">@Model.MovieTitle</h5>
+                                <p class="text-muted small mb-2"><i class="bi bi-geo-alt me-1"></i>Aura Cinema - @Model.RoomName</p>
+                                <p class="ac-badge m-0">@Model.ShowtimeLabel</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Ghế đã chọn:</span>
+                            <span class="fw-bold text-white">@Model.SeatList</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Tạm tính:</span>
+                            <span>@Model.BaseTotal.ToString("N0")đ</span>
+                        </div>
+                        
+                        <!-- Promo Code Form -->
+                        <form method="get" asp-action="Checkout" class="mt-4 pt-3 border-top border-ac">
+                            <input type="hidden" name="orderId" value="@Model.OrderID" />
+                            <label class="form-label text-muted small">Mã khuyến mãi</label>
+                            <div class="input-group">
+                                <input type="text" name="promoCode" class="form-control ac-form-control" value="@Model.PromoCode" placeholder="Nhập mã (VD: AURA10)" />
+                                <button type="submit" class="btn btn-outline-light">Áp dụng</button>
+                            </div>
+                            @if (!string.IsNullOrEmpty(Model.PromoError))
+                            {
+                                <div class="text-danger small mt-1">@Model.PromoError</div>
+                            }
+                            else if (Model.Discount > 0)
+                            {
+                                <div class="text-success small mt-1"><i class="bi bi-check-circle me-1"></i>Đã áp dụng mã @Model.PromoCode</div>
+                            }
+                        </form>
+                    </div>
+                </div>
+
+                <!-- PAYMENT SUMMARY -->
+                <div class="col-md-5">
+                    <div class="ac-card p-4 h-100 d-flex flex-column">
+                        <h5 class="border-bottom border-ac pb-3 mb-3">Thanh toán</h5>
+                        
+                        <!-- Countdown Timer -->
+                        <div class="text-center mb-4 p-3 rounded" style="background: rgba(255, 107, 53, 0.1); border: 1px dashed rgba(255, 107, 53, 0.4);">
+                            <p class="text-muted small mb-1">Thời gian giữ ghế còn lại</p>
+                            <h3 id="countdown" class="mb-0 fw-bold" style="color: #ff6b35; font-variant-numeric: tabular-nums;">--:--</h3>
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Tạm tính:</span>
+                            <span>@Model.BaseTotal.ToString("N0")đ</span>
+                        </div>
+                        @if (Model.Discount > 0)
+                        {
+                            <div class="d-flex justify-content-between mb-2 text-success">
+                                <span>Giảm giá:</span>
+                                <span>-@Model.Discount.ToString("N0")đ</span>
+                            </div>
+                        }
+                        
+                        <div class="d-flex justify-content-between mt-auto pt-3 border-top border-ac">
+                            <span class="text-muted">Tổng cộng:</span>
+                            <span class="fw-bold" style="color: var(--ac-primary); font-size: 1.5rem;">@Model.FinalTotal.ToString("N0")đ</span>
+                        </div>
+
+                        <form method="post" asp-action="ProcessCheckout" class="mt-4">
+                            <input type="hidden" name="orderId" value="@Model.OrderID" />
+                            <button type="submit" id="btnPay" class="ac-btn-primary w-100 justify-content-center py-3 rounded-3">
+                                <i class="bi bi-qr-code-scan me-2"></i>Thanh toán qua PayOS
+                            </button>
+                        </form>
+                        
+                        <form method="get" asp-action="PaymentCancel" class="mt-2">
+                            <input type="hidden" name="orderId" value="@Model.OrderID" />
+                            <button type="submit" class="btn btn-link text-muted w-100 text-decoration-none small">
+                                Hủy đơn hàng
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Server time vs Expiry time
+        const expiryTime = new Date('@Model.HoldExpiryTime.ToString("o")').getTime();
+        
+        function updateTimer() {
+            const now = new Date().getTime();
+            const distance = expiryTime - now;
+
+            if (distance < 0) {
+                document.getElementById("countdown").innerHTML = "00:00";
+                document.getElementById("btnPay").disabled = true;
+                
+                // Show alert and redirect
+                alert("Đã hết thời gian giữ ghế. Đơn hàng đã bị hủy.");
+                window.location.href = '@Url.Action("SelectSeats", "Booking", new { showtimeId = 0 })'.replace('0', new URLSearchParams(window.location.search).get('showtimeId') || '');
+                return;
+            }
+
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown").innerHTML = 
+                (minutes < 10 ? "0" : "") + minutes + ":" + 
+                (seconds < 10 ? "0" : "") + seconds;
+        }
+
+        setInterval(updateTimer, 1000);
+        updateTimer();
+    </script>
+}

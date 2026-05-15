@@ -1,0 +1,244 @@
+@model AuraCinema.Web.ViewModels.Booking.SelectSeatsViewModel
+@{
+    ViewData["Title"] = "Chọn ghế";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container pt-5 pb-5">
+    <div class="row g-4">
+        <!-- SEAT MAP AREA -->
+        <div class="col-lg-8">
+            <div class="ac-card p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="mb-0 text-white">Sơ đồ phòng chiếu</h4>
+                    <span class="ac-badge" style="font-size:0.9rem;">@Model.RoomName</span>
+                </div>
+
+                <!-- Screen -->
+                <div class="text-center mb-5">
+                    <div style="height: 5px; background: var(--ac-gradient); border-radius: 50%; box-shadow: 0 10px 20px rgba(233,30,140,0.4); margin-bottom: 20px; filter: blur(1px);"></div>
+                    <span class="text-muted small text-uppercase tracking-widest">Màn hình</span>
+                </div>
+
+                <!-- Seats -->
+                <div class="seat-map-container overflow-auto pb-4">
+                    <div class="d-flex flex-column align-items-center gap-2" style="min-width: max-content;">
+                        @foreach (var row in Model.Rows)
+                        {
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="text-muted small fw-bold me-2" style="width: 20px;">@row.RowLabel</div>
+                                
+                                <div class="d-flex gap-2">
+                                    @foreach (var seat in row.Seats)
+                                    {
+                                        bool isUnavailable = Model.SoldOrHeldSeatIds.Contains(seat.SeatID);
+                                        string seatClass = "ac-seat";
+                                        
+                                        if (isUnavailable) seatClass += " sold";
+                                        else if (seat.SeatType == "VIP") seatClass += " vip";
+                                        else if (seat.SeatType == "Doi") seatClass += " couple";
+
+                                        <div class="@seatClass" 
+                                             data-id="@seat.SeatID" 
+                                             data-label="@row.RowLabel@seat.SeatNumber"
+                                             data-type="@seat.SeatType"
+                                             title="@row.RowLabel@seat.SeatNumber - @seat.SeatType"
+                                             @(isUnavailable ? "" : "onclick=toggleSeat(this)")>
+                                            @if (seat.SeatType == "Doi") { <i class="bi bi-heart-fill small"></i> }
+                                            else { <span>@seat.SeatNumber</span> }
+                                        </div>
+                                    }
+                                </div>
+                                
+                                <div class="text-muted small fw-bold ms-2" style="width: 20px;">@row.RowLabel</div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Legend -->
+                <div class="d-flex justify-content-center flex-wrap gap-4 mt-4 pt-3 border-top border-ac">
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="ac-seat" style="width: 20px; height: 20px; line-height: 20px;"></div>
+                        <span class="small text-muted">Thường</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="ac-seat vip" style="width: 20px; height: 20px; line-height: 20px;"></div>
+                        <span class="small text-muted">VIP</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="ac-seat couple" style="width: 40px; height: 20px; line-height: 20px;"><i class="bi bi-heart-fill" style="font-size:0.6rem;"></i></div>
+                        <span class="small text-muted">Ghế Đôi</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="ac-seat selected" style="width: 20px; height: 20px; line-height: 20px;"></div>
+                        <span class="small text-muted">Đang chọn</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="ac-seat sold" style="width: 20px; height: 20px; line-height: 20px;"></div>
+                        <span class="small text-muted">Đã bán/giữ</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUMMARY AREA -->
+        <div class="col-lg-4">
+            <div class="ac-card p-0 overflow-hidden sticky-top" style="top: 100px;">
+                <div class="d-flex">
+                    <img src="@Model.MoviePoster" alt="@Model.MovieTitle" style="width: 100px; height: 150px; object-fit: cover;" onerror="this.src='/images/placeholder-movie.jpg'" />
+                    <div class="p-3">
+                        <h5 class="fw-bold text-white mb-1">@Model.MovieTitle</h5>
+                        <p class="text-muted small mb-2">@Model.ShowtimeLabel</p>
+                        <p class="ac-badge m-0">@Model.RoomName</p>
+                    </div>
+                </div>
+                
+                <div class="p-4 border-top border-ac bg-surface">
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="text-muted">Ghế chọn:</span>
+                        <span id="selectedSeatsList" class="fw-bold text-white text-end" style="max-width: 60%;">-</span>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="text-muted">Tổng tiền:</span>
+                        <span id="totalPrice" class="fw-bold" style="color: var(--ac-primary); font-size: 1.2rem;">0đ</span>
+                    </div>
+
+                    <button id="btnContinue" class="ac-btn-primary w-100 justify-content-center py-3 rounded-3 mt-2 d-none" onclick="submitToServices()">
+                        Tiếp tục <i class="bi bi-arrow-right ms-2"></i>
+                    </button>
+                    <p id="hintText" class="text-center text-muted small mt-3 mb-0">Vui lòng chọn ghế để tiếp tục.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .ac-seat {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: rgba(255,255,255,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        .ac-seat:hover:not(.sold) {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.4);
+            transform: translateY(-2px);
+        }
+        .ac-seat.vip {
+            background: rgba(255, 107, 53, 0.15);
+            border-color: rgba(255, 107, 53, 0.4);
+            color: #ff6b35;
+        }
+        .ac-seat.couple {
+            width: 72px;
+            background: rgba(156, 39, 176, 0.15);
+            border-color: rgba(156, 39, 176, 0.4);
+            color: #9c27b0;
+        }
+        .ac-seat.selected {
+            background: var(--ac-gradient);
+            border-color: transparent;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(233,30,140,0.3);
+        }
+        .ac-seat.sold {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.05);
+            color: transparent;
+            cursor: not-allowed;
+            position: relative;
+        }
+        .ac-seat.sold::after {
+            content: 'X';
+            position: absolute;
+            color: rgba(255,255,255,0.2);
+            font-weight: bold;
+        }
+        .tracking-widest { letter-spacing: 0.25em; }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        const config = {
+            basePrice: @Model.BasePrice,
+            vipSurcharge: @Model.VipSurcharge,
+            coupleSurcharge: @Model.CoupleSurcharge,
+            daySurcharge: @Model.DaySurcharge
+        };
+        
+        let selectedSeats = [];
+
+        function toggleSeat(element) {
+            const id = parseInt(element.dataset.id);
+            const label = element.dataset.label;
+            const type = element.dataset.type;
+
+            const index = selectedSeats.findIndex(s => s.id === id);
+            
+            if (index > -1) {
+                selectedSeats.splice(index, 1);
+                element.classList.remove('selected');
+            } else {
+                if (selectedSeats.length >= 8) {
+                    alert("Bạn chỉ được chọn tối đa 8 ghế.");
+                    return;
+                }
+                selectedSeats.push({ id, label, type });
+                element.classList.add('selected');
+            }
+
+            updateSummary();
+        }
+
+        function updateSummary() {
+            // Update labels
+            const labels = selectedSeats.map(s => s.label).join(', ');
+            document.getElementById('selectedSeatsList').innerText = labels || '-';
+
+            // Calculate price
+            let total = 0;
+            selectedSeats.forEach(s => {
+                let price = config.basePrice + config.daySurcharge;
+                if (s.type === 'VIP') price += config.vipSurcharge;
+                else if (s.type === 'Doi') price += config.coupleSurcharge;
+                total += price;
+            });
+
+            document.getElementById('totalPrice').innerText = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(total);
+
+            // Hide/Show button
+            const btn = document.getElementById('btnContinue');
+            const hint = document.getElementById('hintText');
+            if (selectedSeats.length > 0) {
+                btn.classList.remove('d-none');
+                hint.classList.add('d-none');
+            } else {
+                btn.classList.add('d-none');
+                hint.classList.remove('d-none');
+            }
+        }
+
+        function submitToServices() {
+            if (selectedSeats.length === 0) return;
+
+            const seatIds = selectedSeats.map(s => s.id).join(',');
+            const url = `@Url.Action("AddServices", "Booking")?showtimeId=@Model.ShowtimeID&seatIds=${seatIds}`;
+            window.location.href = url;
+        }
+    </script>
+    @Html.AntiForgeryToken()
+}

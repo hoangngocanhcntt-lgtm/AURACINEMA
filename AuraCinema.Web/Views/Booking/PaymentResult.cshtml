@@ -1,0 +1,50 @@
+@model AuraCinema.Domain.Entities.Order
+@{
+    ViewData["Title"] = "Thanh toán thành công";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container pt-5 pb-5 text-center">
+    <div class="ac-card p-5 mx-auto" style="max-width: 600px;">
+        <div class="mb-4">
+            <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+        </div>
+        <h2 class="fw-bold text-white mb-3">Đặt vé thành công!</h2>
+        <p class="text-muted mb-4">Cảm ơn bạn đã sử dụng dịch vụ của Aura Cinema. Thông tin vé đã được gửi đến email của bạn.</p>
+
+        <div class="bg-surface p-4 rounded-3 text-start mb-4 border border-ac">
+            <div class="d-flex mb-3">
+                <img src="@Model.Showtime.Movie.Poster" alt="@Model.Showtime.Movie.Title" class="rounded" style="width: 80px; height: 120px; object-fit: cover;" onerror="this.src='/images/placeholder-movie.jpg'" />
+                <div class="ms-3">
+                    <h5 class="fw-bold text-white mb-1">@Model.Showtime.Movie.Title</h5>
+                    <p class="text-muted small mb-1"><i class="bi bi-calendar-event me-1"></i>@Model.Showtime.StartTime.ToString("HH:mm - dd/MM/yyyy")</p>
+                    <p class="ac-badge m-0">@Model.Showtime.Room.RoomName</p>
+                </div>
+            </div>
+            
+            <hr class="border-ac" />
+
+            <div class="row g-2 mb-2">
+                <div class="col-5 text-muted">Mã đơn hàng:</div>
+                <div class="col-7 fw-bold">#@Model.OrderID</div>
+            </div>
+            <div class="row g-2 mb-2">
+                <div class="col-5 text-muted">Ghế:</div>
+                <div class="col-7 fw-bold">@string.Join(", ", Model.OrderSeats.Select(s => $"{s.Seat.RowLabel}{s.Seat.SeatNumber}"))</div>
+            </div>
+            <div class="row g-2 mb-2">
+                <div class="col-5 text-muted">Tổng tiền:</div>
+                <div class="col-7 fw-bold text-primary-ac">@Model.FinalAmount.ToString("N0")đ</div>
+            </div>
+        </div>
+
+        <div class="d-flex gap-3 justify-content-center">
+            <a asp-controller="Home" asp-action="Index" class="ac-btn-outline px-4 py-2">
+                Về trang chủ
+            </a>
+            <a asp-controller="MyTickets" asp-action="Index" class="ac-btn-primary px-4 py-2">
+                Xem vé của tôi
+            </a>
+        </div>
+    </div>
+</div>

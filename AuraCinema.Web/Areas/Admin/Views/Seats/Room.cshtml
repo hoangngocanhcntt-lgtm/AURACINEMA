@@ -1,0 +1,167 @@
+@model AuraCinema.Domain.Entities.Room
+@{
+    ViewData["Title"] = $"Quản lý ghế - {Model.RoomName}";
+}
+
+<div class="mb-4">
+    <a asp-controller="Rooms" asp-action="Index" class="text-muted text-decoration-none">
+        <i class="bi bi-arrow-left me-2"></i>Quay lại danh sách phòng
+    </a>
+    <div class="d-flex justify-content-between align-items-end mt-2">
+        <div>
+            <h2 class="h4 mb-0 text-dark fw-bold">Sơ đồ ghế: @Model.RoomName</h2>
+            <p class="text-muted small mb-0">Nhấp vào ghế để thay đổi loại ghế</p>
+        </div>
+        <div class="d-flex gap-3">
+            <div class="d-flex align-items-center small">
+                <div class="seat-sample seat-thuong me-2"></div> Thường
+            </div>
+            <div class="d-flex align-items-center small">
+                <div class="seat-sample seat-vip me-2"></div> VIP
+            </div>
+            <div class="d-flex align-items-center small">
+                <div class="seat-sample seat-doi me-2"></div> Ghế đôi
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ac-card p-5 border-0 shadow-sm mb-4 bg-dark text-center">
+    <div class="screen-indicator mb-5 mx-auto">MÀN HÌNH</div>
+    
+    <div class="seat-grid d-inline-block">
+        @{
+            var groupedSeats = Model.Seats.GroupBy(s => s.RowLabel).OrderBy(g => g.Key);
+        }
+        @foreach (var group in groupedSeats)
+        {
+            <div class="seat-row d-flex align-items-center mb-2">
+                <div class="row-label me-3 text-secondary fw-bold" style="width: 20px;">@group.Key</div>
+                <div class="d-flex gap-2">
+                    @foreach (var seat in group.OrderBy(s => s.SeatNumber))
+                    {
+                        var statusClass = $"seat-{seat.SeatType.ToLower()}";
+                        <div class="admin-seat @statusClass" 
+                             data-id="@seat.SeatID" 
+                             data-code="@seat.SeatCode"
+                             data-type="@seat.SeatType"
+                             onclick="openSeatMenu(this)">
+                            @seat.SeatNumber
+                        </div>
+                    }
+                </div>
+                <div class="row-label ms-3 text-secondary fw-bold" style="width: 20px;">@group.Key</div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Quick Batch Edit -->
+<div class="ac-card p-4 border-0 shadow-sm">
+    <h5 class="fw-bold mb-3 small text-uppercase">Chỉnh sửa nhanh theo hàng</h5>
+    <form asp-action="BatchUpdate" method="post" class="row g-3 align-items-end">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="roomId" value="@Model.RoomID" />
+        <div class="col-md-3">
+            <label class="form-label small fw-bold">Hàng</label>
+            <select name="rowLabel" class="form-select shadow-sm border-light-subtle">
+                @foreach (var row in Model.Seats.Select(s => s.RowLabel).Distinct().OrderBy(r => r))
+                {
+                    <option value="@row">Hàng @row</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-5">
+            <label class="form-label small fw-bold">Loại ghế mới</label>
+            <select name="type" class="form-select shadow-sm border-light-subtle">
+                <option value="">(Không đổi)</option>
+                <option value="Thuong">Thường</option>
+                <option value="VIP">VIP</option>
+                <option value="Doi">Ghế đôi</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-secondary w-100 shadow-sm">Cập nhật cả hàng</button>
+        </div>
+    </form>
+</div>
+
+<!-- Seat Action Modal -->
+<div class="modal fade" id="seatModal" tabindex="-1">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title fw-bold small" id="modalSeatCode">Ghế A1</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-grid gap-2">
+                    <button class="btn btn-outline-primary btn-sm" onclick="changeType('Thuong')">Loại: Thường</button>
+                    <button class="btn btn-outline-warning btn-sm" onclick="changeType('VIP')">Loại: VIP</button>
+                    <button class="btn btn-outline-info btn-sm" onclick="changeType('Doi')">Loại: Ghế đôi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .screen-indicator {
+        width: 60%;
+        height: 6px;
+        background: #444;
+        color: #888;
+        font-size: 10px;
+        letter-spacing: 5px;
+        padding-top: 10px;
+        border-radius: 50% / 100% 100% 0 0;
+        margin-bottom: 40px;
+    }
+    .admin-seat {
+        width: 32px;
+        height: 32px;
+        font-size: 11px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s;
+        color: white;
+        font-weight: bold;
+    }
+    .admin-seat:hover { transform: scale(1.1); filter: brightness(1.2); }
+    .seat-thuong { background: #6c757d; }
+    .seat-vip { background: #ffc107; color: #000; }
+    .seat-doi { background: #e83e8c; }
+    
+    .seat-sample { width: 14px; height: 14px; border-radius: 2px; }
+</style>
+
+@section Scripts {
+    <script>
+        let currentSeatId = 0;
+        let currentSeatEl = null;
+
+        function openSeatMenu(el) {
+            currentSeatId = el.dataset.id;
+            currentSeatEl = el;
+            document.getElementById('modalSeatCode').innerText = "Cấu hình ghế: " + el.dataset.code;
+            new bootstrap.Modal(document.getElementById('seatModal')).show();
+        }
+
+        async function changeType(type) {
+            const formData = new FormData();
+            formData.append('seatId', currentSeatId);
+            formData.append('type', type);
+            formData.append('__RequestVerificationToken', document.querySelector('input[name="__RequestVerificationToken"]').value);
+
+            const res = await fetch('/Admin/Seats/UpdateType', { method: 'POST', body: formData });
+            if (res.ok) {
+                currentSeatEl.dataset.type = type;
+                currentSeatEl.className = `admin-seat seat-${type.toLowerCase()}`;
+                bootstrap.Modal.getInstance(document.getElementById('seatModal')).hide();
+            }
+        }
+    </script>
+}

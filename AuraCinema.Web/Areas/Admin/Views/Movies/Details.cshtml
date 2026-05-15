@@ -1,0 +1,87 @@
+@model AuraCinema.Domain.Entities.Movie
+@{
+    ViewData["Title"] = "Chi tiết Phim";
+}
+
+<div class="mb-4">
+    <a asp-action="Index" class="text-muted text-decoration-none"><i class="bi bi-arrow-left me-2"></i>Quay lại danh sách</a>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="ac-card p-4 text-center border-0 shadow-sm">
+            <img src="@Model.Poster" alt="@Model.Title" class="img-fluid rounded mb-3 shadow-sm" style="max-height: 400px; object-fit: cover;" onerror="this.src='/images/placeholder-movie.jpg'" />
+            <h5 class="text-dark fw-bold mb-1">@Model.Title</h5>
+            <p class="text-muted mb-3"><span class="badge bg-secondary bg-opacity-10 text-secondary border">@Model.MovieCode</span></p>
+            
+            <div class="d-grid gap-2">
+                <a asp-action="Edit" asp-route-id="@Model.MovieID" class="btn ac-btn-primary shadow-sm"><i class="bi bi-pencil me-2"></i>Chỉnh sửa</a>
+                @if (Model.Status != "Ngung chieu")
+                {
+                    <form asp-action="Delete" asp-route-id="@Model.MovieID" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn chuyển trạng thái thành Ngừng chiếu không?');">
+                        <button type="submit" class="btn btn-outline-danger w-100 shadow-sm"><i class="bi bi-pause-circle me-2"></i>Ngừng chiếu</button>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="ac-card p-4 mb-4 border-0 shadow-sm">
+            <h5 class="text-dark fw-bold border-bottom border-light pb-3 mb-4">Thông tin chi tiết</h5>
+            
+            <div class="row mb-3">
+                <div class="col-sm-3 text-secondary">Thể loại:</div>
+                <div class="col-sm-9 text-dark fw-medium">@Model.Genre</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-3 text-secondary">Đạo diễn:</div>
+                <div class="col-sm-9 text-dark fw-medium">@Model.Director</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-3 text-secondary">Diễn viên:</div>
+                <div class="col-sm-9 text-dark fw-medium">@Model.Actors</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-3 text-secondary">Thời lượng:</div>
+                <div class="col-sm-9 text-dark fw-medium">@Model.Duration phút</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-3 text-secondary">Khởi chiếu:</div>
+                <div class="col-sm-9 text-dark fw-medium">@Model.ReleaseDate.ToString("dd/MM/yyyy")</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-3 text-secondary">Trạng thái:</div>
+                <div class="col-sm-9">
+                    @if (Model.Status == "Dang chieu")
+                    {
+                        <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25">Đang chiếu</span>
+                    }
+                    else if (Model.Status == "Sap chieu")
+                    {
+                        <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25">Sắp chiếu</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25">Ngừng chiếu</span>
+                    }
+                </div>
+            </div>
+        </div>
+        
+        <div class="ac-card p-4 border-0 shadow-sm">
+            <h5 class="text-dark fw-bold border-bottom border-light pb-3 mb-4">Trailer</h5>
+            @if (!string.IsNullOrEmpty(Model.Trailer))
+            {
+                var embedUrl = Model.Trailer.Contains("watch?v=") ? Model.Trailer.Replace("watch?v=", "embed/") : Model.Trailer;
+                <div class="ratio ratio-16x9 rounded overflow-hidden shadow-sm">
+                    <iframe src="@embedUrl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted small">Chưa có thông tin trailer.</p>
+            }
+        </div>
+    </div>
+</div>

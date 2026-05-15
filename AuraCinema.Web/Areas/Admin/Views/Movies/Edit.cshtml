@@ -1,0 +1,111 @@
+@model AuraCinema.Web.Areas.Admin.ViewModels.MovieFormViewModel
+@{
+    ViewData["Title"] = "Chỉnh sửa Phim";
+}
+
+<div class="mb-4">
+    <a asp-action="Index" class="text-muted text-decoration-none"><i class="bi bi-arrow-left me-2"></i>Quay lại danh sách</a>
+</div>
+
+<div class="ac-card p-4 p-md-5 border-0 shadow-sm">
+    <h4 class="text-dark fw-bold mb-4 border-bottom border-light pb-3">Chỉnh sửa thông tin Phim</h4>
+
+    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="MovieID" />
+        <input type="hidden" asp-for="CurrentPoster" />
+        
+        <div class="row g-4">
+            <!-- Cột trái: Thông tin cơ bản -->
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label asp-for="MovieCode" class="form-label text-secondary small fw-bold"></label>
+                    <input asp-for="MovieCode" class="form-control border-light-subtle shadow-sm bg-light" readonly />
+                    <span asp-validation-for="MovieCode" class="text-danger small"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label text-secondary small fw-bold"></label>
+                    <input asp-for="Title" class="form-control border-light-subtle shadow-sm" />
+                    <span asp-validation-for="Title" class="text-danger small"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Genre" class="form-label text-secondary small fw-bold"></label>
+                    <input asp-for="Genre" class="form-control border-light-subtle shadow-sm" />
+                    <span asp-validation-for="Genre" class="text-danger small"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Director" class="form-label text-secondary small fw-bold"></label>
+                    <input asp-for="Director" class="form-control border-light-subtle shadow-sm" />
+                    <span asp-validation-for="Director" class="text-danger small"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Actors" class="form-label text-secondary small fw-bold"></label>
+                    <textarea asp-for="Actors" class="form-control border-light-subtle shadow-sm" rows="2"></textarea>
+                    <span asp-validation-for="Actors" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <!-- Cột phải: Thông số, Trạng thái & File -->
+            <div class="col-md-6">
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <label asp-for="Duration" class="form-label text-secondary small fw-bold"></label>
+                        <div class="input-group">
+                            <input asp-for="Duration" type="number" class="form-control border-light-subtle shadow-sm" />
+                            <span class="input-group-text bg-light text-muted border-light-subtle">phút</span>
+                        </div>
+                        <span asp-validation-for="Duration" class="text-danger small"></span>
+                    </div>
+                    <div class="col-6">
+                        <label asp-for="ReleaseDate" class="form-label text-secondary small fw-bold"></label>
+                        <input asp-for="ReleaseDate" type="date" class="form-control border-light-subtle shadow-sm" />
+                        <span asp-validation-for="ReleaseDate" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Status" class="form-label text-secondary small fw-bold"></label>
+                    <select asp-for="Status" class="form-select border-light-subtle shadow-sm">
+                        <option value="Dang chieu">Đang chiếu</option>
+                        <option value="Sap chieu">Sắp chiếu</option>
+                        <option value="Ngung chieu">Ngừng chiếu</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Trailer" class="form-label text-secondary small fw-bold"></label>
+                    <input asp-for="Trailer" class="form-control border-light-subtle shadow-sm" />
+                    <span asp-validation-for="Trailer" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="PosterFile" class="form-label text-secondary small fw-bold"></label>
+                    <input asp-for="PosterFile" type="file" class="form-control border-light-subtle shadow-sm" accept="image/*" id="posterInput" />
+                    <p class="text-muted small mt-1">Bỏ trống nếu không muốn đổi ảnh.</p>
+                    <div class="mt-3 text-center">
+                        <img id="posterPreview" src="@Model.CurrentPoster" class="rounded border shadow-sm" style="max-height: 200px; object-fit: cover;" onerror="this.src='/images/placeholder-movie.jpg'" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-end border-top border-light pt-4 mt-2">
+            <a asp-action="Index" class="btn btn-outline-secondary me-2 shadow-sm">Hủy bỏ</a>
+            <button type="submit" class="btn ac-btn-primary px-4 shadow-sm"><i class="bi bi-check-lg me-2"></i>Cập nhật</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.getElementById('posterInput').addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('posterPreview').src = e.target.result;
+                }
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+    </script>
+}

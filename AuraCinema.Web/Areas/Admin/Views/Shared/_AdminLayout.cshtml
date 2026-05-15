@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] — Aura Cinema Admin</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5 & Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    
+    <style>
+        body { 
+            background-color: #f4f7fa; 
+            color: #333333;
+        }
+        .admin-sidebar {
+            width: 260px;
+            height: 100vh;
+            position: fixed;
+            top: 0; left: 0;
+            background: #ffffff;
+            border-right: 1px solid #e0e0e0;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.03);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+        .admin-main {
+            margin-left: 260px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .admin-header {
+            height: 70px;
+            background: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            justify-content: flex-end;
+        }
+        .sidebar-nav .nav-link {
+            color: #555555;
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            align-items: center;
+            border-left: 4px solid transparent;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        .sidebar-nav .nav-link i { font-size: 1.2rem; width: 30px; }
+        .sidebar-nav .nav-link:hover {
+            color: #0047AB;
+            background: #f0f4f8;
+        }
+        .sidebar-nav .nav-link.active {
+            color: #0047AB;
+            background: #eef2f7;
+            border-left-color: #0047AB;
+        }
+        /* Branding Blue consistency */
+        .ac-logo-text { color: #333333 !important; }
+        .ac-logo-accent { color: #0047AB !important; }
+        
+        .ac-card {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            color: #333333;
+        }
+        .ac-btn-primary {
+            background: #0047AB;
+            border: none;
+            color: #ffffff !important;
+        }
+        .ac-btn-primary:hover {
+            background: #003380;
+            box-shadow: 0 4px 12px rgba(0,71,171,0.2);
+        }
+    </style>
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <nav class="admin-sidebar">
+        <div class="p-4 mb-3 text-center border-bottom border-light">
+            <a class="navbar-brand ac-brand text-decoration-none" asp-controller="Dashboard" asp-action="Index">
+                <span class="ac-logo-icon">🎬</span><br/>
+                <span class="ac-logo-text fs-5">AURA<span class="ac-logo-accent">CINEMA</span></span>
+                
+            </a>
+        </div>
+        
+        <ul class="nav flex-column sidebar-nav flex-grow-1">
+            @if (User.IsInRole("Admin"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" ? "active" : "")" 
+                       asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                        <i class="bi bi-grid-1x2"></i>Tổng quan
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Movies" ? "active" : "")" 
+                       asp-area="Admin" asp-controller="Movies" asp-action="Index">
+                        <i class="bi bi-film"></i>Quản lý phim
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Rooms" ? "active" : "")" 
+                       asp-area="Admin" asp-controller="Rooms" asp-action="Index">
+                        <i class="bi bi-door-open"></i>Quản lý phòng chiếu
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Showtimes" ? "active" : "")" 
+                       asp-area="Admin" asp-controller="Showtimes" asp-action="Index">
+                        <i class="bi bi-calendar-event"></i>Quản lý suất chiếu
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Promotions" ? "active" : "")" 
+                       asp-area="Admin" asp-controller="Promotions" asp-action="Index">
+                        <i class="bi bi-tag"></i>Quản lý khuyến mãi
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Services" ? "active" : "")" 
+                       asp-area="Admin" asp-controller="Services" asp-action="Index">
+                        <i class="bi bi-cup-straw"></i>Dịch vụ & Đồ ăn
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Orders" ? "active" : "")" 
+                       asp-area="Admin" asp-controller="Orders" asp-action="Index">
+                        <i class="bi bi-receipt"></i>Quản lý đơn hàng
+                    </a>
+                </li>
+            }
+            
+            @if (User.IsInRole("Staff"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "TicketScanner" ? "active" : "")" 
+                       asp-area="Admin" asp-controller="TicketScanner" asp-action="Index">
+                        <i class="bi bi-qr-code-scan"></i>Quét vé (Check-in)
+                    </a>
+                </li>
+            }
+        </ul>
+
+        <div class="p-4 border-top border-light">
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-outline-primary w-100 btn-sm mb-2">
+                <i class="bi bi-box-arrow-up-right me-2"></i>Xem trang chủ
+            </a>
+            <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-light text-danger border w-100 btn-sm fw-bold">
+                    <i class="bi bi-box-arrow-left me-2"></i>Đăng xuất
+                </button>
+            </form>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="admin-main">
+        <header class="admin-header">
+            <div class="d-flex align-items-center gap-3">
+                <span class="badge bg-primary bg-opacity-25 text-primary border border-primary">@User.Identity?.Name</span>
+            </div>
+        </header>
+
+        <div class="flex-grow-1 p-4 p-md-5">
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i>@TempData["Success"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm" role="alert">
+                    <i class="bi bi-exclamation-circle-fill me-2"></i>@TempData["Error"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            @RenderBody()
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

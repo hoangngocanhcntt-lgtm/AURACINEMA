@@ -1,0 +1,87 @@
+@model IEnumerable<AuraCinema.Domain.Entities.Movie>
+@{
+    ViewData["Title"] = "Quản lý Phim";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="h4 mb-0 text-dark fw-bold">Quản lý Phim</h2>
+    <a asp-action="Create" class="btn ac-btn-primary shadow-sm"><i class="bi bi-plus-lg me-2"></i>Thêm phim mới</a>
+</div>
+
+<div class="ac-card p-4 border-0 shadow-sm">
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-3">
+            <input type="text" name="searchCode" class="form-control border-light-subtle shadow-sm" placeholder="Tìm theo Mã phim..." value="@ViewBag.SearchCode" />
+        </div>
+        <div class="col-md-5">
+            <input type="text" name="searchTitle" class="form-control border-light-subtle shadow-sm" placeholder="Tìm theo Tên phim..." value="@ViewBag.SearchTitle" />
+        </div>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary me-2 shadow-sm" style="background-color: #0047AB; border: none;"><i class="bi bi-search me-2"></i>Tìm kiếm</button>
+            <a asp-action="Index" class="btn btn-outline-secondary shadow-sm">Xóa bộ lọc</a>
+        </div>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="bg-light">
+                <tr class="text-secondary small text-uppercase fw-bold">
+                    <th>Poster</th>
+                    <th>Mã Phim</th>
+                    <th>Tên Phim</th>
+                    <th>Thể loại</th>
+                    <th>Thời lượng</th>
+                    <th>Trạng thái</th>
+                    <th class="text-end">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="border-bottom border-light">
+                        <td>
+                            <img src="@item.Poster" alt="@item.Title" class="rounded shadow-sm" style="width: 40px; height: 60px; object-fit: cover;" onerror="this.src='/images/placeholder-movie.jpg'" />
+                        </td>
+                        <td><span class="badge bg-secondary bg-opacity-10 text-secondary border">@item.MovieCode</span></td>
+                        <td class="fw-bold text-dark">@item.Title</td>
+                        <td class="text-muted">@item.Genre</td>
+                        <td class="text-muted">@item.Duration phút</td>
+                        <td>
+                            @if (item.Status == "Dang chieu")
+                            {
+                                <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25">Đang chiếu</span>
+                            }
+                            else if (item.Status == "Sap chieu")
+                            {
+                                <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25">Sắp chiếu</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25">Ngừng chiếu</span>
+                            }
+                        </td>
+                        <td class="text-end">
+                            <a asp-action="Details" asp-route-id="@item.MovieID" class="btn btn-sm btn-outline-info me-1" title="Xem chi tiết">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a asp-action="Edit" asp-route-id="@item.MovieID" class="btn btn-sm btn-outline-primary me-1" title="Chỉnh sửa">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <form asp-action="Delete" asp-route-id="@item.MovieID" method="post" class="d-inline" onsubmit="return confirm('Bạn có chắc chắn muốn CHUYỂN TRẠNG THÁI phim này thành Ngừng chiếu không?');">
+                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Ngừng chiếu">
+                                    <i class="bi bi-pause-circle"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="7" class="text-center py-4 text-muted small">Không tìm thấy bộ phim nào.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

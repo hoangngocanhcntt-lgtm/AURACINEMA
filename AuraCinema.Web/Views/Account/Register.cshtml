@@ -1,0 +1,133 @@
+﻿@model AuraCinema.Web.ViewModels.Account.RegisterViewModel
+@{
+    ViewData["Title"] = "Đăng ký tài khoản";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="ac-auth-wrapper">
+    <div class="ac-auth-card" style="max-width:520px;">
+        <div class="ac-auth-logo">
+            <div style="font-size:2.5rem;">🎬</div>
+            <h1 class="ac-auth-title mt-2">Tạo tài khoản</h1>
+            <p class="ac-auth-subtitle">Tham gia Aura Cinema ngay hôm nay</p>
+        </div>
+
+        <div asp-validation-summary="ModelOnly" class="validation-summary-errors"></div>
+
+        <form asp-action="Register" method="post" id="registerForm">
+            @Html.AntiForgeryToken()
+
+            <!-- Họ tên -->
+            <div class="mb-3">
+                <label asp-for="FullName" class="ac-form-label">
+                    <i class="bi bi-person me-1 text-primary-ac"></i>Họ và tên
+                </label>
+                <input asp-for="FullName" class="form-control ac-form-control"
+                       placeholder="Nguyễn Văn A" autocomplete="name" id="regFullName"/>
+                <span asp-validation-for="FullName" class="field-validation-error"></span>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+                <label asp-for="Email" class="ac-form-label">
+                    <i class="bi bi-envelope me-1 text-primary-ac"></i>Email
+                </label>
+                <input asp-for="Email" type="email" class="form-control ac-form-control"
+                       placeholder="email@example.com" autocomplete="email" id="regEmail"/>
+                <span asp-validation-for="Email" class="field-validation-error"></span>
+            </div>
+
+            <!-- Số điện thoại -->
+            <div class="mb-3">
+                <label asp-for="Phone" class="ac-form-label">
+                    <i class="bi bi-telephone me-1 text-primary-ac"></i>Số điện thoại
+                </label>
+                <input asp-for="Phone" type="tel" class="form-control ac-form-control"
+                       placeholder="0901234567" maxlength="10" autocomplete="tel" id="regPhone"/>
+                <span asp-validation-for="Phone" class="field-validation-error"></span>
+            </div>
+
+            <!-- Mật khẩu -->
+            <div class="mb-3">
+                <label asp-for="Password" class="ac-form-label">
+                    <i class="bi bi-lock me-1 text-primary-ac"></i>Mật khẩu
+                </label>
+                <div class="position-relative">
+                    <input asp-for="Password" type="password" class="form-control ac-form-control pe-5"
+                           placeholder="Tối thiểu 6 ký tự" autocomplete="new-password" id="regPwd"/>
+                    <button type="button" id="toggleRegPwd"
+                            class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-1 p-2"
+                            tabindex="-1" style="color:var(--ac-muted);">
+                        <i class="bi bi-eye" id="regEyeIcon"></i>
+                    </button>
+                </div>
+                <span asp-validation-for="Password" class="field-validation-error"></span>
+                <!-- Password strength -->
+                <div class="mt-2 d-flex gap-1" id="strengthBar" style="display:none!important;">
+                    <div class="flex-fill rounded" style="height:3px;background:rgba(255,255,255,0.1);" id="s1"></div>
+                    <div class="flex-fill rounded" style="height:3px;background:rgba(255,255,255,0.1);" id="s2"></div>
+                    <div class="flex-fill rounded" style="height:3px;background:rgba(255,255,255,0.1);" id="s3"></div>
+                    <div class="flex-fill rounded" style="height:3px;background:rgba(255,255,255,0.1);" id="s4"></div>
+                </div>
+            </div>
+
+            <!-- Xác nhận mật khẩu -->
+            <div class="mb-4">
+                <label asp-for="ConfirmPassword" class="ac-form-label">
+                    <i class="bi bi-lock-fill me-1 text-primary-ac"></i>Xác nhận mật khẩu
+                </label>
+                <input asp-for="ConfirmPassword" type="password" class="form-control ac-form-control"
+                       placeholder="Nhập lại mật khẩu" autocomplete="new-password" id="regConfirm"/>
+                <span asp-validation-for="ConfirmPassword" class="field-validation-error"></span>
+            </div>
+
+            <button type="submit" class="ac-btn-primary w-100 justify-content-center py-3 rounded-3"
+                    id="registerBtn">
+                <i class="bi bi-person-plus"></i>Tạo tài khoản
+            </button>
+        </form>
+
+        <div class="ac-divider mt-4">hoặc</div>
+
+        <p class="text-center mb-0" style="color:var(--ac-muted);font-size:0.9rem;">
+            Đã có tài khoản?
+            <a asp-action="Login" class="text-primary-ac fw-semibold text-decoration-none ms-1">
+                Đăng nhập
+            </a>
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Toggle password
+        document.getElementById('toggleRegPwd').addEventListener('click', function () {
+            const pwd = document.getElementById('regPwd');
+            const icon = document.getElementById('regEyeIcon');
+            pwd.type = pwd.type === 'password' ? 'text' : 'password';
+            icon.className = pwd.type === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash';
+        });
+        // Strength bar
+        document.getElementById('regPwd').addEventListener('input', function () {
+            const v = this.value, bars = ['s1','s2','s3','s4'];
+            const colors = ['#ef4444','#f97316','#eab308','#22c55e'];
+            let score = 0;
+            if (v.length >= 6) score++;
+            if (/[A-Z]/.test(v)) score++;
+            if (/[0-9]/.test(v)) score++;
+            if (/[^A-Za-z0-9]/.test(v)) score++;
+            bars.forEach((id, i) => {
+                document.getElementById(id).style.background =
+                    i < score ? colors[score - 1] : 'rgba(255,255,255,0.1)';
+            });
+            document.getElementById('strengthBar').style.display = v ? 'flex' : 'none';
+        });
+        // Loading
+        document.getElementById('registerForm').addEventListener('submit', function () {
+            const btn = document.getElementById('registerBtn');
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Đang tạo...';
+            btn.disabled = true;
+        });
+    </script>
+}

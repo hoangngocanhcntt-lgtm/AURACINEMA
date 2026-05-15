@@ -1,0 +1,81 @@
+﻿@model List<AuraCinema.Web.ViewModels.PromotionViewModel>
+@{
+    ViewData["Title"] = "Khuyen mai";
+    ViewData["Description"] = "Uu dai va khuyen mai tai Aura Cinema";
+}
+
+<section class="ac-section pt-5">
+    <div class="container">
+        <div class="mb-4">
+            <h1 class="ac-section-title">
+                <i class="bi bi-gift me-2 text-primary-ac"></i>Khuyen mai
+            </h1>
+            <p class="ac-section-subtitle">Nhung uu dai hap dan danh cho ban</p>
+        </div>
+
+        @if (Model.Any())
+        {
+            <div class="row g-4">
+                @foreach (var promo in Model)
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <div class="ac-promo-card">
+                            <div class="ac-promo-header">
+                                <div class="ac-promo-icon">🎉</div>
+                                <div class="ac-promo-discount">
+                                    -@promo.DiscountValue.ToString("N0")đ
+                                </div>
+                            </div>
+                            <div class="ac-promo-body">
+                                <div class="ac-promo-code">@promo.Title</div>
+                                <p class="ac-promo-condition mb-3">@promo.Condition</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="ac-promo-expiry">
+                                        <i class="bi bi-clock me-1"></i>
+                                        @if (promo.DaysRemaining > 0)
+                                        {
+                                            <span>Con @promo.DaysRemaining ngay</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-danger">Het han hom nay</span>
+                                        }
+                                    </div>
+                                    <button class="ac-btn-copy btn btn-sm"
+                                            data-code="@promo.Title"
+                                            onclick="copyCode(this)">
+                                        <i class="bi bi-clipboard me-1"></i>Sao chep
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-5">
+                <div style="font-size:4rem;">🎁</div>
+                <h5 class="mt-3">Chua co khuyen mai</h5>
+                <p style="color:var(--ac-muted);">Hay quay lai sau de xem cac uu dai moi nhat.</p>
+            </div>
+        }
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        function copyCode(btn) {
+            const code = btn.dataset.code;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerHTML = '<i class="bi bi-check me-1"></i>Da sao chep!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="bi bi-clipboard me-1"></i>Sao chep';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+    </script>
+}

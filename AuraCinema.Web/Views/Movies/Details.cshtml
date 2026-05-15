@@ -1,0 +1,183 @@
+﻿@model AuraCinema.Web.ViewModels.Movie.MovieDetailViewModel
+@{
+    ViewData["Title"] = Model.Title;
+    ViewData["Description"] = $"{Model.Title} - {Model.Genre} - {Model.Duration} phut";
+}
+
+<!-- ═══ MOVIE HERO ═══ -->
+<section class="ac-movie-hero">
+    <div class="ac-movie-hero-bg" style="background-image:url('@Model.Poster');"></div>
+    <div class="container position-relative" style="z-index:2;">
+        <div class="row py-5 g-4 align-items-start">
+            <!-- Poster -->
+            <div class="col-md-4 col-lg-3">
+                <div class="ac-detail-poster">
+                    <img src="@Model.Poster" alt="@Model.Title"
+                         onerror="this.src='/images/placeholder-movie.jpg'" class="w-100" />
+                    @if (Model.Status == "Dang chieu")
+                    {
+                        <span class="ac-movie-badge ac-badge-now">Dang chieu</span>
+                    }
+                    else
+                    {
+                        <span class="ac-movie-badge ac-badge-coming">Sap chieu</span>
+                    }
+                </div>
+            </div>
+
+            <!-- Info -->
+            <div class="col-md-8 col-lg-9">
+                <nav class="mb-3">
+                    <a asp-controller="Home" asp-action="Index" class="text-primary-ac text-decoration-none small">
+                        <i class="bi bi-house me-1"></i>Trang chu
+                    </a>
+                    <span class="mx-2 text-muted">/</span>
+                    <a asp-controller="Movies" asp-action="Index" class="text-primary-ac text-decoration-none small">Phim</a>
+                    <span class="mx-2 text-muted">/</span>
+                    <span class="text-muted small">@Model.Title</span>
+                </nav>
+
+                <h1 class="fw-bold mb-3" style="font-family:'Outfit',sans-serif;font-size:2.2rem;">
+                    @Model.Title
+                </h1>
+
+                <!-- Tags -->
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    @foreach (var genre in Model.Genre.Split(','))
+                    {
+                        <span class="ac-genre-tag">@genre.Trim()</span>
+                    }
+                    <span class="ac-genre-tag"><i class="bi bi-clock me-1"></i>@Model.Duration phut</span>
+                </div>
+
+                <!-- Details grid -->
+                <div class="row g-3 mb-4">
+                    <div class="col-sm-6">
+                        <div class="ac-info-item">
+                            <span class="ac-info-label">Dao dien</span>
+                            <span class="ac-info-value">@Model.Director</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="ac-info-item">
+                            <span class="ac-info-label">Dien vien</span>
+                            <span class="ac-info-value">@Model.Actors</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="ac-info-item">
+                            <span class="ac-info-label">Ngay chieu</span>
+                            <span class="ac-info-value">@Model.ReleaseDate.ToString("dd/MM/yyyy")</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trailer button -->
+                @if (!string.IsNullOrEmpty(Model.Trailer))
+                {
+                    <button class="ac-btn-outline px-4" id="trailerBtn"
+                            data-trailer="@Model.Trailer.Replace("watch?v=","embed/")">
+                        <i class="bi bi-play-circle me-1"></i>Xem Trailer
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ TRAILER MODAL ═══ -->
+<div class="modal fade" id="trailerModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content" style="background:var(--ac-surface);border:1px solid var(--ac-border);">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-white">Trailer — @Model.Title</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="ratio ratio-16x9">
+                    <iframe id="trailerIframe" src="" allowfullscreen
+                            style="border-radius:0 0 16px 16px;"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ SUẤT CHIẾU ═══ -->
+<section class="ac-section">
+    <div class="container">
+        <h2 class="ac-section-title mb-4">
+            <i class="bi bi-calendar-event me-2 text-primary-ac"></i>Suat chieu
+        </h2>
+
+        @if (Model.ShowtimeGroups.Any())
+        {
+            <!-- Day tabs -->
+            <div class="ac-day-tabs mb-4">
+                @foreach (var group in Model.ShowtimeGroups)
+                {
+                    <div class="ac-day-tab @(group == Model.ShowtimeGroups.First() ? "active" : "")"
+                         data-date="@group.Date.ToString("yyyy-MM-dd")"
+                         onclick="selectDay(this)">
+                        <span class="ac-day-name">@group.DayLabel</span>
+                        <span class="ac-day-date">@group.Date.ToString("dd/MM")</span>
+                    </div>
+                }
+            </div>
+
+            <!-- Showtime slots -->
+            @foreach (var group in Model.ShowtimeGroups)
+            {
+                <div class="ac-showtime-group @(group == Model.ShowtimeGroups.First() ? "" : "d-none")"
+                     data-date="@group.Date.ToString("yyyy-MM-dd")">
+                    <div class="d-flex flex-wrap gap-3">
+                        @foreach (var st in group.Showtimes)
+                        {
+                            <a asp-controller="Booking" asp-action="SelectSeats"
+                               asp-route-showtimeId="@st.ShowtimeID"
+                               class="ac-showtime-slot @(st.AvailableSeats <= 0 ? "soldout" : "")">
+                                <span class="ac-slot-time">@st.StartTime</span>
+                                <span class="ac-slot-info">@st.RoomName</span>
+                                <span class="ac-slot-seats">@st.AvailableSeats ghe trong</span>
+                            </a>
+                        }
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="text-center py-5 ac-card p-5">
+                <div style="font-size:3rem;">📅</div>
+                <h5 class="mt-3">Chua co suat chieu</h5>
+                <p style="color:var(--ac-muted);">Phim nay chua co lich chieu trong 4 ngay toi.</p>
+            </div>
+        }
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        // Day tab selection
+        function selectDay(el) {
+            document.querySelectorAll('.ac-day-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            const date = el.dataset.date;
+            document.querySelectorAll('.ac-showtime-group').forEach(g => {
+                g.classList.toggle('d-none', g.dataset.date !== date);
+            });
+        }
+
+        // Trailer modal
+        const trailerBtn = document.getElementById('trailerBtn');
+        if (trailerBtn) {
+            trailerBtn.addEventListener('click', () => {
+                document.getElementById('trailerIframe').src = trailerBtn.dataset.trailer;
+                new bootstrap.Modal(document.getElementById('trailerModal')).show();
+            });
+            document.getElementById('trailerModal').addEventListener('hidden.bs.modal', () => {
+                document.getElementById('trailerIframe').src = '';
+            });
+        }
+    </script>
+}

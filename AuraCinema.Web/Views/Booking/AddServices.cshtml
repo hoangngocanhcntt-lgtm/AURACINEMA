@@ -1,0 +1,167 @@
+@using System.Text.Json
+@model AuraCinema.Web.ViewModels.Booking.AddServicesViewModel
+@{
+    ViewData["Title"] = "Chọn bắp nước";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container pt-5 pb-5">
+    <div class="row g-4">
+        <!-- SERVICES AREA -->
+        <div class="col-lg-8">
+            <div class="ac-card p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="mb-0 text-white">Bắp nước & Dịch vụ</h4>
+                    <span class="text-muted small">Bước 2/3</span>
+                </div>
+
+                <div class="row g-3">
+                    @foreach (var svc in Model.AvailableServices)
+                    {
+                        <div class="col-md-6 col-xl-4">
+                            <div class="service-card ac-card p-0 overflow-hidden border-ac" data-id="@svc.ServiceID" data-price="@svc.Price" data-name="@svc.ServiceName">
+                                <img src="@svc.Image" alt="@svc.ServiceName" class="w-100" style="height: 140px; object-fit: cover;" onerror="this.src='/images/popcorn-default.jpg'" />
+                                <div class="p-3 text-center">
+                                    <h6 class="text-white fw-bold mb-1">@svc.ServiceName</h6>
+                                    <p class="text-primary fw-bold mb-3">@svc.Price.ToString("N0")đ</p>
+                                    
+                                    <div class="d-flex justify-content-center align-items-center gap-3">
+                                        <button class="btn btn-sm btn-outline-light rounded-circle" style="width:30px; height:30px; padding:0;" onclick="changeQty(@svc.ServiceID, -1)">-</button>
+                                        <span class="fw-bold text-white fs-5" id="qty-@svc.ServiceID">0</span>
+                                        <button class="btn btn-sm btn-outline-light rounded-circle" style="width:30px; height:30px; padding:0;" onclick="changeQty(@svc.ServiceID, 1)">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- SUMMARY AREA -->
+        <div class="col-lg-4">
+            <div class="ac-card p-0 overflow-hidden sticky-top" style="top: 100px;">
+                <div class="p-4 border-bottom border-ac bg-surface">
+                    <h5 class="fw-bold text-white mb-3">Thông tin vé</h5>
+                    <div class="d-flex justify-content-between mb-2 small">
+                        <span class="text-muted">Phim:</span>
+                        <span class="text-white text-end">@Model.MovieTitle</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2 small">
+                        <span class="text-muted">Suất chiếu:</span>
+                        <span class="text-white">@Model.ShowtimeLabel</span>
+                    </div>
+                    <div class="d-flex justify-content-between small">
+                        <span class="text-muted">Ghế:</span>
+                        <span class="text-white">@Model.SeatList</span>
+                    </div>
+                </div>
+                
+                <div class="p-4 bg-surface">
+                    <div class="mb-3">
+                        <label class="text-muted small d-block mb-2">Dịch vụ đã chọn:</label>
+                        <div id="selectedServicesList" class="small text-white">Chưa chọn dịch vụ nào</div>
+                    </div>
+                    
+                    <button id="btnSubmit" onclick="confirmBooking()" class="ac-btn-primary w-100 justify-content-center py-3 rounded-3 mt-2">
+                        Tiếp tục thanh toán <i class="bi bi-arrow-right ms-2"></i>
+                    </button>
+                    <a href="javascript:history.back()" class="btn btn-link text-muted w-100 mt-2 small text-decoration-none">Quay lại chọn ghế</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .service-card { transition: all 0.3s; border: 1px solid rgba(255,255,255,0.1); }
+        .service-card.active { border-color: var(--ac-primary); box-shadow: 0 0 15px rgba(233, 30, 140, 0.2); }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        let selections = {};
+
+        function changeQty(id, delta) {
+            let current = selections[id] || 0;
+            let next = current + delta;
+            if (next < 0) next = 0;
+            if (next > 10) next = 10;
+
+            selections[id] = next;
+            document.getElementById(`qty-${id}`).innerText = next;
+            
+            const card = document.querySelector(`.service-card[data-id="${id}"]`);
+            if (next > 0) card.classList.add('active');
+            else card.classList.remove('active');
+
+            updateSummary();
+        }
+
+        function updateSummary() {
+            const listContainer = document.getElementById('selectedServicesList');
+            const items = [];
+            for (let id in selections) {
+                if (selections[id] > 0) {
+                    const card = document.querySelector(`.service-card[data-id="${id}"]`);
+                    items.push(`${card.dataset.name} x${selections[id]}`);
+                }
+            }
+            listContainer.innerHTML = items.length > 0 ? items.join('<br>') : 'Chưa chọn dịch vụ nào';
+        }
+
+        function confirmBooking() {
+            const btn = document.getElementById('btnSubmit');
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Đang kiểm tra ghế...';
+            btn.disabled = true;
+
+            const serviceList = [];
+            for (let id in selections) {
+                if (selections[id] > 0) {
+                    serviceList.push({ ServiceID: parseInt(id), Quantity: selections[id] });
+                }
+            }
+
+            const payload = {
+                ShowtimeId: @Model.ShowtimeID,
+                SeatIds: @Html.Raw(JsonSerializer.Serialize(Model.SelectedSeatIds)),
+                Services: serviceList
+            };
+
+            const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value || '';
+
+            fetch('@Url.Action("ConfirmBooking", "Booking")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': token
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = data.redirectUrl;
+                } else {
+                    alert(data.message || "Có lỗi xảy ra.");
+                    // Redirect back to select seats if seats are taken
+                    if (data.message.includes("ghế")) {
+                        window.location.href = '@Url.Action("SelectSeats", new { showtimeId = Model.ShowtimeID })';
+                    } else {
+                        btn.innerHTML = 'Tiếp tục thanh toán <i class="bi bi-arrow-right ms-2"></i>';
+                        btn.disabled = false;
+                    }
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Lỗi kết nối. Vui lòng thử lại.");
+                btn.innerHTML = 'Tiếp tục thanh toán <i class="bi bi-arrow-right ms-2"></i>';
+                btn.disabled = false;
+            });
+        }
+    </script>
+    @Html.AntiForgeryToken()
+}

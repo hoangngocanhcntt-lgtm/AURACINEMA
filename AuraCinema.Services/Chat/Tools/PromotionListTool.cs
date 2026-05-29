@@ -37,7 +37,7 @@ public class PromotionListTool : IChatTool
             var query = _db.Promotions
                 .Where(p => p.Status == "Hoat dong" && p.StartDate <= now && p.EndDate >= now);
 
-            if (args.TryGetProperty("minOrderAmount", out var minAmtProp) && minAmtProp.ValueKind == JsonValueKind.Number && minAmtProp.TryGetInt32(out var minOrderAmount))
+            if (args.TryGetAny(out var minAmtProp, "minOrderAmount", "min_order_amount") && minAmtProp.ValueKind == JsonValueKind.Number && minAmtProp.TryGetInt32(out var minOrderAmount))
             {
                 query = query.Where(p => p.MinAmount <= minOrderAmount);
             }

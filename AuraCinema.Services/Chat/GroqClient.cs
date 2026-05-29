@@ -47,13 +47,23 @@ public class GroqClient : ILlmClient
             {
                 throw new InvalidOperationException("Bé Aura đang quá tải, bạn thử lại sau ít phút nhé!");
             }
-            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized || 
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized ||
                 response.StatusCode == System.Net.HttpStatusCode.Forbidden)
             {
                 throw new InvalidOperationException("Lỗi cấu hình API key.");
             }
 
             var errorBody = await response.Content.ReadAsStringAsync(cancellationToken);
+
+            // Groq trả 400 "tool_use_failed" khi model sinh tool call sai định dạng (hay gặp với model nhỏ).
+            // Ném exception riêng để ChatService thử lại không dùng tool thay vì báo lỗi chung.
+            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest &&
+                errorBody.Contains("tool_use_failed", StringComparison.OrdinalIgnoreCase))
+            {
+                _logger.LogWarning("Groq tool_use_failed: {ErrorBody}", errorBody);
+                throw new GroqToolUseFailedException();
+            }
+
             _logger.LogError("Groq API error: {StatusCode} {ErrorBody}", response.StatusCode, errorBody);
             response.EnsureSuccessStatusCode();
         }
@@ -61,4 +71,10 @@ public class GroqClient : ILlmClient
         var result = await response.Content.ReadFromJsonAsync<LlmResponse>(_jsonOptions, cancellationToken);
         return result ?? new LlmResponse();
     }
+}
+
+/// <summary>Groq từ chối tool call do model sinh sai định dạng (HTTP 400 tool_use_failed).</summary>
+public class GroqToolUseFailedException : Exception
+{
+    public GroqToolUseFailedException() : base("Groq tool_use_failed") { }
 }

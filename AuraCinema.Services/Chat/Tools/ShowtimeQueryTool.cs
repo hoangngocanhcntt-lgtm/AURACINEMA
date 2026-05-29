@@ -37,7 +37,7 @@ public class ShowtimeQueryTool : IChatTool
         try
         {
             int? movieId = null;
-            if (args.TryGetProperty("movieId", out var mId) && mId.ValueKind == JsonValueKind.Number)
+            if (args.TryGetAny(out var mId, "movieId", "movie_id") && mId.ValueKind == JsonValueKind.Number)
             {
                 movieId = mId.GetInt32();
             }
@@ -54,7 +54,7 @@ public class ShowtimeQueryTool : IChatTool
             }
 
             var fromDate = DateTime.Today;
-            if (args.TryGetProperty("fromDate", out var fdProp) && fdProp.ValueKind == JsonValueKind.String && DateTime.TryParse(fdProp.GetString(), out var parsedDate))
+            if (args.TryGetAny(out var fdProp, "fromDate", "from_date") && fdProp.ValueKind == JsonValueKind.String && DateTime.TryParse(fdProp.GetString(), out var parsedDate))
             {
                 fromDate = parsedDate.Date;
             }
@@ -65,16 +65,45 @@ public class ShowtimeQueryTool : IChatTool
                 days = Math.Clamp(parsedDays, 1, 14);
             }
 
-            var movie = movieId.HasValue 
-                ? await _db.Movies.FindAsync(new object[] { movieId.Value }, ct)
-                : await _db.Movies.FirstOrDefaultAsync(m => m.Title != null && m.Title.Contains(title!), ct);
-
-            if (movie == null)
+            int matchedId;
+            string? matchedTitle;
+            if (movieId.HasValue)
             {
-                return new { ok = false, error = "MOVIE_NOT_FOUND", message = "Không tìm thấy phim này." };
+                var byId = await _db.Movies.AsNoTracking()
+                    .Where(m => m.MovieID == movieId.Value)
+                    .Select(m => new { m.MovieID, m.Title })
+                    .FirstOrDefaultAsync(ct);
+                if (byId == null)
+                {
+                    return new { ok = false, error = "MOVIE_NOT_FOUND", message = "Không tìm thấy phim này." };
+                }
+                matchedId = byId.MovieID;
+                matchedTitle = byId.Title;
+            }
+            else
+            {
+                // So khớp tên phim KHÔNG phân biệt dấu/hoa-thường để chịu được lỗi chính tả của model.
+                var normQuery = VietnameseText.Normalize(title);
+                var candidates = await _db.Movies.AsNoTracking()
+                    .Where(m => m.Title != null)
+                    .Select(m => new { m.MovieID, m.Title })
+                    .ToListAsync(ct);
+
+                var match = candidates.FirstOrDefault(m =>
+                {
+                    var normTitle = VietnameseText.Normalize(m.Title);
+                    return normTitle.Contains(normQuery) || normQuery.Contains(normTitle);
+                });
+
+                if (match == null)
+                {
+                    return new { ok = false, error = "MOVIE_NOT_FOUND", message = "Không tìm thấy phim này." };
+                }
+                matchedId = match.MovieID;
+                matchedTitle = match.Title;
             }
 
-            var id = movie.MovieID;
+            var id = matchedId;
             var now = DateTime.Now;
             var startDate = now > fromDate ? now : fromDate;
             var maxDate = fromDate.AddDays(days);
@@ -123,7 +152,7 @@ public class ShowtimeQueryTool : IChatTool
             return new
             {
                 ok = true,
-                movie = new { id = movie.MovieID, title = movie.Title },
+                movie = new { id = matchedId, title = matchedTitle },
                 groups = groups
             };
         }

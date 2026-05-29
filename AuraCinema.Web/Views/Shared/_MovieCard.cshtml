@@ -1,4 +1,4 @@
-﻿@model AuraCinema.Web.ViewModels.Home.MovieCardViewModel
+@model AuraCinema.Web.ViewModels.Home.MovieCardViewModel
 
 <a asp-controller="Movies" asp-action="Details" asp-route-id="@Model.MovieID"
    class="text-decoration-none">
@@ -14,17 +14,17 @@
             </div>
             @if (Model.Status == "Dang chieu")
             {
-                <span class="ac-movie-badge ac-badge-now">Dang chieu</span>
+                <span class="ac-movie-badge ac-badge-now">Đang chiếu</span>
             }
             else
             {
-                <span class="ac-movie-badge ac-badge-coming">Sap chieu</span>
+                <span class="ac-movie-badge ac-badge-coming">Sắp chiếu</span>
             }
         </div>
         <div class="ac-movie-info">
             <h6 class="ac-movie-title" title="@Model.Title">@Model.Title</h6>
             <div class="ac-movie-meta">
-                <span><i class="bi bi-clock me-1"></i>@Model.Duration phut</span>
+                <span><i class="bi bi-clock me-1"></i>@Model.Duration phút</span>
                 <span class="mx-1">&bull;</span>
                 <span>@Model.Genre.Split(',').FirstOrDefault()?.Trim()</span>
             </div>

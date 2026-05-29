@@ -1,0 +1,60 @@
+@{
+    int currentPage = ViewBag.CurrentPage ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 1;
+
+    if (totalPages <= 1)
+    {
+        return;
+    }
+
+    string GetPageUrl(int pageNumber)
+    {
+        var queryParams = new Dictionary<string, string>();
+        foreach (var key in Context.Request.Query.Keys)
+        {
+            if (key.ToLower() != "page")
+            {
+                queryParams[key] = Context.Request.Query[key]!;
+            }
+        }
+        queryParams["page"] = pageNumber.ToString();
+
+        var requestPath = Context.Request.Path;
+        var queryString = string.Join("&", queryParams.Select(kvp => $"{kvp.Key}={Uri.EscapeDataString(kvp.Value)}"));
+        return $"{requestPath}?{queryString}";
+    }
+}
+
+<nav aria-label="Page navigation" class="mt-4">
+    <ul class="pagination justify-content-center mb-0">
+        <li class="page-item @(currentPage <= 1 ? "disabled" : "")">
+            <a class="page-link shadow-sm border-light-subtle text-secondary" href="@GetPageUrl(currentPage - 1)" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+
+        @for (int i = 1; i <= totalPages; i++)
+        {
+            if (i == 1 || i == totalPages || Math.Abs(i - currentPage) <= 2)
+            {
+                <li class="page-item @(i == currentPage ? "active" : "")">
+                    <a class="page-link shadow-sm @(i == currentPage ? "border-primary" : "border-light-subtle text-dark")" href="@GetPageUrl(i)">@i</a>
+                </li>
+            }
+            else if (i == 2 && currentPage > 4)
+            {
+                <li class="page-item disabled"><span class="page-link border-light-subtle text-muted">...</span></li>
+            }
+            else if (i == totalPages - 1 && currentPage < totalPages - 3)
+            {
+                <li class="page-item disabled"><span class="page-link border-light-subtle text-muted">...</span></li>
+            }
+        }
+
+        <li class="page-item @(currentPage >= totalPages ? "disabled" : "")">
+            <a class="page-link shadow-sm border-light-subtle text-secondary" href="@GetPageUrl(currentPage + 1)" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>

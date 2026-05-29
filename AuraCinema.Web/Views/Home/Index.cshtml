@@ -1,7 +1,7 @@
 @model AuraCinema.Web.ViewModels.Home.HomeViewModel
 @{
-    ViewData["Title"] = "Trang chu";
-    ViewData["Description"] = "Aura Cinema - He thong dat ve xem phim truc tuyen";
+    ViewData["Title"] = "Trang chủ";
+    ViewData["Description"] = "Aura Cinema - Hệ thống đặt vé xem phim trực tuyến";
 }
 
 <!-- ═══ HERO SECTION ═══ -->
@@ -10,15 +10,15 @@
     <div class="container position-relative" style="z-index:2;">
         <div class="row align-items-center min-vh-75 py-5">
             <div class="col-lg-6">
-                <span class="ac-badge mb-3">🎬 RAP PHIM SO 1</span>
+                <span class="ac-badge mb-3">🎬 RẠP PHIM SỐ 1</span>
                 <h1 class="ac-hero-title">
-                    Trai nghiem<br/>
-                    <span class="ac-gradient-text">Dien anh</span><br/>
-                    Dinh cao
+                    Trải nghiệm<br/>
+                    <span class="ac-gradient-text">Điện ảnh</span><br/>
+                    Đỉnh cao
                 </h1>
                 <p class="ac-hero-desc mt-3 mb-4">
-                    Dat ve de dang, thanh toan nhanh chong. Tan huong nhung bo phim
-                    bom tan voi chat luong hinh anh va am thanh tuyet voi nhat.
+                    Đặt vé dễ dàng, thanh toán nhanh chóng. Tận hưởng những bộ phim
+                    bom tấn với chất lượng hình ảnh và âm thanh tuyệt vời nhất.
                 </p>
                 <div class="d-flex gap-3 flex-wrap">
                     <a asp-controller="Movies" asp-action="Index"
@@ -27,7 +27,7 @@
                     </a>
                     <a asp-controller="Promotions" asp-action="Index"
                        class="ac-btn-outline px-4 py-3">
-                        <i class="bi bi-gift"></i>Uu dai
+                        <i class="bi bi-gift"></i>Ưu đãi
                     </a>
                 </div>
 
@@ -35,17 +35,17 @@
                 <div class="d-flex gap-4 mt-5">
                     <div>
                         <div class="ac-stat-number">@Model.NowShowing.Count+</div>
-                        <div class="ac-stat-label">Phim dang chieu</div>
+                        <div class="ac-stat-label">Phim đang chiếu</div>
                     </div>
                     <div class="ac-stat-divider"></div>
                     <div>
                         <div class="ac-stat-number">3</div>
-                        <div class="ac-stat-label">Phong chieu</div>
+                        <div class="ac-stat-label">Phòng chiếu</div>
                     </div>
                     <div class="ac-stat-divider"></div>
                     <div>
                         <div class="ac-stat-number">300</div>
-                        <div class="ac-stat-label">Ghe ngoi</div>
+                        <div class="ac-stat-label">Ghế ngồi</div>
                     </div>
                 </div>
             </div>
@@ -53,24 +53,120 @@
                 <div class="ac-hero-cards">
                     @if (Model.FeaturedMovies.Any())
                     {
-                        var hero = Model.FeaturedMovies.First();
-                        <a asp-controller="Movies" asp-action="Details" asp-route-id="@hero.MovieID" class="text-decoration-none">
-                            <div class="ac-hero-poster">
-                                <img src="@hero.Poster" alt="@hero.Title"
-                                     onerror="this.src='/images/placeholder-movie.jpg'" />
-                                <div class="ac-hero-poster-overlay">
-                                    <span class="badge ac-badge-live">DANG CHIEU</span>
-                                    <h4>@hero.Title</h4>
-                                    <p>@hero.Genre &bull; @hero.Duration phut</p>
+                        var featuredMovies = Model.FeaturedMovies.Take(5).ToList();
+                        <div class="carousel-3d" id="heroCarousel3d">
+                            @for (int i = 0; i < featuredMovies.Count; i++)
+                            {
+                                var hero = featuredMovies[i];
+                                <div class="item-3d" data-index="@i">
+                                    <a asp-controller="Movies" asp-action="Details" asp-route-id="@hero.MovieID" class="text-decoration-none d-block h-100">
+                                        <img src="@hero.Poster" alt="@hero.Title" onerror="this.src='/images/placeholder-movie.jpg'" />
+                                    </a>
                                 </div>
-                            </div>
-                        </a>
+                            }
+                        </div>
                     }
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+@section Scripts {
+    <style>
+        .carousel-3d {
+            position: relative;
+            width: 100%;
+            height: 540px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1200px;
+            transform-style: preserve-3d;
+        }
+        .item-3d {
+            position: absolute;
+            width: 340px;
+            aspect-ratio: 2/3;
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            cursor: pointer;
+        }
+        .item-3d img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .item-3d.active {
+            transform: translateX(0) translateZ(0) scale(1);
+            z-index: 3;
+            opacity: 1;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.8);
+        }
+        .item-3d.prev {
+            transform: translateX(-180px) translateZ(-100px) scale(0.85);
+            z-index: 2;
+            opacity: 0.8;
+            filter: brightness(0.5);
+        }
+        .item-3d.next {
+            transform: translateX(180px) translateZ(-100px) scale(0.85);
+            z-index: 2;
+            opacity: 0.8;
+            filter: brightness(0.5);
+        }
+        .item-3d.hidden {
+            transform: translateX(0) translateZ(-200px) scale(0.5);
+            z-index: 1;
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const items = document.querySelectorAll('.item-3d');
+            if (items.length === 0) return;
+            
+            let currentIndex = 0;
+            const totalItems = items.length;
+
+            function updateCarousel() {
+                items.forEach((item, index) => {
+                    item.className = 'item-3d'; // reset
+                    if (index === currentIndex) {
+                        item.classList.add('active');
+                    } else if (index === (currentIndex - 1 + totalItems) % totalItems) {
+                        item.classList.add('prev');
+                    } else if (index === (currentIndex + 1) % totalItems) {
+                        item.classList.add('next');
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+            }
+
+            updateCarousel();
+
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % totalItems;
+                updateCarousel();
+            }, 3000);
+
+            // Cho phép click để chọn prev/next
+            items.forEach((item, index) => {
+                item.addEventListener('click', (e) => {
+                    if (!item.classList.contains('active')) {
+                        e.preventDefault();
+                        currentIndex = index;
+                        updateCarousel();
+                    }
+                });
+            });
+        });
+    </script>
+}
 
 <!-- ═══ PHIM ĐANG CHIẾU ═══ -->
 @if (Model.NowShowing.Any())
@@ -80,13 +176,13 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h2 class="ac-section-title">
-                    <span class="ac-dot ac-dot-live"></span>Phim dang chieu
+                    <span class="ac-dot ac-dot-live"></span>Phim đang chiếu
                 </h2>
-                <p class="ac-section-subtitle">Nhung bo phim hay nhat dang co o rap</p>
+                <p class="ac-section-subtitle">Những bộ phim hay nhất đang có ở rạp</p>
             </div>
             <a asp-controller="Movies" asp-action="Index" asp-route-status="Dang chieu"
                class="ac-btn-outline btn-sm px-3">
-                Xem tat ca <i class="bi bi-arrow-right ms-1"></i>
+                Xem tất cả <i class="bi bi-arrow-right ms-1"></i>
             </a>
         </div>
         <div class="row g-4">
@@ -108,11 +204,11 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-                <h2 class="ac-section-title">Ve cua ban</h2>
-                <p class="ac-section-subtitle">Nhung suat chieu sap toi</p>
+                <h2 class="ac-section-title">Vé của bạn</h2>
+                <p class="ac-section-subtitle">Những suất chiếu sắp tới</p>
             </div>
             <a asp-controller="MyTickets" asp-action="Index" class="ac-btn-outline btn-sm px-3">
-                Xem tat ca <i class="bi bi-arrow-right ms-1"></i>
+                Xem tất cả <i class="bi bi-arrow-right ms-1"></i>
             </a>
         </div>
         <div class="row g-3">
@@ -123,7 +219,7 @@
                         <div class="ac-card p-3 border-ac hover-scale d-flex gap-3">
                             <img src="@ticket.Poster" alt="@ticket.MovieTitle" class="rounded" style="width: 60px; height: 90px; object-fit: cover;" onerror="this.src='/images/placeholder-movie.jpg'" />
                             <div class="flex-grow-1 overflow-hidden">
-                                <h6 class="text-white fw-bold mb-1 text-truncate">@ticket.MovieTitle</h6>
+                                <h6 class=" fw-bold mb-1 text-truncate">@ticket.MovieTitle</h6>
                                 <p class="text-muted small mb-1">@ticket.Showtime.ToString("HH:mm - dd/MM")</p>
                                 <p class="ac-badge m-0" style="font-size: 0.7rem;">@ticket.RoomName &bull; @ticket.SeatList</p>
                             </div>
@@ -144,13 +240,13 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h2 class="ac-section-title">
-                    <span class="ac-dot ac-dot-soon"></span>Sap chieu
+                    <span class="ac-dot ac-dot-soon"></span>Sắp chiếu
                 </h2>
-                <p class="ac-section-subtitle">Dang cho doi va san sang</p>
+                <p class="ac-section-subtitle">Đang chờ đợi và sẵn sàng</p>
             </div>
             <a asp-controller="Movies" asp-action="Index" asp-route-status="Sap chieu"
                class="ac-btn-outline btn-sm px-3">
-                Xem tat ca <i class="bi bi-arrow-right ms-1"></i>
+                Xem tất cả <i class="bi bi-arrow-right ms-1"></i>
             </a>
         </div>
         <div class="row g-4">
@@ -168,15 +264,15 @@
 <!-- ═══ CTA ═══ -->
 <section class="ac-cta-section">
     <div class="container text-center py-5">
-        <h2 class="ac-section-title mb-3">San sang cho buoi xem phim?</h2>
-        <p style="color:var(--ac-muted);max-width:500px;margin:auto;" class="mb-4">
-            Dang ky tai khoan de dat ve nhanh chong va nhan nhieu uu dai hap dan.
+        <h2 class="ac-section-title mb-3">Sẵn sàng cho buổi xem phim?</h2>
+        <p style="color:var(--ac-text);max-width:500px;margin:auto;" class="mb-4">
+            Đăng ký tài khoản để đặt vé nhanh chóng và nhận nhiều ưu đãi hấp dẫn.
         </p>
         @if (!(User.Identity?.IsAuthenticated == true))
         {
             <a asp-controller="Account" asp-action="Register"
                class="ac-btn-primary px-5 py-3">
-                <i class="bi bi-person-plus"></i>Tao tai khoan mien phi
+                <i class="bi bi-person-plus"></i>Tạo tài khoản miễn phí
             </a>
         }
     </div>

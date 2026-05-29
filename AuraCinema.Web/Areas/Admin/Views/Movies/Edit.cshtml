@@ -42,6 +42,11 @@
                     <textarea asp-for="Actors" class="form-control border-light-subtle shadow-sm" rows="2"></textarea>
                     <span asp-validation-for="Actors" class="text-danger small"></span>
                 </div>
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label text-secondary small fw-bold"></label>
+                    <textarea asp-for="Description" class="form-control border-light-subtle shadow-sm" rows="4" placeholder="Nhập mô tả tóm tắt nội dung phim..."></textarea>
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
             </div>
 
             <!-- Cột phải: Thông số, Trạng thái & File -->

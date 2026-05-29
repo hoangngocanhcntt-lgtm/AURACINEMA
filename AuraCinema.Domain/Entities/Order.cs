@@ -10,10 +10,12 @@ public class Order {
     public string? PayOSTransID { get; set; }
     public string? QrCode { get; set; }
     public DateTime HoldExpiryTime { get; set; }
+    public DateTime? CheckInTime { get; set; }
     public string Status { get; set; } = "Cho thanh toan";
     public User User { get; set; } = null!;
     public Showtime Showtime { get; set; } = null!;
     public Promotion? Promotion { get; set; }
     public ICollection<OrderSeat> OrderSeats { get; set; } = new List<OrderSeat>();
     public ICollection<OrderService> OrderServices { get; set; } = new List<OrderService>();
+    public RefundRequest? RefundRequest { get; set; }
 }

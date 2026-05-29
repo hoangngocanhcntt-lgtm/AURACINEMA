@@ -16,7 +16,7 @@ public class RoomFormViewModel
     [Required(ErrorMessage = "Vui lòng nhập số lượng ghế")]
     [Range(1, 500, ErrorMessage = "Sức chứa từ 1 đến 500")]
     [Display(Name = "Sức chứa")]
-    public int Capacity { get; set; } = 100;
+    public int Capacity { get; set; } = 50;
 
     [Display(Name = "Trạng thái")]
     public string Status { get; set; } = "Hoat dong";

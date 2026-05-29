@@ -40,25 +40,36 @@ public class HomeController : Controller
             var userIdString = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             if (int.TryParse(userIdString, out int userId))
             {
-                vm.RecentTickets = await _db.Orders
+                var rawTickets = await _db.Orders
                     .Include(o => o.Showtime).ThenInclude(s => s.Movie)
+                    .Include(o => o.Showtime).ThenInclude(s => s.Room)
                     .Include(o => o.OrderSeats).ThenInclude(os => os.Seat)
-                    .Where(o => o.UserID == userId && (o.Status == "Da thanh toan" || o.Status == "Da su dung"))
+                    .Where(o => o.UserID == userId && (o.Status == "Da thanh toan" || o.Status == "Da su dung" || o.Status == "Đã thanh toán" || o.Status == "Đã sử dụng"))
                     .OrderByDescending(o => o.OrderID)
                     .Take(3)
-                    .Select(o => new AuraCinema.Web.ViewModels.MyTickets.TicketItemViewModel
-                    {
-                        OrderID = o.OrderID,
-                        OrderCode = o.OrderCode,
-                        MovieTitle = o.Showtime.Movie.Title,
-                        Poster = o.Showtime.Movie.Poster,
-                        RoomName = o.Showtime.Room.RoomName,
-                        Showtime = o.Showtime.StartTime,
-                        SeatList = string.Join(", ", o.OrderSeats.Select(s => $"{s.Seat.RowLabel}{s.Seat.SeatNumber}")),
-                        FinalAmount = o.FinalAmount,
-                        Status = o.Status
-                    })
                     .ToListAsync();
+
+                vm.RecentTickets = rawTickets.Select(o => new AuraCinema.Web.ViewModels.MyTickets.TicketItemViewModel
+                {
+                    OrderID = o.OrderID,
+                    OrderCode = o.OrderCode,
+                    MovieTitle = o.Showtime.Movie.Title,
+                    Poster = o.Showtime.Movie.Poster,
+                    RoomName = o.Showtime.Room.RoomName,
+                    Showtime = o.Showtime.StartTime,
+                    SeatList = string.Join(", ", o.OrderSeats.Select(s => $"{s.Seat.RowLabel}{s.Seat.SeatNumber}")),
+                    FinalAmount = o.FinalAmount,
+                    Status = o.Status switch
+                    {
+                        "Da thanh toan" or "Đã thanh toán" => "Đã thanh toán",
+                        "Cho thanh toan" or "Chờ thanh toán" => "Chờ thanh toán",
+                        "Da su dung" or "Đã sử dụng" => "Đã sử dụng",
+                        "can hoan tien" or "Cần hoàn tiền" => "Cần hoàn tiền",
+                        "da huy" or "Đã hủy" => "Đã hủy",
+                        "Đã hoàn tiền" or "da hoan tien" => "Đã hoàn tiền",
+                        _ => o.Status
+                    }
+                }).ToList();
             }
         }
 

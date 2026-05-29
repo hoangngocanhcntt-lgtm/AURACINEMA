@@ -1,0 +1,71 @@
+@model AuraCinema.Web.Areas.Admin.ViewModels.StaffCreateViewModel
+@{
+    ViewData["Title"] = "Thêm Nhân viên mới";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="h4 mb-0 text-dark fw-bold">Thêm Nhân viên mới</h2>
+        <p class="text-muted small mb-0">Tạo tài khoản quản lý và vận hành cho nhân viên rạp</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary shadow-sm">
+        <i class="bi bi-arrow-left me-2"></i>Quay lại danh sách
+    </a>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+        <div class="ac-card p-5 border-0 shadow-sm">
+            <form asp-action="Create" method="post">
+                @Html.AntiForgeryToken()
+                
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-4 rounded-3 border-0"></div>
+
+                <div class="row g-4">
+                    <div class="col-md-12">
+                        <label asp-for="FullName" class="form-label fw-bold text-secondary"></label>
+                        <input asp-for="FullName" class="form-control border-light-subtle shadow-sm p-3" placeholder="Nhập họ tên đầy đủ..." />
+                        <span asp-validation-for="FullName" class="text-danger small mt-1 d-block"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Email" class="form-label fw-bold text-secondary"></label>
+                        <input asp-for="Email" type="email" class="form-control border-light-subtle shadow-sm p-3" placeholder="email@auracinema.vn" />
+                        <span asp-validation-for="Email" class="text-danger small mt-1 d-block"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Phone" class="form-label fw-bold text-secondary"></label>
+                        <input asp-for="Phone" class="form-control border-light-subtle shadow-sm p-3" placeholder="0xxxxxxxxx (10 chữ số)" />
+                        <span asp-validation-for="Phone" class="text-danger small mt-1 d-block"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Password" class="form-label fw-bold text-secondary"></label>
+                        <input asp-for="Password" type="password" class="form-control border-light-subtle shadow-sm p-3" placeholder="Nhập mật khẩu..." />
+                        <span asp-validation-for="Password" class="text-danger small mt-1 d-block"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="ConfirmPassword" class="form-label fw-bold text-secondary"></label>
+                        <input asp-for="ConfirmPassword" type="password" class="form-control border-light-subtle shadow-sm p-3" placeholder="Nhập lại mật khẩu..." />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger small mt-1 d-block"></span>
+                    </div>
+                </div>
+
+                <div class="mt-5 text-end border-top pt-4">
+                    <button type="reset" class="btn btn-light border px-4 py-2.5 me-2 fw-bold text-secondary shadow-sm">
+                        Nhập lại
+                    </button>
+                    <button type="submit" class="btn ac-btn-primary px-5 py-2.5 shadow-sm">
+                        <i class="bi bi-save me-2"></i>Lưu tài khoản
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

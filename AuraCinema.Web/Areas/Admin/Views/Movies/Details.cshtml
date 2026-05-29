@@ -43,6 +43,19 @@
                 <div class="col-sm-9 text-dark fw-medium">@Model.Actors</div>
             </div>
             <div class="row mb-3">
+                <div class="col-sm-3 text-secondary">Mô tả:</div>
+                <div class="col-sm-9 text-dark">
+                    @if (!string.IsNullOrWhiteSpace(Model.Description))
+                    {
+                        <p class="mb-0" style="white-space: pre-line;">@Model.Description</p>
+                    }
+                    else
+                    {
+                        <span class="text-muted fst-italic">Chưa có mô tả.</span>
+                    }
+                </div>
+            </div>
+            <div class="row mb-3">
                 <div class="col-sm-3 text-secondary">Thời lượng:</div>
                 <div class="col-sm-9 text-dark fw-medium">@Model.Duration phút</div>
             </div>

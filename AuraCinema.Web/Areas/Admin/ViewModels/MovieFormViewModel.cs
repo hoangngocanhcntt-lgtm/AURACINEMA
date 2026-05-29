@@ -26,6 +26,9 @@ public class MovieFormViewModel
     [Display(Name = "Diễn viên")]
     public string Actors { get; set; } = string.Empty;
 
+    [Display(Name = "Mô tả nội dung")]
+    public string Description { get; set; } = string.Empty;
+
     [Required(ErrorMessage = "Vui lòng nhập Thời lượng (phút)")]
     [Range(1, 500, ErrorMessage = "Thời lượng không hợp lệ")]
     [Display(Name = "Thời lượng (phút)")]

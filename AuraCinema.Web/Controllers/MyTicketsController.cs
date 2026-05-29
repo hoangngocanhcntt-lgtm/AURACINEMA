@@ -42,7 +42,17 @@ public class MyTicketsController : Controller
             Showtime = o.Showtime.StartTime,
             SeatList = string.Join(", ", o.OrderSeats.Select(s => $"{s.Seat.RowLabel}{s.Seat.SeatNumber}")),
             FinalAmount = o.FinalAmount,
-            Status = o.Status
+            Status = o.Status switch
+            {
+                "Da thanh toan" or "Đã thanh toán" => "Đã thanh toán",
+                "Cho thanh toan" or "Chờ thanh toán" => "Chờ thanh toán",
+                "Da su dung" or "Đã sử dụng" => "Đã sử dụng",
+                "can hoan tien" or "Cần hoàn tiền" => "Cần hoàn tiền",
+                "da huy" or "Đã hủy" => "Đã hủy",
+                "Đã hoàn tiền" or "da hoan tien" => "Đã hoàn tiền",
+                _ => o.Status
+            },
+            HoldExpiryTime = o.HoldExpiryTime
         }).ToList();
 
         return View(vm);
@@ -64,6 +74,17 @@ public class MyTicketsController : Controller
 
         if (order == null) return NotFound();
 
+        var statusFriendly = order.Status switch
+        {
+            "Da thanh toan" or "Đã thanh toán" => "Đã thanh toán",
+            "Cho thanh toan" or "Chờ thanh toán" => "Chờ thanh toán",
+            "Da su dung" or "Đã sử dụng" => "Đã sử dụng",
+            "can hoan tien" or "Cần hoàn tiền" => "Cần hoàn tiền",
+            "da huy" or "Đã hủy" => "Đã hủy",
+            "Đã hoàn tiền" or "da hoan tien" => "Đã hoàn tiền",
+            _ => order.Status
+        };
+
         var vm = new TicketDetailViewModel
         {
             OrderID = order.OrderID,
@@ -74,7 +95,7 @@ public class MyTicketsController : Controller
             Showtime = order.Showtime.StartTime,
             SeatList = string.Join(", ", order.OrderSeats.Select(s => $"{s.Seat.RowLabel}{s.Seat.SeatNumber}")),
             FinalAmount = order.FinalAmount,
-            Status = order.Status,
+            Status = statusFriendly,
             CreatedAt = order.HoldExpiryTime.AddMinutes(-10), // Updated from -5 to -10 to match 10m hold
             PayOSTransID = order.PayOSTransID,
             PromotionTitle = order.Promotion?.Title,
@@ -84,7 +105,7 @@ public class MyTicketsController : Controller
         };
 
         // Generate QR Code if Paid
-        if (order.Status == "Da thanh toan")
+        if (statusFriendly == "Đã thanh toán")
         {
             string qrData = order.OrderCode; // Changed from AURA-{order.OrderID} to OrderCode
             using var qrGenerator = new QRCodeGenerator();

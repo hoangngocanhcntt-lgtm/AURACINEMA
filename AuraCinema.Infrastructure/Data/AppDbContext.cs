@@ -18,6 +18,7 @@ public class AppDbContext : DbContext
     public DbSet<Order> Orders => Set<Order>();
     public DbSet<OrderSeat> OrderSeats => Set<OrderSeat>();
     public DbSet<OrderService> OrderServices => Set<OrderService>();
+    public DbSet<RefundRequest> RefundRequests => Set<RefundRequest>();
 
     protected override void OnModelCreating(ModelBuilder mb)
     {
@@ -60,12 +61,14 @@ public class AppDbContext : DbContext
         mb.Entity<Service>(e => {
             e.HasKey(x => x.ServiceID);
             e.Property(x => x.ServiceName).HasMaxLength(100).IsRequired();
+            e.Property(x => x.Status).HasMaxLength(50);
         });
         mb.Entity<Promotion>(e => {
             e.HasKey(x => x.PromoID);
             e.Property(x => x.Title).HasMaxLength(20).IsRequired();
             e.HasIndex(x => x.Title).IsUnique();
             e.Property(x => x.Condition).HasMaxLength(255);
+            e.Property(x => x.Status).HasMaxLength(50);
         });
         mb.Entity<PriceConfig>(e => {
             e.HasKey(x => x.ConfigID);
@@ -73,10 +76,12 @@ public class AppDbContext : DbContext
             e.HasIndex(x => x.ConfigCode).IsUnique();
             e.Property(x => x.ConfigType).HasMaxLength(50);
             e.Property(x => x.ConfigName).HasMaxLength(100);
+            e.Property(x => x.EffectiveDate).HasColumnType("datetime2");
         });
         mb.Entity<Order>(e => {
             e.HasKey(x => x.OrderID);
             e.Property(x => x.Status).HasMaxLength(50);
+            e.Property(x => x.CheckInTime).HasColumnType("datetime2");
             e.HasOne(x => x.User).WithMany(u => u.Orders)
              .HasForeignKey(x => x.UserID).OnDelete(DeleteBehavior.Restrict);
             e.HasOne(x => x.Showtime).WithMany(s => s.Orders)
@@ -84,6 +89,8 @@ public class AppDbContext : DbContext
             e.HasOne(x => x.Promotion).WithMany(p => p.Orders)
              .HasForeignKey(x => x.PromoID).IsRequired(false).OnDelete(DeleteBehavior.SetNull);
             e.HasIndex(x => new { x.ShowtimeID, x.Status, x.HoldExpiryTime });
+            e.HasOne(x => x.RefundRequest).WithOne(r => r.Order)
+             .HasForeignKey<RefundRequest>(r => r.OrderID).OnDelete(DeleteBehavior.Cascade);
         });
         mb.Entity<OrderSeat>(e => {
             e.HasKey(x => new { x.OrderID, x.SeatID });

@@ -23,57 +23,110 @@ public class TicketScannerController : AdminBaseController
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ProcessScan([FromBody] ScanRequest request)
+    public async Task<IActionResult> VerifyTicket(string qrCode)
     {
-        if (string.IsNullOrEmpty(request.QrCodeData) || !request.QrCodeData.StartsWith("ORD-"))
+        if (string.IsNullOrEmpty(qrCode) || !qrCode.StartsWith("ORD-"))
         {
-            return BadRequest(new { success = false, message = "Mã QR không hợp lệ. Vui lòng quét mã do Aura Cinema cung cấp." });
+            return Json(new { success = false, message = "Mã QR không hợp lệ. Vui lòng quét mã do Aura Cinema cung cấp." });
         }
 
-        var orderCode = request.QrCodeData;
+        var order = await _db.Orders
+            .Include(o => o.User)
+            .Include(o => o.OrderSeats).ThenInclude(os => os.Seat)
+            .Include(o => o.OrderServices).ThenInclude(os => os.Service)
+            .Include(o => o.Showtime).ThenInclude(s => s.Movie)
+            .Include(o => o.Showtime).ThenInclude(s => s.Room)
+            .FirstOrDefaultAsync(o => o.OrderCode == qrCode);
+
+        if (order == null)
+        {
+            return Json(new { success = false, message = "Không tìm thấy vé trong hệ thống." });
+        }
+
+        string statusClean = order.Status?.Trim().ToLower() ?? "";
+        if (statusClean != "da thanh toan" && statusClean != "đã thanh toán")
+        {
+            string friendlyStatus = statusClean switch
+            {
+                "cho thanh toan" or "chờ thanh toán" => "Chờ thanh toán",
+                "da thanh toan" or "đã thanh toán" => "Đã thanh toán",
+                "da su dung" or "đã sử dụng" => "Đã sử dụng",
+                "can hoan tien" or "cần hoàn tiền" => "Cần hoàn tiền",
+                "da huy" or "đã hủy" => "Đã hủy",
+                _ => order.Status
+            };
+            return Json(new { success = false, message = $"Vé không hợp lệ! Trạng thái hiện tại: {friendlyStatus}" });
+        }
+
+        var seatLabels = order.OrderSeats.Any() 
+            ? string.Join(", ", order.OrderSeats.Select(os => $"{os.Seat.RowLabel}{os.Seat.SeatNumber}"))
+            : "Chưa xác định";
+
+        var services = order.OrderServices.Select(os => new {
+            name = os.Service.ServiceName,
+            quantity = os.Quantity
+        }).ToList();
+
+        return Json(new {
+            success = true,
+            orderInfo = new {
+                id = order.OrderCode,
+                movie = order.Showtime.Movie.Title,
+                customer = order.User.FullName,
+                room = order.Showtime.Room.RoomName,
+                seats = seatLabels,
+                startTime = order.Showtime.StartTime.ToString("dd/MM/yyyy HH:mm"),
+                amount = order.FinalAmount.ToString("N0") + " đ",
+                services = services,
+                printUrl = Url.Action("PrintTicket", new { orderCode = order.OrderCode })
+            }
+        });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ConfirmCheckIn(string qrCode)
+    {
+        if (string.IsNullOrEmpty(qrCode) || !qrCode.StartsWith("ORD-"))
+        {
+            return Json(new { success = false, message = "Mã QR không hợp lệ." });
+        }
 
         var order = await _db.Orders
             .Include(o => o.User)
             .Include(o => o.Showtime).ThenInclude(s => s.Movie)
-            .FirstOrDefaultAsync(o => o.OrderCode == orderCode);
+            .FirstOrDefaultAsync(o => o.OrderCode == qrCode);
 
         if (order == null)
         {
-            return NotFound(new { success = false, message = "Không tìm thấy vé trong hệ thống." });
+            return Json(new { success = false, message = "Không tìm thấy vé trong hệ thống." });
         }
 
-        if (order.Status == "Da su dung")
+        string statusClean = order.Status?.Trim().ToLower() ?? "";
+        if (statusClean != "da thanh toan" && statusClean != "đã thanh toán")
         {
-            return Ok(new { 
-                success = false, 
-                message = "Vé này ĐÃ ĐƯỢC SỬ DỤNG trước đó!", 
-                orderInfo = new { id = order.OrderCode, movie = order.Showtime.Movie.Title, customer = order.User.FullName } 
-            });
+            string friendlyStatus = statusClean switch
+            {
+                "cho thanh toan" or "chờ thanh toán" => "Chờ thanh toán",
+                "da thanh toan" or "đã thanh toán" => "Đã thanh toán",
+                "da su dung" or "đã sử dụng" => "Đã sử dụng",
+                "can hoan tien" or "cần hoàn tiền" => "Cần hoàn tiền",
+                "da huy" or "đã hủy" => "Đã hủy",
+                _ => order.Status
+            };
+            return Json(new { success = false, message = $"Không thể check-in. Vé đang ở trạng thái: {friendlyStatus}" });
         }
 
-        if (order.Status != "Da thanh toan")
-        {
-            return BadRequest(new { 
-                success = false, 
-                message = $"Vé đang ở trạng thái '{order.Status}' và không thể sử dụng." 
-            });
-        }
-
-        // Validate showtime (e.g. check if it's the correct day)
-        // Optionally: if (order.Showtime.StartTime.Date != DateTime.Today) { ... }
-
-        // Mark as used
-        order.Status = "Da su dung";
+        order.Status = "Đã sử dụng";
         await _db.SaveChangesAsync();
 
-        return Ok(new { 
+        return Json(new { 
             success = true, 
-            message = "Check-in vé THÀNH CÔNG!",
-            orderInfo = new { 
-                id = order.OrderCode, 
-                movie = order.Showtime.Movie.Title, 
-                customer = order.User.FullName,
-                printUrl = Url.Action("PrintTicket", new { orderCode = order.OrderCode })
+            message = "Xác nhận cho khách vào rạp thành công!",
+            orderInfo = new {
+                id = order.OrderCode,
+                movie = order.Showtime.Movie.Title,
+                customer = order.User.FullName
             }
         });
     }
@@ -84,6 +137,7 @@ public class TicketScannerController : AdminBaseController
         var order = await _db.Orders
             .Include(o => o.User)
             .Include(o => o.OrderSeats).ThenInclude(os => os.Seat)
+            .Include(o => o.OrderServices).ThenInclude(os => os.Service)
             .Include(o => o.Showtime).ThenInclude(s => s.Movie)
             .Include(o => o.Showtime).ThenInclude(s => s.Room)
             .FirstOrDefaultAsync(o => o.OrderCode == orderCode);

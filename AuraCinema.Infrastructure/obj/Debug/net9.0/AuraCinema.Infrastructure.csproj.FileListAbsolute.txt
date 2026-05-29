@@ -15,3 +15,4 @@ D:\AURACINEMA\AuraCinema.Infrastructure\bin\Debug\net9.0\AuraCinema.Domain.dll
 D:\AURACINEMA\AuraCinema.Infrastructure\bin\Debug\net9.0\AuraCinema.Domain.pdb
 D:\AURACINEMA\AuraCinema.Infrastructure\obj\Debug\net9.0\AuraCine.AFB189D0.Up2Date
 D:\AURACINEMA\AuraCinema.Infrastructure\obj\Debug\net9.0\AuraCinema.Infrastructure.genruntimeconfig.cache
+d:\AURACINEMA\AuraCinema.Infrastructure\obj\Debug\net9.0\AuraCinema.Infrastructure.sourcelink.json

@@ -1,4 +1,4 @@
-@model AuraCinema.Web.ViewModels.MyTickets.TicketDetailViewModel
+﻿@model AuraCinema.Web.ViewModels.MyTickets.TicketDetailViewModel
 @{
     ViewData["Title"] = "Chi tiết vé";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -17,20 +17,28 @@
                     <div class="col-md-7 p-4 p-md-5 d-flex flex-column">
                         <div class="d-flex justify-content-between align-items-start mb-4">
                             <div>
-                                <h4 class="fw-bold text-white mb-1">@Model.MovieTitle</h4>
+                                <h4 class="fw-bold  mb-1">@Model.MovieTitle</h4>
                                 <span class="ac-badge px-2 py-1">@Model.RoomName</span>
                             </div>
-                            @if (Model.Status == "Da thanh toan")
+                            @if (Model.Status == "Đã thanh toán")
                             {
                                 <span class="badge bg-success bg-opacity-25 text-success border border-success px-3 py-2 rounded-pill">Đã thanh toán</span>
                             }
-                            else if (Model.Status == "Cho thanh toan")
+                            else if (Model.Status == "Chờ thanh toán")
                             {
                                 <span class="badge bg-warning bg-opacity-25 text-warning border border-warning px-3 py-2 rounded-pill">Chờ thanh toán</span>
                             }
-                            else if (Model.Status == "Da su dung")
+                            else if (Model.Status == "Đã sử dụng")
                             {
                                 <span class="badge bg-secondary bg-opacity-25 text-secondary border border-secondary px-3 py-2 rounded-pill">Đã sử dụng</span>
+                            }
+                            else if (Model.Status == "Cần hoàn tiền")
+                            {
+                                <span class="badge bg-info bg-opacity-25 text-info border border-info px-3 py-2 rounded-pill">Cần hoàn tiền</span>
+                            }
+                            else if (Model.Status == "Đã hoàn tiền")
+                            {
+                                <span class="badge bg-primary bg-opacity-25 text-primary border border-primary px-3 py-2 rounded-pill">Đã hoàn tiền</span>
                             }
                             else
                             {
@@ -41,19 +49,19 @@
                         <div class="row g-4 flex-grow-1">
                             <div class="col-6">
                                 <p class="text-muted small mb-1">Ngày giờ chiếu</p>
-                                <h6 class="fw-bold text-white">@Model.Showtime.ToString("HH:mm")<br/>@Model.Showtime.ToString("dd/MM/yyyy")</h6>
+                                <h6 class="fw-bold ">@Model.Showtime.ToString("HH:mm")<br/>@Model.Showtime.ToString("dd/MM/yyyy")</h6>
                             </div>
                             <div class="col-6">
                                 <p class="text-muted small mb-1">Ghế ngồi</p>
-                                <h6 class="fw-bold text-white">@Model.SeatList</h6>
+                                <h6 class="fw-bold ">@Model.SeatList</h6>
                             </div>
                             <div class="col-6">
                                 <p class="text-muted small mb-1">Mã đơn hàng</p>
-                                <h6 class="fw-bold text-white">#@Model.OrderCode</h6>
+                                <h6 class="fw-bold ">#@Model.OrderCode</h6>
                             </div>
                             <div class="col-6">
                                 <p class="text-muted small mb-1">Ngày đặt</p>
-                                <h6 class="fw-bold text-white">@Model.CreatedAt.ToString("HH:mm dd/MM/yyyy")</h6>
+                                <h6 class="fw-bold ">@Model.CreatedAt.ToString("HH:mm dd/MM/yyyy")</h6>
                             </div>
                         </div>
 
@@ -64,7 +72,7 @@
                                 <div class="d-flex flex-wrap gap-2">
                                     @foreach (var svc in Model.ServiceList)
                                     {
-                                        <span class="badge bg-surface border border-ac text-white fw-normal">@svc</span>
+                                        <span class="badge bg-surface border border-ac  fw-normal">@svc</span>
                                     }
                                 </div>
                             </div>
@@ -104,25 +112,39 @@
                         
                         <img src="@Model.Poster" alt="@Model.MovieTitle" class="rounded mb-4 shadow" style="width: 120px; height: 180px; object-fit: cover; opacity: 0.9;" onerror="this.src='/images/placeholder-movie.jpg'" />
                         
-                        @if (Model.Status == "Da thanh toan" && !string.IsNullOrEmpty(Model.QrCodeBase64))
+                        @if (Model.Status == "Đã thanh toán" && !string.IsNullOrEmpty(Model.QrCodeBase64))
                         {
                             <div class="bg-white p-2 rounded shadow-sm">
                                 <img src="data:image/png;base64,@Model.QrCodeBase64" alt="QR Code" style="width: 150px; height: 150px;" />
                             </div>
                             <p class="text-muted small mt-3 mb-0 text-center">Đưa mã QR này cho nhân viên khi đến rạp</p>
                         }
-                        else if (Model.Status == "Cho thanh toan")
+                        else if (Model.Status == "Chờ thanh toán")
                         {
                             <div class="text-center">
                                 <i class="bi bi-qr-code text-muted mb-2" style="font-size: 3rem; opacity: 0.2;"></i>
                                 <p class="text-muted small mb-0">Mã QR sẽ hiển thị sau khi thanh toán</p>
                             </div>
                         }
-                        else if (Model.Status == "Da su dung")
+                        else if (Model.Status == "Đã sử dụng")
                         {
                             <div class="text-center">
                                 <i class="bi bi-check2-circle text-secondary mb-2" style="font-size: 4rem;"></i>
                                 <p class="text-secondary fw-bold mb-0">Vé đã sử dụng</p>
+                            </div>
+                        }
+                        else if (Model.Status == "Cần hoàn tiền")
+                        {
+                            <div class="text-center">
+                                <i class="bi bi-arrow-counterclockwise text-info mb-2" style="font-size: 3rem; opacity: 0.6;"></i>
+                                <p class="text-info small mb-0">Đang chờ hoàn tiền</p>
+                            </div>
+                        }
+                        else if (Model.Status == "Đã hoàn tiền")
+                        {
+                            <div class="text-center">
+                                <i class="bi bi-check2-circle text-primary mb-2" style="font-size: 4rem;"></i>
+                                <p class="text-primary fw-bold mb-0">Đã hoàn tiền thành công</p>
                             </div>
                         }
                         else

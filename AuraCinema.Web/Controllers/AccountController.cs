@@ -30,35 +30,44 @@ public class AccountController : Controller
     {
         if (!ModelState.IsValid) return View(model);
 
-        var user = await _auth.LoginAsync(model.Email, model.Password);
-        if (user is null)
+        try
         {
-            ModelState.AddModelError(string.Empty, "Email hoặc mật khẩu không đúng.");
+            var user = await _auth.LoginAsync(model.Email, model.Password);
+            if (user is null)
+            {
+                ModelState.AddModelError(string.Empty, "Email hoặc mật khẩu không đúng.");
+                return View(model);
+            }
+
+            var claims = new List<Claim>
+            {
+                new(ClaimTypes.NameIdentifier, user.UserID.ToString()),
+                new(ClaimTypes.Name, user.FullName),
+                new(ClaimTypes.Email, user.Email),
+                new(ClaimTypes.Role, user.Role)
+            };
+
+            var identity  = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+            var props = new AuthenticationProperties
+            {
+                IsPersistent = false,
+                ExpiresUtc   = DateTimeOffset.UtcNow.AddHours(8)
+            };
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props);
+
+            if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+                return Redirect(model.ReturnUrl);
+
+            TempData["Success"] = "Đăng nhập thành công!";
+            return RedirectByRole(user.Role);
+        }
+        catch (System.Exception ex)
+        {
+            ModelState.AddModelError(string.Empty, ex.Message);
             return View(model);
         }
-
-        var claims = new List<Claim>
-        {
-            new(ClaimTypes.NameIdentifier, user.UserID.ToString()),
-            new(ClaimTypes.Name, user.FullName),
-            new(ClaimTypes.Email, user.Email),
-            new(ClaimTypes.Role, user.Role)
-        };
-
-        var identity  = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-        var principal = new ClaimsPrincipal(identity);
-        var props = new AuthenticationProperties
-        {
-            IsPersistent = false,
-            ExpiresUtc   = DateTimeOffset.UtcNow.AddHours(8)
-        };
-
-        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props);
-
-        if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
-            return Redirect(model.ReturnUrl);
-
-        return RedirectByRole(user.Role);
     }
 
     // ─────────────── ĐĂNG XUẤT ───────────────
@@ -66,6 +75,7 @@ public class AccountController : Controller
     public async Task<IActionResult> Logout()
     {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        TempData["Success"] = "Đăng xuất thành công!";
         return RedirectToAction("Index", "Home");
     }
 

@@ -21,20 +21,26 @@ public class MoviesController : AdminBaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index(string? searchCode, string? searchTitle)
+    public async Task<IActionResult> Index(string? searchCode, int page = 1)
     {
         var query = _db.Movies.AsQueryable();
 
         if (!string.IsNullOrEmpty(searchCode))
             query = query.Where(m => m.MovieCode.Contains(searchCode));
 
-        if (!string.IsNullOrEmpty(searchTitle))
-            query = query.Where(m => m.Title.Contains(searchTitle));
-
         ViewBag.SearchCode = searchCode;
-        ViewBag.SearchTitle = searchTitle;
 
-        var movies = await query.OrderByDescending(m => m.MovieID).ToListAsync();
+        query = query.Where(m => m.Status != "Ngung chieu");
+
+        int pageSize = 6;
+        int totalRecords = await query.CountAsync();
+        ViewBag.TotalPages = (int)Math.Ceiling(totalRecords / (double)pageSize);
+        ViewBag.CurrentPage = page;
+
+        var movies = await query.OrderByDescending(m => m.MovieID)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
         return View(movies);
     }
 
@@ -97,6 +103,7 @@ public class MoviesController : AdminBaseController
             Genre = model.Genre,
             Director = model.Director,
             Actors = model.Actors,
+            Description = model.Description,
             Duration = model.Duration,
             ReleaseDate = model.ReleaseDate,
             Trailer = model.Trailer,
@@ -125,6 +132,7 @@ public class MoviesController : AdminBaseController
             Genre = movie.Genre,
             Director = movie.Director,
             Actors = movie.Actors,
+            Description = movie.Description,
             Duration = movie.Duration,
             ReleaseDate = movie.ReleaseDate,
             Trailer = movie.Trailer,
@@ -156,6 +164,7 @@ public class MoviesController : AdminBaseController
         movie.Genre = model.Genre;
         movie.Director = model.Director;
         movie.Actors = model.Actors;
+        movie.Description = model.Description;
         movie.Duration = model.Duration;
         movie.ReleaseDate = model.ReleaseDate;
         movie.Trailer = model.Trailer;
@@ -186,14 +195,24 @@ public class MoviesController : AdminBaseController
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(int id)
     {
-        var movie = await _db.Movies.FindAsync(id);
+        var movie = await _db.Movies.Include(m => m.Showtimes).FirstOrDefaultAsync(m => m.MovieID == id);
         if (movie == null) return NotFound();
 
-        // Soft delete
-        movie.Status = "Ngung chieu";
-        await _db.SaveChangesAsync();
+        if (movie.Showtimes.Any())
+        {
+            // Nếu đã có suất chiếu, chỉ nên ngừng chiếu để bảo toàn dữ liệu lịch sử
+            movie.Status = "Ngung chieu";
+            await _db.SaveChangesAsync();
+            TempData["Info"] = "Phim đã có suất chiếu nên chỉ được chuyển sang trạng thái 'Ngừng chiếu'.";
+        }
+        else
+        {
+            // Nếu chưa có suất chiếu, có thể xóa hoàn toàn
+            _db.Movies.Remove(movie);
+            await _db.SaveChangesAsync();
+            TempData["Success"] = "Đã xóa phim thành công!";
+        }
 
-        TempData["Info"] = "Đã chuyển trạng thái phim thành 'Ngừng chiếu'!";
         return RedirectToAction(nameof(Index));
     }
 }

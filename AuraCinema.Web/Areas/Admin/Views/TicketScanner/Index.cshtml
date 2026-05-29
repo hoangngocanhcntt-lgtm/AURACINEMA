@@ -1,27 +1,289 @@
 @{
-    ViewData["Title"] = "Quét mã QR";
+    ViewData["Title"] = "Soát Vé Mã QR";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        /* CSS to hide image upload options from html5-qrcode */
+        #reader__dashboard_section_swaplink, 
+        #reader input[type="file"],
+        #reader input[type="file"] + span,
+        #reader button[id*="swaplink"],
+        #reader a[id*="swaplink"] {
+            display: none !important;
+        }
+
+        /* Glassmorphism & premium UI styles */
+        .scanner-card {
+            border: none;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        #reader-container {
+            border: 2px dashed #0047AB;
+            border-radius: 16px;
+            background: #0f172a;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Cyberpunk scanning line animation */
+        .scan-laser {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, transparent, #00d2ff, #0047AB, #00d2ff, transparent);
+            box-shadow: 0 0 8px #00d2ff, 0 0 15px #0047AB;
+            animation: scanning 2.5s infinite linear;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        @@keyframes scanning {
+            0% { top: 0%; }
+            50% { top: 100%; }
+            100% { top: 0%; }
+        }
+
+        /* Cinema ticket card style */
+        .ticket-glass {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border-radius: 16px;
+            padding: 24px;
+            color: #f8fafc;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .ticket-glass::before, .ticket-glass::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 24px;
+            height: 24px;
+            background-color: #f4f7fa; /* Match body background */
+            border-radius: 50%;
+            z-index: 5;
+        }
+        .ticket-glass::before {
+            left: -12px;
+            transform: translateY(-50%);
+            box-shadow: inset -3px 0 5px rgba(0,0,0,0.2);
+        }
+        .ticket-glass::after {
+            right: -12px;
+            transform: translateY(-50%);
+            box-shadow: inset 3px 0 5px rgba(0,0,0,0.2);
+        }
+
+        .ticket-divider {
+            border-top: 2px dashed rgba(255, 255, 255, 0.2);
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .ticket-status-badge {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 6px 16px;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+            display: inline-block;
+        }
+
+        .ticket-error-badge {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 6px 16px;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
+            display: inline-block;
+        }
+
+        .glow-btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 50px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .glow-btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+            background: linear-gradient(135deg, #059669, #047857);
+        }
+
+        .glow-btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #f1f5f9;
+            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+
+        .glow-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .pulse-scanner {
+            width: 12px;
+            height: 12px;
+            background-color: #10b981;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            animation: pulse-animation 1.5s infinite;
+        }
+
+        @@keyframes pulse-animation {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        .ticket-detail-item {
+            margin-bottom: 12px;
+        }
+
+        .ticket-label {
+            color: #94a3b8;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .ticket-value {
+            color: #f8fafc;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+    </style>
 }
 
 <div class="row justify-content-center">
-    <div class="col-lg-6">
+    <div class="col-lg-7 col-md-9 col-12">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="h4 mb-0 text-dark fw-bold">Check-in Vé (QR Code)</h2>
+            <div>
+                <h2 class="h3 mb-1 text-dark fw-bold font-outfit"><i class="bi bi-qr-code-scan me-2 text-primary"></i>Soát Vé Thông Minh</h2>
+                <p class="text-muted small mb-0">Hệ thống quét mã QR Code nhận diện và kiểm soát vé tự động.</p>
+            </div>
+            <div id="scanner-indicator" class="d-none align-items-center bg-white border rounded-pill px-3 py-1 shadow-sm">
+                <span class="pulse-scanner"></span>
+                <span class="small fw-semibold text-muted">Camera đang hoạt động</span>
+            </div>
         </div>
 
-        <div class="ac-card p-4 text-center border-0 shadow-sm">
-            <div id="reader-container" class="mb-4 bg-light rounded overflow-hidden position-relative" style="min-height: 300px; border: 2px dashed #dee2e6;">
-                <div id="reader" style="width: 100%;"></div>
+        <div class="scanner-card p-4 shadow-lg border-0 mb-4">
+            
+            <!-- SCANNER CAMERA CONTAINER -->
+            <div id="scannerSection">
+                <div id="reader-container" class="mb-4">
+                    <div class="scan-laser" id="laserLine"></div>
+                    <div id="reader" style="width: 100%;"></div>
+                </div>
+                <div class="text-center">
+                    <p class="text-muted small mb-0"><i class="bi bi-info-circle me-1"></i> Đặt mã QR của vé trước camera để thực hiện nhận diện tự động.</p>
+                </div>
             </div>
 
-            <!-- Custom Status Alert -->
-            <div id="scanResult" class="alert d-none shadow-sm" role="alert" style="transition: all 0.3s;">
-                <h5 id="resultTitle" class="alert-heading fw-bold mb-1"></h5>
-                <p id="resultMessage" class="mb-0"></p>
-                <hr id="resultDivider" class="d-none">
-                <div id="resultInfo" class="text-start small fw-bold d-none"></div>
+            <!-- TICKET VERIFICATION RESULT OVERLAY -->
+            <div id="resultSection" class="d-none">
+                
+                <!-- SUCCESS TICKET -->
+                <div id="ticketValid" class="ticket-glass d-none">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="ticket-status-badge"><i class="bi bi-check-circle-fill me-1"></i> Vé Hợp Lệ</div>
+                        <span class="text-muted font-monospace small" id="lblOrderCode">ORD-XXXXXX</span>
+                    </div>
+
+                    <h3 class="fw-bold font-outfit text-white mb-4" id="lblMovieTitle">TÊN PHIM</h3>
+
+                    <div class="row g-3">
+                        <div class="col-6 ticket-detail-item">
+                            <div class="ticket-label"><i class="bi bi-person me-1"></i> Khách hàng</div>
+                            <div class="ticket-value" id="lblCustomerName">Nguyễn Văn A</div>
+                        </div>
+                        <div class="col-6 ticket-detail-item">
+                            <div class="ticket-label"><i class="bi bi-door-open me-1"></i> Rạp chiếu</div>
+                            <div class="ticket-value" id="lblRoomName">Phòng 1</div>
+                        </div>
+                        <div class="col-6 ticket-detail-item">
+                            <div class="ticket-label"><i class="bi bi-grid-3x3-gap me-1"></i> Ghế đã chọn</div>
+                            <div class="ticket-value" id="lblSeats">A1, A2</div>
+                        </div>
+                        <div class="col-6 ticket-detail-item">
+                            <div class="ticket-label"><i class="bi bi-clock me-1"></i> Giờ chiếu</div>
+                            <div class="ticket-value" id="lblStartTime">18/05/2026 19:30</div>
+                        </div>
+                        <div class="col-12 ticket-detail-item">
+                            <div class="ticket-label"><i class="bi bi-cash-coin me-1"></i> Tổng tiền hóa đơn</div>
+                            <div class="ticket-value text-warning fs-5" id="lblAmount">95,000 đ</div>
+                        </div>
+                        <div class="col-12 ticket-detail-item" id="servicesWrapper">
+                            <div class="ticket-label"><i class="bi bi-cup-straw me-1"></i> Dịch vụ đi kèm</div>
+                            <div class="ticket-value text-info font-monospace" id="lblServices">Không có dịch vụ đi kèm</div>
+                        </div>
+                    </div>
+
+                    <div class="ticket-divider"></div>
+
+                    <div class="d-flex flex-column flex-sm-row gap-2 justify-content-end align-items-center mt-3">
+                        <div class="d-flex gap-2 w-100 w-sm-auto">
+                            <button id="btnPrintTicketAndCheckIn" class="btn glow-btn-success w-100 px-4"><i class="bi bi-printer me-2"></i>In Vé</button>
+                            <button id="btnResetScan" class="btn glow-btn-secondary w-100 px-4"><i class="bi bi-camera me-2"></i>Quét lại</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- INVALID TICKET -->
+                <div id="ticketInvalid" class="ticket-glass d-none" style="background: linear-gradient(135deg, #2d161a, #0f0709);">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="ticket-error-badge"><i class="bi bi-x-circle-fill me-1"></i> Vé Không Hợp Lệ</div>
+                        <span class="text-muted font-monospace small" id="lblInvalidOrderCode">ORD-XXXXXX</span>
+                    </div>
+
+                    <h3 class="fw-bold font-outfit text-danger mb-3"><i class="bi bi-exclamation-triangle-fill me-2 text-danger"></i>Từ chối truy cập!</h3>
+                    
+                    <div class="p-3 bg-danger bg-opacity-10 rounded border border-danger border-opacity-25 mb-4">
+                        <p class="text-light mb-0 fs-6" id="lblInvalidMessage">Thông tin chi tiết về lỗi...</p>
+                    </div>
+
+                    <div class="ticket-divider"></div>
+
+                    <div class="text-end">
+                        <button id="btnResetScanInvalid" class="btn btn-danger rounded-pill px-4"><i class="bi bi-camera me-2"></i>Quét lại ngay</button>
+                    </div>
+                </div>
+
             </div>
 
-            <p class="text-muted small mt-4 mb-0">Sử dụng Camera của thiết bị để quét mã QR Code trên ứng dụng của khách hàng.</p>
         </div>
     </div>
 </div>
@@ -30,94 +292,262 @@
 
 @section Scripts {
     <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            // Web Audio API Sound generator to simulate scanner beeps
+            function playBeep(type) {
+                try {
+                    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioCtx.createOscillator();
+                    const gainNode = audioCtx.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioCtx.destination);
+                    
+                    if (type === 'success') {
+                        oscillator.type = 'sine';
+                        oscillator.frequency.setValueAtTime(880, audioCtx.currentTime); // High pitch beep
+                        gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                        oscillator.start();
+                        oscillator.stop(audioCtx.currentTime + 0.12);
+                    } else if (type === 'error') {
+                        oscillator.type = 'sawtooth';
+                        oscillator.frequency.setValueAtTime(130, audioCtx.currentTime); // Buzz sound
+                        gainNode.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                        oscillator.start();
+                        oscillator.stop(audioCtx.currentTime + 0.35);
+                    }
+                } catch (e) {
+                    console.warn("Audio feedback not supported in this environment.", e);
+                }
+            }
+
+            // HTML5 QR Scanner setup
+            // 1. Force direct Camera only using Html5QrcodeScanType.SCAN_TYPE_CAMERA
             let html5QrcodeScanner = new Html5QrcodeScanner(
                 "reader",
-                { fps: 10, qrbox: {width: 250, height: 250} },
-                false);
+                { 
+                    fps: 15, 
+                    qrbox: { width: 250, height: 250 },
+                    supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA] 
+                },
+                /* verbose= */ false
+            );
 
             let isProcessing = false;
+            let activeQrCode = "";
+            let activePrintUrl = "";
+
+            // Custom UI State Helpers
+            const indicator = document.getElementById('scanner-indicator');
+            const laserLine = document.getElementById('laserLine');
 
             function onScanSuccess(decodedText, decodedResult) {
-                if (isProcessing) return; // Prevent double scanning
+                if (isProcessing) return; // Anti-double-trigger
                 isProcessing = true;
+                activeQrCode = decodedText;
                 
-                // Show processing UI
+                // Immediately Pause camera
                 html5QrcodeScanner.pause();
-                showResult('info', 'Đang xử lý...', `Mã: ${decodedText}`);
+                laserLine.style.animationPlayState = 'paused';
+                indicator.querySelector('span:last-child').innerText = 'Camera đang tạm dừng';
+                indicator.querySelector('.pulse-scanner').style.backgroundColor = '#64748b';
+
+                // Play scanner feedback sound
+                playBeep('success');
+
+                // Toast/loader feedback
+                Swal.fire({
+                    title: 'Đang xác thực vé...',
+                    html: 'Đang kết nối đến máy chủ quản lý vé.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
 
                 const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value || '';
+                const formData = new URLSearchParams();
+                formData.append('qrCode', decodedText);
 
-                fetch('@Url.Action("ProcessScan", "TicketScanner", new { area = "Admin" })', {
+                // Fetch Verification to backend API
+                fetch('@Url.Action("VerifyTicket", "TicketScanner", new { area = "Admin" })', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/x-www-form-urlencoded',
                         'RequestVerificationToken': token
                     },
-                    body: JSON.stringify({ QrCodeData: decodedText })
+                    body: formData.toString()
                 })
                 .then(res => res.json())
                 .then(data => {
-                    if (data.success) {
-                        showResult('success', 'THÀNH CÔNG', data.message, data.orderInfo);
-                    } else {
-                        showResult('danger', 'CẢNH BÁO', data.message, data.orderInfo);
-                    }
+                    Swal.close();
                     
-                    // Resume scanning after 3 seconds
-                    setTimeout(() => {
-                        hideResult();
-                        html5QrcodeScanner.resume();
-                        isProcessing = false;
-                    }, 3000);
+                    document.getElementById('scannerSection').classList.add('d-none');
+                    document.getElementById('resultSection').classList.remove('d-none');
+
+                    if (data.success) {
+                        // Display beautiful successful Ticket Glass card
+                        document.getElementById('ticketValid').classList.remove('d-none');
+                        document.getElementById('ticketInvalid').classList.add('d-none');
+
+                        // Fill out ticket data
+                        document.getElementById('lblOrderCode').innerText = data.orderInfo.id;
+                        document.getElementById('lblMovieTitle').innerText = data.orderInfo.movie;
+                        document.getElementById('lblCustomerName').innerText = data.orderInfo.customer;
+                        document.getElementById('lblRoomName').innerText = data.orderInfo.room;
+                        document.getElementById('lblSeats').innerText = data.orderInfo.seats;
+                        document.getElementById('lblStartTime').innerText = data.orderInfo.startTime;
+                        document.getElementById('lblAmount').innerText = data.orderInfo.amount;
+
+                        // Fill out services
+                        const servicesContainer = document.getElementById('lblServices');
+                        if (data.orderInfo.services && data.orderInfo.services.length > 0) {
+                            const svcText = data.orderInfo.services.map(s => `${s.name} (x${s.quantity})`).join(', ');
+                            servicesContainer.innerText = svcText;
+                        } else {
+                            servicesContainer.innerHTML = '<span class="text-muted font-italic text-opacity-50">Không có dịch vụ đi kèm</span>';
+                        }
+                        
+                        // Set Print URL state
+                        activePrintUrl = data.orderInfo.printUrl;
+                    } else {
+                        // Play alert sound for error
+                        playBeep('error');
+
+                        // Display ticket invalid card
+                        document.getElementById('ticketValid').classList.add('d-none');
+                        document.getElementById('ticketInvalid').classList.remove('d-none');
+                        document.getElementById('lblInvalidOrderCode').innerText = decodedText;
+                        document.getElementById('lblInvalidMessage').innerText = data.message;
+
+                        // Trigger beautiful SweetAlert2 Error popup
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Vé Không Hợp Lệ!',
+                            text: data.message,
+                            confirmButtonColor: '#ef4444',
+                            confirmButtonText: 'Quét lại'
+                        }).then(() => {
+                            resumeScanning();
+                        });
+                    }
                 })
                 .catch(err => {
-                    showResult('danger', 'LỖI MẠNG', 'Không thể kết nối đến máy chủ.');
-                    setTimeout(() => {
-                        hideResult();
-                        html5QrcodeScanner.resume();
-                        isProcessing = false;
-                    }, 3000);
+                    Swal.close();
+                    playBeep('error');
+                    
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi Kết Nối',
+                        text: 'Không thể liên lạc với máy chủ. Vui lòng kiểm tra lại kết nối mạng.',
+                        confirmButtonColor: '#64748b',
+                        confirmButtonText: 'Thử lại'
+                    }).then(() => {
+                        resumeScanning();
+                    });
                 });
             }
 
             function onScanFailure(error) {
-                // handle scan failure
+                // Ignore silent scan errors to avoid cluttering
             }
 
+            // Render camera
             html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+            
+            // Adjust visual indicator
+            setTimeout(() => {
+                indicator.classList.remove('d-none');
+                indicator.classList.add('d-flex');
+            }, 1000);
 
-            function showResult(type, title, message, info = null) {
-                const alertBox = document.getElementById('scanResult');
-                const titleEl = document.getElementById('resultTitle');
-                const msgEl = document.getElementById('resultMessage');
-                const infoEl = document.getElementById('resultInfo');
-                const divEl = document.getElementById('resultDivider');
+            // Handler: In Vé & Vào Rạp (Print Ticket & Check-In in one go!)
+            document.getElementById('btnPrintTicketAndCheckIn').addEventListener('click', function() {
+                if (!activeQrCode) return;
 
-                // Reset classes
-                alertBox.className = `alert alert-${type} shadow-sm border-0`;
-                alertBox.classList.remove('d-none');
-                titleEl.innerText = title;
-                msgEl.innerText = message;
-
-                if (info) {
-                    divEl.classList.remove('d-none');
-                    infoEl.classList.remove('d-none');
-                    let html = `Mã đơn: #${info.id}<br/>Phim: ${info.movie}<br/>Khách hàng: ${info.customer}`;
-                    if (info.printUrl) {
-                        html += `<div class="mt-3"><a href="${info.printUrl}" target="_blank" class="btn btn-primary btn-sm"><i class="bi bi-printer me-2"></i>In Vé</a></div>`;
+                Swal.fire({
+                    title: 'Đang chuẩn bị in vé...',
+                    html: 'Đang kết nối để ghi nhận trạng thái vào rạp...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
                     }
-                    infoEl.innerHTML = html;
-                } else {
-                    divEl.classList.add('d-none');
-                    infoEl.classList.add('d-none');
-                }
+                });
+
+                const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value || '';
+                const formData = new URLSearchParams();
+                formData.append('qrCode', activeQrCode);
+
+                fetch('@Url.Action("ConfirmCheckIn", "TicketScanner", new { area = "Admin" })', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'RequestVerificationToken': token
+                    },
+                    body: formData.toString()
+                })
+                .then(res => res.json())
+                .then(data => {
+                    Swal.close();
+                    if (data.success) {
+                        // 1. Mở cửa sổ in vé ở tab mới
+                        if (activePrintUrl) {
+                            window.open(activePrintUrl, '_blank');
+                        }
+
+                        // 2. Hiện SweetAlert2 báo thành công
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Xác Nhận Thành Công!',
+                            text: 'Đã cập nhật trạng thái "Đã sử dụng" và chuẩn bị in vé.',
+                            timer: 2000,
+                            showConfirmButton: false
+                        }).then(() => {
+                            // 3. Tự động quay lại màn hình quét camera
+                            resumeScanning();
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi Xử Lý!',
+                            text: data.message,
+                            confirmButtonColor: '#ef4444'
+                        });
+                    }
+                })
+                .catch(err => {
+                    Swal.close();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi Hệ Thống',
+                        text: 'Đã xảy ra lỗi trong quá trình kết nối. Vui lòng thử lại.',
+                        confirmButtonColor: '#ef4444'
+                    });
+                });
+            });
+
+            // Resumes the camera scanner and hides result UI
+            function resumeScanning() {
+                document.getElementById('resultSection').classList.add('d-none');
+                document.getElementById('scannerSection').classList.remove('d-none');
+                
+                // Clear state
+                isProcessing = false;
+                activeQrCode = "";
+
+                // Resume html5QrcodeScanner
+                html5QrcodeScanner.resume();
+                laserLine.style.animationPlayState = 'running';
+                indicator.querySelector('span:last-child').innerText = 'Camera đang hoạt động';
+                indicator.querySelector('.pulse-scanner').style.backgroundColor = '#10b981';
             }
 
-            function hideResult() {
-                document.getElementById('scanResult').classList.add('d-none');
-            }
+            // Bind Resume Buttons
+            document.getElementById('btnResetScan').addEventListener('click', resumeScanning);
+            document.getElementById('btnResetScanInvalid').addEventListener('click', resumeScanning);
         });
     </script>
 }

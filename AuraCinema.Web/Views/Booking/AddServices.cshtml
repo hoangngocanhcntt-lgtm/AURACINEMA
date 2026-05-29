@@ -1,4 +1,4 @@
-@using System.Text.Json
+﻿@using System.Text.Json
 @model AuraCinema.Web.ViewModels.Booking.AddServicesViewModel
 @{
     ViewData["Title"] = "Chọn bắp nước";
@@ -11,7 +11,7 @@
         <div class="col-lg-8">
             <div class="ac-card p-4">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h4 class="mb-0 text-white">Bắp nước & Dịch vụ</h4>
+                    <h4 class="mb-0 ">Bắp nước & Dịch vụ</h4>
                     <span class="text-muted small">Bước 2/3</span>
                 </div>
 
@@ -22,12 +22,12 @@
                             <div class="service-card ac-card p-0 overflow-hidden border-ac" data-id="@svc.ServiceID" data-price="@svc.Price" data-name="@svc.ServiceName">
                                 <img src="@svc.Image" alt="@svc.ServiceName" class="w-100" style="height: 140px; object-fit: cover;" onerror="this.src='/images/popcorn-default.jpg'" />
                                 <div class="p-3 text-center">
-                                    <h6 class="text-white fw-bold mb-1">@svc.ServiceName</h6>
+                                    <h6 class=" fw-bold mb-1">@svc.ServiceName</h6>
                                     <p class="text-primary fw-bold mb-3">@svc.Price.ToString("N0")đ</p>
                                     
                                     <div class="d-flex justify-content-center align-items-center gap-3">
                                         <button class="btn btn-sm btn-outline-light rounded-circle" style="width:30px; height:30px; padding:0;" onclick="changeQty(@svc.ServiceID, -1)">-</button>
-                                        <span class="fw-bold text-white fs-5" id="qty-@svc.ServiceID">0</span>
+                                        <span class="fw-bold  fs-5" id="qty-@svc.ServiceID">0</span>
                                         <button class="btn btn-sm btn-outline-light rounded-circle" style="width:30px; height:30px; padding:0;" onclick="changeQty(@svc.ServiceID, 1)">+</button>
                                     </div>
                                 </div>
@@ -42,25 +42,25 @@
         <div class="col-lg-4">
             <div class="ac-card p-0 overflow-hidden sticky-top" style="top: 100px;">
                 <div class="p-4 border-bottom border-ac bg-surface">
-                    <h5 class="fw-bold text-white mb-3">Thông tin vé</h5>
+                    <h5 class="fw-bold  mb-3">Thông tin vé</h5>
                     <div class="d-flex justify-content-between mb-2 small">
                         <span class="text-muted">Phim:</span>
-                        <span class="text-white text-end">@Model.MovieTitle</span>
+                        <span class=" text-end">@Model.MovieTitle</span>
                     </div>
                     <div class="d-flex justify-content-between mb-2 small">
                         <span class="text-muted">Suất chiếu:</span>
-                        <span class="text-white">@Model.ShowtimeLabel</span>
+                        <span class="">@Model.ShowtimeLabel</span>
                     </div>
                     <div class="d-flex justify-content-between small">
                         <span class="text-muted">Ghế:</span>
-                        <span class="text-white">@Model.SeatList</span>
+                        <span class="">@Model.SeatList</span>
                     </div>
                 </div>
                 
                 <div class="p-4 bg-surface">
                     <div class="mb-3">
                         <label class="text-muted small d-block mb-2">Dịch vụ đã chọn:</label>
-                        <div id="selectedServicesList" class="small text-white">Chưa chọn dịch vụ nào</div>
+                        <div id="selectedServicesList" class="small ">Chưa chọn dịch vụ nào</div>
                     </div>
                     
                     <button id="btnSubmit" onclick="confirmBooking()" class="ac-btn-primary w-100 justify-content-center py-3 rounded-3 mt-2">

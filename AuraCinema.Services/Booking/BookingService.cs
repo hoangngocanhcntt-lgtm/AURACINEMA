@@ -5,6 +5,7 @@ using AuraCinema.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Text.Json;
+using Microsoft.Extensions.Logging;
 using Net.payOS;
 using Net.payOS.Types;
 
@@ -15,12 +16,14 @@ public class BookingService : IBookingService
     private readonly AppDbContext _db;
     private readonly IConfiguration _config;
     private readonly IEmailService _emailService;
+    private readonly ILogger<BookingService> _logger;
 
-    public BookingService(AppDbContext db, IConfiguration config, IEmailService emailService)
+    public BookingService(AppDbContext db, IConfiguration config, IEmailService emailService, ILogger<BookingService> logger)
     {
         _db = db;
         _config = config;
         _emailService = emailService;
+        _logger = logger;
     }
 
     public async Task<(Showtime Showtime, List<Seat> Seats, List<int> SoldOrHeldSeatIds)> GetShowtimeSeatLayoutAsync(int showtimeId)
@@ -41,8 +44,8 @@ public class BookingService : IBookingService
         var soldOrHeldOrderSeats = await _db.OrderSeats
             .Include(os => os.Order)
             .Where(os => os.Order.ShowtimeID == showtimeId &&
-                         (os.Order.Status == "Da thanh toan" || 
-                         (os.Order.Status == "Cho thanh toan" && os.Order.HoldExpiryTime > DateTime.UtcNow)))
+                         (os.Order.Status == "Đã thanh toán" || 
+                         (os.Order.Status == "Chờ thanh toán" && os.Order.HoldExpiryTime > DateTime.Now)))
             .ToListAsync();
 
         var soldOrHeldSeatIds = soldOrHeldOrderSeats.Select(os => os.SeatID).ToList();
@@ -60,10 +63,11 @@ public class BookingService : IBookingService
         var svcIds = selectedServices.Where(s => s.Quantity > 0).Select(s => s.ServiceID).ToList();
         var services = await _db.Services.Where(s => svcIds.Contains(s.ServiceID)).ToListAsync();
 
-        var configs = await _db.PriceConfigs.ToDictionaryAsync(c => c.ConfigCode, c => c.SurchargeAmount);
+        var configs = await _db.PriceConfigs.ToDictionaryAsync(c => c.ConfigCode.Trim(), c => c.SurchargeAmount);
         
-        int basePrice = configs.GetValueOrDefault("BASE", 70000);
-        int daySurcharge = (showtime.StartTime.DayOfWeek == DayOfWeek.Saturday || showtime.StartTime.DayOfWeek == DayOfWeek.Sunday) ? configs.GetValueOrDefault("DAY_WEEKEND", 15000) : 0;
+        int basePrice = configs.GetValueOrDefault("BASE_PRICE", 70000);
+        int daySurcharge = (showtime.StartTime.DayOfWeek == DayOfWeek.Saturday || showtime.StartTime.DayOfWeek == DayOfWeek.Sunday) ? configs.GetValueOrDefault("WEEKEND_SURCHARGE", 15000) : 0;
+        int eveningSurcharge = (showtime.StartTime.Hour >= 18) ? configs.GetValueOrDefault("EVENING_SURCHARGE", 10000) : 0;
         
         int totalAmount = 0;
         var details = new Dictionary<string, object>();
@@ -71,9 +75,9 @@ public class BookingService : IBookingService
         // Ghế
         foreach (var seat in seats)
         {
-            int seatPrice = basePrice + daySurcharge;
-            if (seat.SeatType == "VIP") seatPrice += configs.GetValueOrDefault("SEAT_VIP", 20000);
-            else if (seat.SeatType == "Doi") seatPrice += configs.GetValueOrDefault("SEAT_COUPLE", 50000);
+            int seatPrice = basePrice + daySurcharge + eveningSurcharge;
+            if (seat.SeatType == "VIP") seatPrice += configs.GetValueOrDefault("VIP_SURCHARGE", 20000);
+            else if (seat.SeatType == "Doi") seatPrice += configs.GetValueOrDefault("COUPLE_SURCHARGE", 50000);
             totalAmount += seatPrice;
         }
 
@@ -138,8 +142,8 @@ public class BookingService : IBookingService
                 PromoID = promoId,
                 TotalAmount = total,
                 FinalAmount = final,
-                Status = "Cho thanh toan",
-                HoldExpiryTime = DateTime.UtcNow.AddMinutes(holdMinutes),
+                Status = "Chờ thanh toán",
+                HoldExpiryTime = DateTime.Now.AddMinutes(holdMinutes),
             };
 
             _db.Orders.Add(order);
@@ -148,15 +152,16 @@ public class BookingService : IBookingService
             // 3. Lưu OrderSeats
             var showtime = await _db.Showtimes.FindAsync(showtimeId);
             var seats = await _db.Seats.Where(s => seatIds.Contains(s.SeatID)).ToListAsync();
-            var configs = await _db.PriceConfigs.ToDictionaryAsync(c => c.ConfigCode, c => c.SurchargeAmount);
-            int basePrice = configs.GetValueOrDefault("BASE", 70000);
-            int daySurcharge = (showtime!.StartTime.DayOfWeek == DayOfWeek.Saturday || showtime.StartTime.DayOfWeek == DayOfWeek.Sunday) ? configs.GetValueOrDefault("DAY_WEEKEND", 15000) : 0;
+            var configs = await _db.PriceConfigs.ToDictionaryAsync(c => c.ConfigCode.Trim(), c => c.SurchargeAmount);
+            int basePrice = configs.GetValueOrDefault("BASE_PRICE", 70000);
+            int daySurcharge = (showtime!.StartTime.DayOfWeek == DayOfWeek.Saturday || showtime.StartTime.DayOfWeek == DayOfWeek.Sunday) ? configs.GetValueOrDefault("WEEKEND_SURCHARGE", 15000) : 0;
+            int eveningSurcharge = (showtime.StartTime.Hour >= 18) ? configs.GetValueOrDefault("EVENING_SURCHARGE", 10000) : 0;
 
             foreach (var seat in seats)
             {
-                int seatPrice = basePrice + daySurcharge;
-                if (seat.SeatType == "VIP") seatPrice += configs.GetValueOrDefault("SEAT_VIP", 20000);
-                else if (seat.SeatType == "Doi") seatPrice += configs.GetValueOrDefault("SEAT_COUPLE", 50000);
+                int seatPrice = basePrice + daySurcharge + eveningSurcharge;
+                if (seat.SeatType == "VIP") seatPrice += configs.GetValueOrDefault("VIP_SURCHARGE", 20000);
+                else if (seat.SeatType == "Doi") seatPrice += configs.GetValueOrDefault("COUPLE_SURCHARGE", 50000);
 
                 _db.OrderSeats.Add(new OrderSeat
                 {
@@ -197,22 +202,28 @@ public class BookingService : IBookingService
     public async Task<bool> CancelOrderAsync(int orderId)
     {
         var order = await _db.Orders.FindAsync(orderId);
-        if (order == null || order.Status == "Da thanh toan" || order.Status == "Da huy")
+        if (order == null || order.Status == "Đã thanh toán" || order.Status == "Đã hủy")
             return false;
 
-        order.Status = "Da huy";
+        order.Status = "Đã hủy";
         await _db.SaveChangesAsync();
         return true;
     }
 
-    public async Task<(bool Success, string CheckoutUrl)> GeneratePayOSPaymentUrlAsync(int orderId, string cancelUrl, string returnUrl)
+    public async Task<(bool Success, string CheckoutUrl, string? ErrorMessage)> GeneratePayOSPaymentUrlAsync(int orderId, string cancelUrl, string returnUrl)
     {
         var order = await _db.Orders
             .Include(o => o.Showtime)
                 .ThenInclude(s => s.Movie)
             .FirstOrDefaultAsync(o => o.OrderID == orderId);
 
-        if (order == null) return (false, string.Empty);
+        if (order == null) return (false, string.Empty, "Không tìm thấy đơn hàng.");
+
+        // PayOS yêu cầu tối thiểu 2000 VND
+        if (order.FinalAmount < 2000)
+        {
+            return (false, string.Empty, "Số tiền thanh toán tối thiểu là 2.000đ. Vui lòng kiểm tra lại đơn hàng.");
+        }
 
         var payOS = new PayOS(
             _config["PayOS:ClientId"] ?? "",
@@ -227,10 +238,11 @@ public class BookingService : IBookingService
         var item = new ItemData($"Ve xem phim {order.Showtime.Movie.Title}", 1, order.FinalAmount);
         var items = new List<ItemData> { item };
 
+        // Description không được chứa ký tự đặc biệt như #
         var paymentData = new PaymentData(
             orderCode: orderCode,
             amount: order.FinalAmount,
-            description: $"Thanh toan ve #{orderId}",
+            description: $"Thanh toan ve {orderId}",
             items: items,
             cancelUrl: cancelUrl,
             returnUrl: returnUrl
@@ -239,12 +251,44 @@ public class BookingService : IBookingService
         try
         {
             var result = await payOS.createPaymentLink(paymentData);
-            return (true, result.checkoutUrl);
+            return (true, result.checkoutUrl, null);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            return (false, string.Empty);
+            Console.WriteLine($"PayOS Error: {ex.Message}");
+            return (false, string.Empty, $"Lỗi từ PayOS: {ex.Message}");
         }
+    }
+
+    public async Task<bool> CheckPaymentStatusAsync(int orderId)
+    {
+        var order = await _db.Orders.FindAsync(orderId);
+        if (order == null || string.IsNullOrEmpty(order.PayOSTransID)) return false;
+
+        if (order.Status == "Đã thanh toán") return true;
+
+        var payOS = new PayOS(
+            _config["PayOS:ClientId"] ?? "",
+            _config["PayOS:ApiKey"] ?? "",
+            _config["PayOS:ChecksumKey"] ?? ""
+        );
+
+        try
+        {
+            var paymentInfo = await payOS.getPaymentLinkInformation(long.Parse(order.PayOSTransID));
+            
+            if (paymentInfo.status == "PAID")
+            {
+                await ProcessSuccessfulPaymentAsync(orderId, paymentInfo.transactions.LastOrDefault()?.reference ?? "ACTIVE_CHECK");
+                return true;
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error checking payment status for Order {OrderId}", orderId);
+        }
+
+        return false;
     }
 
     public async Task<bool> ProcessSuccessfulPaymentAsync(int orderId, string transactionId)
@@ -254,10 +298,29 @@ public class BookingService : IBookingService
             .Include(o => o.OrderSeats)
             .FirstOrDefaultAsync(o => o.OrderID == orderId);
 
-        if (order == null || order.Status == "Da thanh toan")
-            return true;
+        if (order == null)
+        {
+            _logger.LogWarning("Webhook payment received for non-existent Order ID: {OrderId}", orderId);
+            return false;
+        }
 
-        order.Status = "Da thanh toan";
+        // Xử lý trường hợp thanh toán muộn (Đơn hàng đã bị hủy hoặc đã quá hạn giữ ghế)
+        // Thêm 5-10 giây buffer cho các trường hợp ngân hàng delay phản hồi
+        if (order.Status == "Đã hủy" || order.HoldExpiryTime.AddSeconds(10) < DateTime.Now)
+        {
+            _logger.LogCritical("LATE PAYMENT DETECTED: Order {OrderId} is expired. Status: {Status}, Expiry: {Expiry}. Redirecting to Refund.", 
+                orderId, order.Status, order.HoldExpiryTime);
+            
+            order.Status = "Cần hoàn tiền";
+            order.PayOSTransID = transactionId;
+            await _db.SaveChangesAsync();
+            
+            return true;
+        }
+
+        _logger.LogInformation("Processing successful payment for Order {OrderId}. PayOS Ref: {Ref}", orderId, transactionId);
+        
+        order.Status = "Đã thanh toán";
         order.PayOSTransID = transactionId;
         order.QrCode = Guid.NewGuid().ToString();
 
@@ -290,5 +353,47 @@ public class BookingService : IBookingService
             .Include(o => o.OrderServices)
                 .ThenInclude(os => os.Service)
             .FirstOrDefaultAsync(o => o.OrderID == id);
+    }
+
+    public async Task<List<Promotion>> GetAvailablePromotionsAsync(int totalAmount)
+    {
+        return await _db.Promotions
+            .Where(p => p.Status == "Hoat dong" && 
+                        p.StartDate <= DateTime.Now && 
+                        p.EndDate >= DateTime.Now &&
+                        p.MinAmount <= totalAmount)
+            .OrderByDescending(p => p.DiscountValue)
+            .ToListAsync();
+    }
+
+    public async Task<(bool Success, string Message)> ApplyPromotionAsync(int orderId, int? promoId)
+    {
+        var order = await _db.Orders.FindAsync(orderId);
+        if (order == null) return (false, "Không tìm thấy đơn hàng.");
+
+        if (order.Status != "Chờ thanh toán") 
+            return (false, "Đơn hàng không ở trạng thái có thể áp dụng khuyến mãi.");
+
+        if (promoId == null)
+        {
+            order.PromoID = null;
+            order.FinalAmount = order.TotalAmount;
+            await _db.SaveChangesAsync();
+            return (true, "Đã gỡ bỏ khuyến mãi.");
+        }
+
+        var promo = await _db.Promotions.FindAsync(promoId);
+        if (promo == null || promo.Status != "Hoat dong" || promo.StartDate > DateTime.Now || promo.EndDate < DateTime.Now)
+            return (false, "Khuyến mãi không hợp lệ hoặc đã hết hạn.");
+
+        if (promo.MinAmount > order.TotalAmount)
+            return (false, $"Đơn hàng chưa đạt giá trị tối thiểu {promo.MinAmount:N0}đ để áp dụng khuyến mãi này.");
+
+        order.PromoID = promo.PromoID;
+        order.FinalAmount = order.TotalAmount - promo.DiscountValue;
+        if (order.FinalAmount < 0) order.FinalAmount = 0;
+
+        await _db.SaveChangesAsync();
+        return (true, "Áp dụng khuyến mãi thành công.");
     }
 }

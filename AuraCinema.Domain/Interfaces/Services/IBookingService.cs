@@ -19,11 +19,20 @@ public interface IBookingService
     Task<bool> CancelOrderAsync(int orderId);
 
     // Sinh link thanh toán PayOS
-    Task<(bool Success, string CheckoutUrl)> GeneratePayOSPaymentUrlAsync(int orderId, string cancelUrl, string returnUrl);
+    Task<(bool Success, string CheckoutUrl, string? ErrorMessage)> GeneratePayOSPaymentUrlAsync(int orderId, string cancelUrl, string returnUrl);
 
     // Xử lý Webhook từ PayOS thành công
     Task<bool> ProcessSuccessfulPaymentAsync(int orderId, string transactionId);
+
+    // Kiểm tra chủ động trạng thái đơn hàng từ PayOS
+    Task<bool> CheckPaymentStatusAsync(int orderId);
     
+    // Lấy danh sách khuyến mãi phù hợp với tổng tiền đơn hàng
+    Task<List<Promotion>> GetAvailablePromotionsAsync(int totalAmount);
+
+    // Áp dụng khuyến mãi vào đơn hàng
+    Task<(bool Success, string Message)> ApplyPromotionAsync(int orderId, int? promoId);
+
     // Lấy thông tin đơn hàng
     Task<Order?> GetOrderByIdAsync(int orderId);
 }

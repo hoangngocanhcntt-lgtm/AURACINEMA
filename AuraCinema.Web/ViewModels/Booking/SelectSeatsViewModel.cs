@@ -18,6 +18,7 @@ public class SelectSeatsViewModel
     public int VipSurcharge { get; set; }
     public int CoupleSurcharge { get; set; }
     public int DaySurcharge { get; set; }
+    public int EveningSurcharge { get; set; }
 }
 
 public class SeatRowViewModel

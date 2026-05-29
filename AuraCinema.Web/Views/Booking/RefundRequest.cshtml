@@ -1,0 +1,76 @@
+@model AuraCinema.Domain.Entities.Order
+@{
+    ViewData["Title"] = "Yêu cầu hoàn tiền";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container pt-5 pb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="ac-card p-5">
+                <div class="text-center mb-4">
+                    <i class="bi bi-exclamation-triangle text-warning" style="font-size: 3rem;"></i>
+                    <h3 class="fw-bold text-white mt-3">Rất tiếc!</h3>
+                </div>
+                
+                <div class="alert alert-info border-0 bg-opacity-10 bg-info text-info mb-4">
+                    <p class="mb-0 small">
+                        Giao dịch của bạn đã được thực hiện, nhưng do thời gian giữ ghế đã kết thúc (ngân hàng xử lý chậm), chúng tôi không thể cấp vé cho bạn. 
+                        <strong>Aura Cinema sẽ hoàn lại 100% số tiền trong vòng 24h làm việc.</strong>
+                    </p>
+                </div>
+
+                <form asp-action="SubmitRefundRequest" method="post" id="refundForm">
+                    <input type="hidden" name="orderId" value="@Model.OrderID" />
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-muted small">Chọn Ngân hàng</label>
+                        <select name="bankName" class="form-select ac-form-control" required>
+                            <option value="">-- Chọn ngân hàng --</option>
+                            <option value="Vietcombank">Vietcombank</option>
+                            <option value="Techcombank">Techcombank</option>
+                            <option value="MB Bank">MB Bank</option>
+                            <option value="VietinBank">VietinBank</option>
+                            <option value="BIDV">BIDV</option>
+                            <option value="Agribank">Agribank</option>
+                            <option value="TPBank">TPBank</option>
+                            <option value="VPBank">VPBank</option>
+                            <option value="ACB">ACB</option>
+                            <option value="Sacombank">Sacombank</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted small">Số tài khoản</label>
+                        <input type="text" name="accountNumber" class="form-control ac-form-control" placeholder="Nhập số tài khoản" required />
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label text-muted small">Tên chủ tài khoản</label>
+                        <input type="text" name="accountName" class="form-control ac-form-control" placeholder="Tên in trên thẻ (không dấu)" required />
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="ac-btn-primary py-3" id="btnSubmit">
+                            <span id="btnText">Xác nhận & Nhận tiền ngay</span>
+                            <span id="btnLoading" class="d-none">
+                                <span class="spinner-border spinner-border-sm me-2"></span> Đang xử lý...
+                            </span>
+                        </button>
+                        <a href="/" class="btn btn-link text-muted text-decoration-none small">
+                            Quay lại trang chủ
+                        </a>
+                    </div>
+                </form>
+
+                <script>
+                    document.getElementById('refundForm').onsubmit = function() {
+                        document.getElementById('btnText').classList.add('d-none');
+                        document.getElementById('btnLoading').classList.remove('d-none');
+                        document.getElementById('btnSubmit').disabled = true;
+                    };
+                </script>
+            </div>
+        </div>
+    </div>
+</div>

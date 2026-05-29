@@ -1,4 +1,4 @@
-﻿namespace AuraCinema.Web.ViewModels.Movie;
+namespace AuraCinema.Web.ViewModels.Movie;
 
 public class MovieDetailViewModel
 {
@@ -7,6 +7,7 @@ public class MovieDetailViewModel
     public string Genre { get; set; } = string.Empty;
     public string Director { get; set; } = string.Empty;
     public string Actors { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
     public int Duration { get; set; }
     public DateOnly ReleaseDate { get; set; }
     public string Poster { get; set; } = string.Empty;
@@ -29,6 +30,7 @@ public class ShowtimeItemViewModel
     public string EndTime { get; set; } = string.Empty;
     public string RoomName { get; set; } = string.Empty;
     public int AvailableSeats { get; set; }
+    public int TotalSeats { get; set; }
 }
 
 public class MovieListViewModel

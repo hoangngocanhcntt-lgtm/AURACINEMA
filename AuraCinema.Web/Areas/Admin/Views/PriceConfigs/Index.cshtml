@@ -1,0 +1,113 @@
+@model List<AuraCinema.Domain.Entities.PriceConfig>
+@{
+    ViewData["Title"] = "Cấu hình giá vé";
+    Layout = "_AdminLayout";
+}
+
+<div class="mb-4">
+    <h2 class="fw-bold">Thiết lập giá vé & Phụ thu</h2>
+    <p class="text-muted">Thay đổi các thông số cơ bản để hệ thống tự động tính giá vé cho khách hàng.</p>
+</div>
+
+<div class="row">
+    <div class="col-lg-7">
+        <div class="ac-card p-5 shadow-sm border-0">
+            <form asp-action="UpdatePrices" method="post">
+                <div class="row g-4">
+                    <div class="col-12 bg-light p-4 rounded-3 border @(TempData["DateError"] != null ? "border-danger" : "")">
+                        <h5 class="fw-bold mb-3"><i class="bi bi-calendar-event me-2"></i>Ngày áp dụng chung</h5>
+                        <label class="form-label text-muted mb-2">Chọn 1 ngày áp dụng cho TẤT CẢ các thay đổi giá (tối thiểu sau 5 ngày)</label>
+                        <input type="date" name="globalEffectiveDate" class="form-control form-control-lg shadow-sm @(TempData["DateError"] != null ? "is-invalid" : "")" 
+                               min="@DateTime.Now.AddDays(5).ToString("yyyy-MM-dd")" />
+                        @if(TempData["DateError"] != null) {
+                            <div class="invalid-feedback fw-bold">@TempData["DateError"]</div>
+                        }
+                    </div>
+
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        var config = Model[i];
+                        <div class="col-12">
+                            <input type="hidden" name="items[@i].ConfigCode" value="@config.ConfigCode" />
+                            <label class="form-label fw-bold d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span>@config.ConfigName</span>
+                                    @if (config.EffectiveDate.HasValue)
+                                    {
+                                        <div class="small text-muted fw-normal mt-1"><i class="bi bi-clock-history me-1"></i>Áp dụng từ: @config.EffectiveDate.Value.ToString("dd/MM/yyyy")</div>
+                                    }
+                                </div>
+                                @if (config.ConfigCode == "BASE_PRICE")
+                                {
+                                    <span class="badge bg-primary bg-opacity-10 text-primary fw-normal">Giá cơ bản</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning bg-opacity-10 text-warning fw-normal">Phụ thu</span>
+                                }
+                            </label>
+                            <div class="input-group shadow-sm">
+                                <span class="input-group-text bg-light border-end-0"><i class="bi bi-cash-coin"></i></span>
+                                <input type="number" name="items[@i].Amount" value="@config.SurchargeAmount" 
+                                       class="form-control form-control-lg border-start-0 no-spinner" min="0" required />
+                                <span class="input-group-text bg-light fw-bold border-start-0">VNĐ</span>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="col-12 pt-4 border-top">
+                        <button type="submit" class="btn ac-btn-primary btn-lg w-100 py-3 shadow">
+                            <i class="bi bi-save me-2"></i>Lưu tất cả thay đổi
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="col-lg-5">
+        <div class="alert alert-info border-0 shadow-sm p-4">
+            <h5 class="fw-bold"><i class="bi bi-info-circle me-2"></i>Lưu ý về cách tính giá</h5>
+            <ul class="mb-0 small ps-3 mt-2">
+                <li class="mb-1"><strong>Tổng giá vé</strong> = Giá vé thường + Phụ thu loại ghế + Phụ thu khung giờ/ngày.</li>
+                <li class="mb-1">Giá vé sẽ được áp dụng ngay lập tức cho các lượt đặt vé mới.</li>
+                <li>Suất chiếu đã được đặt sẽ không bị ảnh hưởng bởi thay đổi này.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        /* Ẩn nút tăng giảm của ô nhập số */
+        .no-spinner::-webkit-outer-spin-button,
+        .no-spinner::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .no-spinner[type=number] {
+            -moz-appearance: textfield;
+        }
+        
+        .ac-card {
+            background: #fff;
+            border-radius: 15px;
+        }
+        
+        .form-control-lg {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        // Ngăn sự kiện cuộn chuột làm thay đổi giá trị trong ô input number
+        document.addEventListener("wheel", function(event){
+            if(document.activeElement.type === "number"){
+                document.activeElement.blur();
+            }
+        }, { passive: false });
+    </script>
+}

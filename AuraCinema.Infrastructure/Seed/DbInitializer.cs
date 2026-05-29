@@ -52,6 +52,17 @@ public static class DbInitializer
         }
         await db.SaveChangesAsync();
 
+        // Vá lỗi: Bổ sung UserCode cho các tài khoản cũ chưa có UserCode
+        var usersWithoutCode = await db.Users.Where(u => string.IsNullOrEmpty(u.UserCode)).ToListAsync();
+        if (usersWithoutCode.Any())
+        {
+            foreach (var user in usersWithoutCode)
+            {
+                user.UserCode = CodeGenerator.GenerateUserCode();
+            }
+            await db.SaveChangesAsync();
+        }
+
         // 2. Rooms & Seats
         if (!await db.Rooms.AnyAsync())
         {
@@ -129,13 +140,32 @@ public static class DbInitializer
         // 6. Promotions
         if (!await db.Promotions.AnyAsync())
         {
-            db.Promotions.Add(new Promotion {
-                PromoCode = CodeGenerator.GeneratePromoCode(),
-                Title = "AURA10", DiscountValue = 10000,
-                Condition = "Hóa đơn tối thiểu 100.000đ",
-                StartDate = DateTime.Now.AddDays(-30), EndDate = DateTime.Now.AddMonths(3),
-                Status = "Hoat dong"
-            });
+            db.Promotions.AddRange(
+                new Promotion {
+                    PromoCode = CodeGenerator.GeneratePromoCode(),
+                    Title = "AURA10", DiscountValue = 10000,
+                    MinAmount = 100000,
+                    Condition = "Hóa đơn tối thiểu 100.000đ",
+                    StartDate = DateTime.Now.AddDays(-30), EndDate = DateTime.Now.AddMonths(3),
+                    Status = "Hoat dong"
+                },
+                new Promotion {
+                    PromoCode = CodeGenerator.GeneratePromoCode(),
+                    Title = "AURA20", DiscountValue = 20000,
+                    MinAmount = 200000,
+                    Condition = "Hóa đơn tối thiểu 200.000đ",
+                    StartDate = DateTime.Now.AddDays(-10), EndDate = DateTime.Now.AddMonths(2),
+                    Status = "Hoat dong"
+                },
+                new Promotion {
+                    PromoCode = CodeGenerator.GeneratePromoCode(),
+                    Title = "AURA50", DiscountValue = 50000,
+                    MinAmount = 500000,
+                    Condition = "Hóa đơn tối thiểu 500.000đ",
+                    StartDate = DateTime.Now.AddDays(-5), EndDate = DateTime.Now.AddMonths(1),
+                    Status = "Hoat dong"
+                }
+            );
             await db.SaveChangesAsync();
         }
 
@@ -160,7 +190,8 @@ public static class DbInitializer
                             MovieID = movie.MovieID,
                             RoomID = room.RoomID,
                             StartTime = date.AddHours(hour),
-                            Status = "Hoat dong"
+                            EndTime = date.AddHours(hour).AddMinutes(movie.Duration),
+                            Status = "Sap chieu"
                         });
                     }
                 }
@@ -169,7 +200,7 @@ public static class DbInitializer
         }
 
         // 8. Fake Orders for Dashboard visuals (Paid orders in the last 3 days)
-        if (!await db.Orders.AnyAsync(o => o.Status == "Da thanh toan"))
+        if (!await db.Orders.AnyAsync(o => o.Status == "Da thanh toan" || o.Status == "Đã thanh toán"))
         {
             var customer = await db.Users.FirstOrDefaultAsync(u => u.Role == "Customer");
             var showtimes = await db.Showtimes.Include(s => s.Room).Take(10).ToListAsync();
@@ -191,8 +222,8 @@ public static class DbInitializer
                         ShowtimeID = st.ShowtimeID,
                         TotalAmount = 95000,
                         FinalAmount = 95000,
-                        Status = "Da thanh toan",
-                        HoldExpiryTime = DateTime.UtcNow.AddHours(1),
+                        Status = "Đã thanh toán",
+                        HoldExpiryTime = DateTime.Now.AddHours(1),
                         PayOSTransID = "FAKE-" + Guid.NewGuid().ToString().Substring(0, 8),
                         QrCode = Guid.NewGuid().ToString()
                     };
@@ -217,6 +248,85 @@ public static class DbInitializer
                 }
             }
             await db.SaveChangesAsync();
+        }
+
+        // 9. Seed June 2026 Showtimes (200 showtimes from 1/6 to 25/6)
+        var startDate = new DateTime(2026, 6, 1);
+        var endDate = new DateTime(2026, 6, 25);
+        int juneShowtimeCount = await db.Showtimes.CountAsync(s => s.StartTime >= startDate && s.StartTime <= endDate.AddDays(1));
+        if (juneShowtimeCount < 200)
+        {
+            // Clean up existing showtimes in this range first to avoid duplication/conflicts
+            var existingJuneShowtimes = await db.Showtimes.Where(s => s.StartTime >= startDate && s.StartTime <= endDate.AddDays(1)).ToListAsync();
+            db.Showtimes.RemoveRange(existingJuneShowtimes);
+            await db.SaveChangesAsync();
+
+            var movies = await db.Movies.Where(m => m.Status != "Ngung chieu").ToListAsync();
+            var rooms = await db.Rooms.Where(r => r.Status == "Hoat dong").ToListAsync();
+            if (movies.Any() && rooms.Count >= 3)
+            {
+                var random = new Random();
+                var showtimesToAdd = new List<Showtime>();
+                for (int day = 0; day < 25; day++)
+                {
+                    var currentDate = startDate.AddDays(day);
+                    
+                    // Room 1: 3 showtimes (9:00, 13:00, 17:00)
+                    var room1 = rooms[0];
+                    var times1 = new[] { 9, 13, 17 };
+                    foreach (var hour in times1)
+                    {
+                        var movie = movies[random.Next(movies.Count)];
+                        var start = currentDate.AddHours(hour);
+                        var end = start.AddMinutes(movie.Duration);
+                        showtimesToAdd.Add(new Showtime {
+                            ShowtimeCode = CodeGenerator.GenerateShowtimeCode(),
+                            MovieID = movie.MovieID,
+                            RoomID = room1.RoomID,
+                            StartTime = start,
+                            EndTime = end,
+                            Status = "Đã lên lịch"
+                        });
+                    }
+                    
+                    // Room 2: 3 showtimes (10:00, 14:00, 18:00)
+                    var room2 = rooms[1];
+                    var times2 = new[] { 10, 14, 18 };
+                    foreach (var hour in times2)
+                    {
+                        var movie = movies[random.Next(movies.Count)];
+                        var start = currentDate.AddHours(hour);
+                        var end = start.AddMinutes(movie.Duration);
+                        showtimesToAdd.Add(new Showtime {
+                            ShowtimeCode = CodeGenerator.GenerateShowtimeCode(),
+                            MovieID = movie.MovieID,
+                            RoomID = room2.RoomID,
+                            StartTime = start,
+                            EndTime = end,
+                            Status = "Đã lên lịch"
+                        });
+                    }
+                    
+                    // Room 3: 2 showtimes (11:00, 15:00)
+                    var room3 = rooms[2];
+                    var times3 = new[] { 11, 15 };
+                    foreach (var hour in times3)
+                    {
+                        var movie = movies[random.Next(movies.Count)];
+                        var start = currentDate.AddHours(hour);
+                        var end = start.AddMinutes(movie.Duration);
+                        showtimesToAdd.Add(new Showtime {
+                            ShowtimeCode = CodeGenerator.GenerateShowtimeCode(),
+                            MovieID = movie.MovieID,
+                            RoomID = room3.RoomID,
+                            StartTime = start,
+                            EndTime = end,
+                            Status = "Đã lên lịch"
+                        });
+                    }
+                }
+                db.Showtimes.AddRange(showtimesToAdd);
+            }
         }
 
         await db.SaveChangesAsync();

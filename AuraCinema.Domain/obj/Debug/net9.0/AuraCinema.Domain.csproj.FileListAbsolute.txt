@@ -9,3 +9,4 @@ D:\AURACINEMA\AuraCinema.Domain\obj\Debug\net9.0\AuraCinema.Domain.dll
 D:\AURACINEMA\AuraCinema.Domain\obj\Debug\net9.0\refint\AuraCinema.Domain.dll
 D:\AURACINEMA\AuraCinema.Domain\obj\Debug\net9.0\AuraCinema.Domain.pdb
 D:\AURACINEMA\AuraCinema.Domain\obj\Debug\net9.0\ref\AuraCinema.Domain.dll
+d:\AURACINEMA\AuraCinema.Domain\obj\Debug\net9.0\AuraCinema.Domain.sourcelink.json

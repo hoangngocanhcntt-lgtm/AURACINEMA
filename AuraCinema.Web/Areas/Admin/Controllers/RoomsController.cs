@@ -18,9 +18,18 @@ public class RoomsController : AdminBaseController
         _db = db;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int page = 1)
     {
-        var rooms = await _db.Rooms.OrderByDescending(r => r.RoomID).ToListAsync();
+        var query = _db.Rooms.AsQueryable();
+        int pageSize = 6;
+        int totalRecords = await query.CountAsync();
+        ViewBag.TotalPages = (int)Math.Ceiling(totalRecords / (double)pageSize);
+        ViewBag.CurrentPage = page;
+
+        var rooms = await query.OrderByDescending(r => r.RoomID)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
         return View(rooms);
     }
 
@@ -45,6 +54,27 @@ public class RoomsController : AdminBaseController
         };
 
         _db.Rooms.Add(room);
+        await _db.SaveChangesAsync();
+
+        // Tự động tạo 50 ghế (5 hàng A-E, mỗi hàng 10 ghế)
+        var rows = new[] { "A", "B", "C", "D", "E" };
+        var seats = new List<Seat>();
+        foreach (var row in rows)
+        {
+            for (int n = 1; n <= 10; n++)
+            {
+                string type = (row == "D" || row == "E") ? "VIP" : "Thuong";
+                seats.Add(new Seat
+                {
+                    SeatCode = $"{room.RoomCode}-{row}{n}",
+                    RoomID = room.RoomID,
+                    RowLabel = row,
+                    SeatNumber = n,
+                    SeatType = type
+                });
+            }
+        }
+        _db.Seats.AddRange(seats);
         await _db.SaveChangesAsync();
 
         TempData["Success"] = "Đã thêm phòng chiếu mới thành công!";
@@ -99,6 +129,56 @@ public class RoomsController : AdminBaseController
         await _db.SaveChangesAsync();
 
         TempData["Info"] = "Phòng chiếu đã được chuyển sang trạng thái ngừng hoạt động.";
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Activate(int id)
+    {
+        var room = await _db.Rooms.FindAsync(id);
+        if (room == null) return NotFound();
+
+        room.Status = "Hoat dong";
+        await _db.SaveChangesAsync();
+
+        TempData["Success"] = $"Phòng chiếu {room.RoomName} đã được mở hoạt động trở lại.";
+        return RedirectToAction(nameof(Index));
+    }
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> GenerateSeats(int id)
+    {
+        var room = await _db.Rooms.Include(r => r.Seats).FirstOrDefaultAsync(r => r.RoomID == id);
+        if (room == null) return NotFound();
+
+        if (room.Seats.Any())
+        {
+            TempData["Error"] = "Phòng này đã có sơ đồ ghế.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        var rows = new[] { "A", "B", "C", "D", "E" };
+        var seats = new List<Seat>();
+        foreach (var row in rows)
+        {
+            for (int n = 1; n <= 10; n++)
+            {
+                string type = (row == "D" || row == "E") ? "VIP" : "Thuong";
+                seats.Add(new Seat
+                {
+                    SeatCode = $"{room.RoomCode}-{row}{n}",
+                    RoomID = room.RoomID,
+                    RowLabel = row,
+                    SeatNumber = n,
+                    SeatType = type
+                });
+            }
+        }
+        _db.Seats.AddRange(seats);
+        await _db.SaveChangesAsync();
+
+        TempData["Success"] = $"Đã tạo 50 ghế cho phòng {room.RoomName} thành công!";
         return RedirectToAction(nameof(Index));
     }
 }

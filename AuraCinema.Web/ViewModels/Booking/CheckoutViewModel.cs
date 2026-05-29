@@ -1,3 +1,5 @@
+using AuraCinema.Domain.Entities;
+
 namespace AuraCinema.Web.ViewModels.Booking;
 
 public class CheckoutViewModel
@@ -14,6 +16,7 @@ public class CheckoutViewModel
     public int FinalTotal { get; set; }
     
     public DateTime HoldExpiryTime { get; set; }
-    public string? PromoCode { get; set; }
-    public string? PromoError { get; set; }
+
+    public List<Promotion> AvailablePromotions { get; set; } = new();
+    public int? SelectedPromoID { get; set; }
 }

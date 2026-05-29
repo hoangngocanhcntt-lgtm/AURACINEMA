@@ -1,5 +1,6 @@
-﻿using AuraCinema.Domain.Entities;
+using AuraCinema.Domain.Entities;
 using AuraCinema.Domain.Interfaces.Services;
+using AuraCinema.Domain.Helpers;
 using AuraCinema.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,6 +25,7 @@ public class AuthService : IAuthService
 
         var user = new User
         {
+            UserCode = CodeGenerator.GenerateUserCode(),
             FullName = fullName,
             Email    = email.ToLower().Trim(),
             Password = BCrypt.Net.BCrypt.HashPassword(password),
@@ -43,7 +45,8 @@ public class AuthService : IAuthService
             .FirstOrDefaultAsync(u => u.Email == email.ToLower().Trim());
 
         if (user is null) return null;
-        if (user.Status == "Da khoa") return null;
+        if (user.Status == "Da khoa") 
+            throw new System.Exception("Tài khoản của bạn đã bị khóa. Vui lòng liên hệ Admin.");
         if (!BCrypt.Net.BCrypt.Verify(password, user.Password)) return null;
 
         return user;

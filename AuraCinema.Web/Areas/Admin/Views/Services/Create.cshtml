@@ -7,15 +7,20 @@
     <a asp-action="Index" class="btn btn-link text-decoration-none p-0 text-secondary mb-2">
         <i class="bi bi-arrow-left me-1"></i>Quay lại danh sách
     </a>
-    <h2 class="h4 mb-0 text-dark fw-bold">Tạo Dịch vụ & Đồ ăn</h2>
+    <h2 class="h4 mb-0 text-dark fw-bold">Thêm Dịch vụ kèm mới</h2>
 </div>
 
 <div class="row">
     <div class="col-xl-6 col-lg-8">
         <div class="ac-card p-4 shadow-sm border-0">
-            <form asp-action="Create" method="post">
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
                 @Html.AntiForgeryToken()
                 <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+                <div class="mb-3 text-center">
+                    <img id="imagePreview" src="/images/popcorn-default.jpg" 
+                         alt="Preview" class="rounded shadow-sm" style="max-height: 150px; object-fit: cover;" />
+                </div>
 
                 <div class="mb-3">
                     <label asp-for="ServiceCode" class="form-label text-secondary small fw-bold"></label>
@@ -38,9 +43,9 @@
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="Image" class="form-label text-secondary small fw-bold"></label>
-                    <input asp-for="Image" class="form-control border-light-subtle shadow-sm" placeholder="URL hình ảnh" />
-                    <span asp-validation-for="Image" class="text-danger small"></span>
+                    <label asp-for="ImageFile" class="form-label text-secondary small fw-bold"></label>
+                    <input asp-for="ImageFile" class="form-control border-light-subtle shadow-sm" type="file" accept="image/*" onchange="previewImage(this)" />
+                    <span asp-validation-for="ImageFile" class="text-danger small"></span>
                 </div>
 
                 <div class="mb-4">

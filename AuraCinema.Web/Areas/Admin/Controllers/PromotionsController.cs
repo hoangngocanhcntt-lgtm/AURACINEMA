@@ -18,9 +18,24 @@ public class PromotionsController : AdminBaseController
         _db = db;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string? searchCode, int page = 1)
     {
-        var promos = await _db.Promotions.OrderByDescending(p => p.PromoID).ToListAsync();
+        var query = _db.Promotions.AsQueryable();
+
+        if (!string.IsNullOrEmpty(searchCode))
+            query = query.Where(p => p.PromoCode.Contains(searchCode));
+
+        ViewBag.SearchCode = searchCode;
+
+        int pageSize = 6;
+        int totalRecords = await query.CountAsync();
+        ViewBag.TotalPages = (int)Math.Ceiling(totalRecords / (double)pageSize);
+        ViewBag.CurrentPage = page;
+
+        var promos = await query.OrderByDescending(p => p.PromoID)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
         return View(promos);
     }
 
@@ -41,6 +56,7 @@ public class PromotionsController : AdminBaseController
             PromoCode = string.IsNullOrEmpty(model.PromoCode) ? CodeGenerator.GeneratePromoCode() : model.PromoCode,
             Title = model.Title,
             DiscountValue = model.DiscountValue,
+            MinAmount = model.MinAmount,
             Condition = model.Condition,
             StartDate = model.StartDate,
             EndDate = model.EndDate,
@@ -66,6 +82,7 @@ public class PromotionsController : AdminBaseController
             PromoCode = p.PromoCode,
             Title = p.Title,
             DiscountValue = p.DiscountValue,
+            MinAmount = p.MinAmount,
             Condition = p.Condition,
             StartDate = p.StartDate,
             EndDate = p.EndDate,
@@ -86,6 +103,7 @@ public class PromotionsController : AdminBaseController
 
         p.Title = model.Title;
         p.DiscountValue = model.DiscountValue;
+        p.MinAmount = model.MinAmount;
         p.Condition = model.Condition;
         p.StartDate = model.StartDate;
         p.EndDate = model.EndDate;
@@ -100,13 +118,22 @@ public class PromotionsController : AdminBaseController
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(int id)
     {
-        var p = await _db.Promotions.FindAsync(id);
+        var p = await _db.Promotions.Include(p => p.Orders).FirstOrDefaultAsync(p => p.PromoID == id);
         if (p == null) return NotFound();
 
-        p.Status = "Het han";
-        await _db.SaveChangesAsync();
+        if (p.Orders != null && p.Orders.Any())
+        {
+            p.Status = "Het han";
+            await _db.SaveChangesAsync();
+            TempData["Info"] = "Khuyến mãi đã được sử dụng trong đơn hàng nên chỉ được đóng lại.";
+        }
+        else
+        {
+            _db.Promotions.Remove(p);
+            await _db.SaveChangesAsync();
+            TempData["Success"] = "Đã xóa chương trình khuyến mãi thành công!";
+        }
 
-        TempData["Info"] = "Chương trình khuyến mãi đã được đóng.";
         return RedirectToAction(nameof(Index));
     }
 }

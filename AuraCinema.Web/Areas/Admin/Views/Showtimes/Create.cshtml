@@ -17,6 +17,13 @@
                 @Html.AntiForgeryToken()
                 <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
 
+                <div class="alert alert-info small shadow-sm border-0 d-flex align-items-center mb-4" role="alert">
+                    <i class="bi bi-info-circle-fill me-2 fs-5 text-info"></i>
+                    <div>
+                        <strong>Quy định:</strong> Chỉ cho phép thêm suất chiếu vào tương lai, <strong>từ ngày thứ 5 trở đi</strong> (Hôm nay + 5 ngày).
+                    </div>
+                </div>
+
                 <div class="mb-3">
                     <label asp-for="ShowtimeCode" class="form-label text-secondary small fw-bold"></label>
                     <input asp-for="ShowtimeCode" class="form-control border-light-subtle shadow-sm bg-light" placeholder="Hệ thống tự sinh..." readonly />
@@ -44,15 +51,8 @@
                     <span asp-validation-for="StartTime" class="text-danger small"></span>
                 </div>
 
-                <div class="mb-4">
-                    <label asp-for="Status" class="form-label text-secondary small fw-bold"></label>
-                    <select asp-for="Status" class="form-select border-light-subtle shadow-sm">
-                        <option value="Sap chieu">Sắp chiếu</option>
-                        <option value="Dang chieu">Đang chiếu</option>
-                        <option value="Da ket thuc">Đã kết thúc</option>
-                        <option value="Da huy">Đã hủy</option>
-                    </select>
-                </div>
+                <!-- Trạng thái được hệ thống tự động xác định -->
+                <input type="hidden" asp-for="Status" value="Sap chieu" />
 
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-primary px-4">

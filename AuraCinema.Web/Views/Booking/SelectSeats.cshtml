@@ -102,7 +102,7 @@
                     
                     <div class="d-flex justify-content-between mb-3">
                         <span class="text-muted">Tổng tiền:</span>
-                        <span id="totalPrice" class="fw-bold" style="color: var(--ac-primary); font-size: 1.2rem;">0đ</span>
+                        <span id="totalPrice" class="fw-bold text-primary-ac" style="font-size: 1.2rem;">0đ</span>
                     </div>
 
                     <button id="btnContinue" class="ac-btn-primary w-100 justify-content-center py-3 rounded-3 mt-2 d-none" onclick="submitToServices()">
@@ -177,7 +177,8 @@
             basePrice: @Model.BasePrice,
             vipSurcharge: @Model.VipSurcharge,
             coupleSurcharge: @Model.CoupleSurcharge,
-            daySurcharge: @Model.DaySurcharge
+            daySurcharge: @Model.DaySurcharge,
+            eveningSurcharge: @Model.EveningSurcharge
         };
         
         let selectedSeats = [];
@@ -212,7 +213,7 @@
             // Calculate price
             let total = 0;
             selectedSeats.forEach(s => {
-                let price = config.basePrice + config.daySurcharge;
+                let price = config.basePrice + config.daySurcharge + config.eveningSurcharge;
                 if (s.type === 'VIP') price += config.vipSurcharge;
                 else if (s.type === 'Doi') price += config.coupleSurcharge;
                 total += price;

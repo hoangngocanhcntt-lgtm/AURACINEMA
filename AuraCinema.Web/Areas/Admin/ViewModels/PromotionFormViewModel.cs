@@ -18,6 +18,10 @@ public class PromotionFormViewModel
     [Display(Name = "Mức giảm (VNĐ)")]
     public int DiscountValue { get; set; }
 
+    [Range(0, int.MaxValue, ErrorMessage = "Số tiền tối thiểu không hợp lệ")]
+    [Display(Name = "Đơn tối thiểu (VNĐ)")]
+    public int MinAmount { get; set; } = 0;
+
     [Display(Name = "Điều kiện")]
     public string Condition { get; set; } = string.Empty;
 

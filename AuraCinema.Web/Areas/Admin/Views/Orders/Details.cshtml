@@ -120,22 +120,38 @@
                     @switch (Model.Status)
                     {
                         case "Da thanh toan":
+                        case "Đã thanh toán":
                             <i class="bi bi-patch-check-fill text-success me-2 fs-5"></i>
                             <span class="fw-bold text-success">Đã thanh toán</span>
                             break;
                         case "Cho thanh toan":
+                        case "Chờ thanh toán":
                             <i class="bi bi-clock-history text-warning me-2 fs-5"></i>
                             <span class="fw-bold text-warning">Chờ thanh toán</span>
                             break;
                         case "Da huy":
+                        case "Đã hủy":
                             <i class="bi bi-x-circle-fill text-danger me-2 fs-5"></i>
                             <span class="fw-bold text-danger">Đã hủy</span>
+                            break;
+                        case "Da su dung":
+                        case "Đã sử dụng":
+                            <i class="bi bi-check-circle-fill text-secondary me-2 fs-5"></i>
+                            <span class="fw-bold text-secondary">Đã sử dụng</span>
+                            break;
+                        case "Cần hoàn tiền":
+                            <i class="bi bi-arrow-counterclockwise text-info me-2 fs-5"></i>
+                            <span class="fw-bold text-info">Cần hoàn tiền</span>
+                            break;
+                        case "Đã hoàn tiền":
+                            <i class="bi bi-patch-check-fill text-primary me-2 fs-5"></i>
+                            <span class="fw-bold text-primary">Đã hoàn tiền</span>
                             break;
                     }
                 </div>
             </div>
 
-            @if (Model.Status == "Da thanh toan" && !string.IsNullOrEmpty(Model.QrCode))
+            @if ((Model.Status == "Da thanh toan" || Model.Status == "Đã thanh toán") && !string.IsNullOrEmpty(Model.QrCode))
             {
                 <div class="text-center p-3 border rounded">
                     <label class="text-muted extra-small text-uppercase fw-bold d-block mb-2">Mã QR Check-in</label>
@@ -144,7 +160,7 @@
             }
         </div>
 
-        @if (Model.Status == "Da thanh toan")
+        @if (Model.Status == "Da thanh toan" || Model.Status == "Đã thanh toán")
         {
             <div class="ac-card p-4 border-0 shadow-sm bg-primary text-white">
                 <div class="d-flex align-items-center mb-2">

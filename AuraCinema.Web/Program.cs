@@ -41,8 +41,18 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
+builder.Services.AddScoped<AuraCinema.Services.Chat.Tools.IChatTool, AuraCinema.Services.Chat.Tools.MovieSearchTool>();
+builder.Services.AddScoped<AuraCinema.Services.Chat.Tools.IChatTool, AuraCinema.Services.Chat.Tools.ShowtimeQueryTool>();
+builder.Services.AddScoped<AuraCinema.Services.Chat.Tools.IChatTool, AuraCinema.Services.Chat.Tools.PromotionListTool>();
+builder.Services.AddScoped<AuraCinema.Services.Chat.Tools.IChatTool, AuraCinema.Services.Chat.Tools.PriceInfoTool>();
+builder.Services.AddScoped<AuraCinema.Services.Chat.Tools.IChatTool, AuraCinema.Services.Chat.Tools.FaqTool>();
 builder.Services.AddHostedService<BookingCleanupService>();
 
+builder.Services.AddHttpClient();
+builder.Services.Configure<AuraCinema.Domain.Models.Chat.LlmOptions>(builder.Configuration.GetSection("Llm"));
+builder.Services.AddScoped<ILlmClient, AuraCinema.Services.Chat.GroqClient>();
+builder.Services.AddScoped<IChatService, AuraCinema.Services.Chat.ChatService>();
+builder.Services.AddScoped<AuraCinema.Services.Chat.Tools.ToolRegistry>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

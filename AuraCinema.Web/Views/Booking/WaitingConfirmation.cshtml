@@ -1,0 +1,62 @@
+﻿@model AuraCinema.Domain.Entities.Order
+@{
+    ViewData["Title"] = "Đang xác nhận thanh toán";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container pt-5 pb-5 text-center">
+    <div class="ac-card p-5 mx-auto" style="max-width: 600px;">
+        <div class="mb-4">
+            <div class="spinner-border text-primary-ac" role="status" style="width: 4rem; height: 4rem;">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        <h2 class="fw-bold  mb-3">Đang chờ xác nhận...</h2>
+        <p class="text-muted mb-4">Hệ thống đang kiểm tra giao dịch của bạn với ngân hàng. Vui lòng không tắt trình duyệt.</p>
+
+        <div class="bg-surface p-4 rounded-3 text-start mb-4 border border-ac">
+            <div class="row g-2 mb-2">
+                <div class="col-5 text-muted">Mã đơn hàng:</div>
+                <div class="col-7 fw-bold">#@Model.OrderID</div>
+            </div>
+            <div class="row g-2 mb-2">
+                <div class="col-5 text-muted">Tổng tiền:</div>
+                <div class="col-7 fw-bold text-primary-ac">@Model.FinalAmount.ToString("N0")đ</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const orderId = @Model.OrderID;
+        
+        function kiemTraTrangThaiDonHang() {
+            $.get('/api/booking/order-status?id=' + orderId, function (res) {
+                if (res.status === "Đã thanh toán") {
+                    // Thành công -> Chuyển sang trang xem mã QR hoặc kết quả
+                    window.location.href = '/Booking/Success?orderId=' + orderId;
+                } 
+                else if (res.status === "Cần hoàn tiền") {
+                    // Tiền vào nhưng trễ giờ -> Chuyển sang trang điền form Hoàn tiền
+                    window.location.href = '/Booking/RefundRequest?orderId=' + orderId;
+                }
+                else if (res.status === "Đã hủy") {
+                    // Khách không nạp tiền, hết giờ
+                    alert("Đã hết thời gian giữ ghế!");
+                    window.location.href = '/';
+                }
+                else {
+                    // Vẫn đang "Chờ thanh toán" -> Đợi tiếp
+                    setTimeout(kiemTraTrangThaiDonHang, 3000);
+                }
+            }).fail(function() {
+                // Nếu lỗi API, đợi lâu hơn rồi thử lại
+                setTimeout(kiemTraTrangThaiDonHang, 5000);
+            });
+        }
+
+        // Bắt đầu polling
+        setTimeout(kiemTraTrangThaiDonHang, 2000);
+    </script>
+}

@@ -11,6 +11,7 @@ public class TicketItemViewModel
     public string SeatList { get; set; } = string.Empty;
     public int FinalAmount { get; set; }
     public string Status { get; set; } = string.Empty;
+    public DateTime HoldExpiryTime { get; set; }
 }
 
 public class TicketDetailViewModel : TicketItemViewModel

@@ -1,7 +1,3 @@
-D:\AURACINEMA\AuraCinema.Services\obj\Debug\net9.0\AuraCinema.Services.GeneratedMSBuildEditorConfig.editorconfig
-D:\AURACINEMA\AuraCinema.Services\obj\Debug\net9.0\AuraCinema.Services.AssemblyInfoInputs.cache
-D:\AURACINEMA\AuraCinema.Services\obj\Debug\net9.0\AuraCinema.Services.AssemblyInfo.cs
-D:\AURACINEMA\AuraCinema.Services\obj\Debug\net9.0\AuraCinema.Services.csproj.CoreCompileInputs.cache
 D:\AURACINEMA\AuraCinema.Services\bin\Debug\net9.0\LatoFont\Lato-Black.ttf
 D:\AURACINEMA\AuraCinema.Services\bin\Debug\net9.0\LatoFont\Lato-BlackItalic.ttf
 D:\AURACINEMA\AuraCinema.Services\bin\Debug\net9.0\LatoFont\Lato-Bold.ttf
@@ -29,6 +25,11 @@ D:\AURACINEMA\AuraCinema.Services\bin\Debug\net9.0\AuraCinema.Infrastructure.dll
 D:\AURACINEMA\AuraCinema.Services\bin\Debug\net9.0\AuraCinema.Domain.pdb
 D:\AURACINEMA\AuraCinema.Services\bin\Debug\net9.0\AuraCinema.Infrastructure.pdb
 D:\AURACINEMA\AuraCinema.Services\obj\Debug\net9.0\AuraCinema.Services.csproj.AssemblyReference.cache
+D:\AURACINEMA\AuraCinema.Services\obj\Debug\net9.0\AuraCinema.Services.GeneratedMSBuildEditorConfig.editorconfig
+D:\AURACINEMA\AuraCinema.Services\obj\Debug\net9.0\AuraCinema.Services.AssemblyInfoInputs.cache
+D:\AURACINEMA\AuraCinema.Services\obj\Debug\net9.0\AuraCinema.Services.AssemblyInfo.cs
+D:\AURACINEMA\AuraCinema.Services\obj\Debug\net9.0\AuraCinema.Services.csproj.CoreCompileInputs.cache
+D:\AURACINEMA\AuraCinema.Services\obj\Debug\net9.0\AuraCinema.Services.sourcelink.json
 D:\AURACINEMA\AuraCinema.Services\obj\Debug\net9.0\AuraCine.CB64ED31.Up2Date
 D:\AURACINEMA\AuraCinema.Services\obj\Debug\net9.0\AuraCinema.Services.dll
 D:\AURACINEMA\AuraCinema.Services\obj\Debug\net9.0\refint\AuraCinema.Services.dll

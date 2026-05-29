@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace AuraCinema.Web.Areas.Admin.ViewModels;
 
@@ -18,8 +19,11 @@ public class ServiceFormViewModel
     [Display(Name = "Giá (VNĐ)")]
     public int Price { get; set; }
 
-    [Display(Name = "Hình ảnh")]
+    [Display(Name = "Hình ảnh hiện tại")]
     public string? Image { get; set; }
+
+    [Display(Name = "Tải ảnh lên")]
+    public IFormFile? ImageFile { get; set; }
 
     [Display(Name = "Trạng thái")]
     public string Status { get; set; } = "Hoat dong";

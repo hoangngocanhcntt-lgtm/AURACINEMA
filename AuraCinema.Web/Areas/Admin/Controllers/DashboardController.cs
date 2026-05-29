@@ -23,7 +23,7 @@ public class DashboardController : AdminBaseController
 
         // Fetch valid orders
         var validOrders = await _db.Orders
-            .Where(o => o.Status == "Da thanh toan" || o.Status == "Da su dung")
+            .Where(o => o.Status == "Da thanh toan" || o.Status == "Da su dung" || o.Status == "Đã thanh toán" || o.Status == "Đã sử dụng")
             .Include(o => o.OrderSeats)
             .Include(o => o.Showtime)
                 .ThenInclude(s => s.Movie)

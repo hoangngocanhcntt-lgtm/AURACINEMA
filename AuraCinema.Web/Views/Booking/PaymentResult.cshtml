@@ -1,4 +1,4 @@
-@model AuraCinema.Domain.Entities.Order
+﻿@model AuraCinema.Domain.Entities.Order
 @{
     ViewData["Title"] = "Thanh toán thành công";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -9,14 +9,14 @@
         <div class="mb-4">
             <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
         </div>
-        <h2 class="fw-bold text-white mb-3">Đặt vé thành công!</h2>
+        <h2 class="fw-bold  mb-3">Đặt vé thành công!</h2>
         <p class="text-muted mb-4">Cảm ơn bạn đã sử dụng dịch vụ của Aura Cinema. Thông tin vé đã được gửi đến email của bạn.</p>
 
         <div class="bg-surface p-4 rounded-3 text-start mb-4 border border-ac">
             <div class="d-flex mb-3">
                 <img src="@Model.Showtime.Movie.Poster" alt="@Model.Showtime.Movie.Title" class="rounded" style="width: 80px; height: 120px; object-fit: cover;" onerror="this.src='/images/placeholder-movie.jpg'" />
                 <div class="ms-3">
-                    <h5 class="fw-bold text-white mb-1">@Model.Showtime.Movie.Title</h5>
+                    <h5 class="fw-bold  mb-1">@Model.Showtime.Movie.Title</h5>
                     <p class="text-muted small mb-1"><i class="bi bi-calendar-event me-1"></i>@Model.Showtime.StartTime.ToString("HH:mm - dd/MM/yyyy")</p>
                     <p class="ac-badge m-0">@Model.Showtime.Room.RoomName</p>
                 </div>
@@ -36,6 +36,16 @@
                 <div class="col-5 text-muted">Tổng tiền:</div>
                 <div class="col-7 fw-bold text-primary-ac">@Model.FinalAmount.ToString("N0")đ</div>
             </div>
+
+            @if (ViewBag.QrCodeBase64 != null)
+            {
+                <div class="text-center mt-4 pt-4 border-top border-ac">
+                    <div class="bg-white p-3 rounded d-inline-block shadow-sm">
+                        <img src="data:image/png;base64,@ViewBag.QrCodeBase64" alt="QR Code" style="width: 180px; height: 180px;" />
+                    </div>
+                    <p class="text-muted small mt-3 mb-0">Vui lòng đưa mã QR này cho nhân viên để vào rạp.</p>
+                </div>
+            }
         </div>
 
         <div class="d-flex gap-3 justify-content-center">

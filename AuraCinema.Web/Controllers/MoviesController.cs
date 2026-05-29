@@ -63,12 +63,13 @@ public class MoviesController : Controller
         var movie = await _db.Movies.FindAsync(id);
         if (movie is null) return NotFound();
 
-        var today = DateTime.Today;
-        var maxDate = today.AddDays(4);
+        var now = DateTime.Now;
+        var today = now.Date;
+        var maxDate = today.AddDays(5);
 
         var showtimes = await _db.Showtimes
             .Include(s => s.Room)
-            .Where(s => s.MovieID == id && s.StartTime >= today && s.StartTime < maxDate)
+            .Where(s => s.MovieID == id && s.Status == "Đang mở bán" && s.StartTime >= now && s.StartTime < maxDate)
             .OrderBy(s => s.StartTime)
             .ToListAsync();
 
@@ -76,7 +77,7 @@ public class MoviesController : Controller
         var showtimeIds = showtimes.Select(s => s.ShowtimeID).ToList();
         var seatCounts = await _db.Orders
             .Where(o => showtimeIds.Contains(o.ShowtimeID) &&
-                        (o.Status == "Da thanh toan" || (o.Status == "Cho thanh toan" && o.HoldExpiryTime > DateTime.UtcNow)))
+                        (o.Status == "Đã thanh toán" || (o.Status == "Chờ thanh toán" && o.HoldExpiryTime > DateTime.Now)))
             .SelectMany(o => o.OrderSeats)
             .GroupBy(os => os.Order.ShowtimeID)
             .Select(g => new { ShowtimeID = g.Key, Sold = g.Count() })
@@ -88,8 +89,8 @@ public class MoviesController : Controller
             .Select(g => new ShowtimeGroupViewModel
             {
                 Date  = g.Key,
-                DayLabel = g.Key == DateOnly.FromDateTime(today)  ? "Hom nay" :
-                           g.Key == DateOnly.FromDateTime(today.AddDays(1)) ? "Ngay mai" :
+                DayLabel = g.Key == DateOnly.FromDateTime(today)  ? "Hôm nay" :
+                           g.Key == DateOnly.FromDateTime(today.AddDays(1)) ? "Ngày mai" :
                            g.Key.ToString("dd/MM"),
                 Showtimes = g.Select(s => new ShowtimeItemViewModel
                 {
@@ -97,7 +98,8 @@ public class MoviesController : Controller
                     StartTime      = s.StartTime.ToString("HH:mm"),
                     EndTime        = s.EndTime.ToString("HH:mm"),
                     RoomName       = s.Room.RoomName,
-                    AvailableSeats = s.Room.Capacity - seatCounts.GetValueOrDefault(s.ShowtimeID, 0)
+                    AvailableSeats = s.Room.Capacity - seatCounts.GetValueOrDefault(s.ShowtimeID, 0),
+                    TotalSeats     = s.Room.Capacity
                 }).ToList()
             })
             .ToList();
@@ -109,6 +111,7 @@ public class MoviesController : Controller
             Genre       = movie.Genre,
             Director    = movie.Director,
             Actors      = movie.Actors,
+            Description = movie.Description,
             Duration    = movie.Duration,
             ReleaseDate = movie.ReleaseDate,
             Poster      = movie.Poster,

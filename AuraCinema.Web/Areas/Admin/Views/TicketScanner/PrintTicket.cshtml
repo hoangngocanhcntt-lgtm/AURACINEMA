@@ -5,38 +5,145 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8" />
     <title>In Vé - @Model.OrderCode</title>
     <style>
-        body { font-family: 'Courier New', Courier, monospace; width: 300px; margin: 0 auto; padding: 20px; border: 1px solid #000; }
+        body { 
+            font-family: 'Courier New', Courier, monospace; 
+            width: 300px; 
+            margin: 0 auto; 
+            padding: 10px; 
+            background-color: #fff;
+            color: #000;
+        }
+        .ticket-box { 
+            border: 1px dashed #333; 
+            padding: 15px; 
+            margin-bottom: 25px; 
+            box-sizing: border-box; 
+            background: #fff;
+            page-break-after: always;
+            break-after: page;
+        }
         .center { text-align: center; }
         .line { border-bottom: 1px dashed #000; margin: 10px 0; }
         .bold { font-weight: bold; }
-        .movie-title { font-size: 1.2rem; }
+        .movie-title { font-size: 1.25rem; line-height: 1.3; margin: 5px 0; }
+        .ticket-type { 
+            font-size: 1rem; 
+            border: 2px solid #000; 
+            padding: 3px 8px; 
+            display: inline-block; 
+            margin: 8px 0; 
+            letter-spacing: 1px;
+        }
+        .seat-highlight {
+            font-size: 1.5rem; 
+            font-weight: bold; 
+            border: 2px solid #000; 
+            padding: 2px 10px; 
+            display: inline-block;
+            margin-top: 3px;
+        }
+        p { margin: 6px 0; font-size: 0.9rem; }
+        
         @@media print {
-            .no-print { display: none; }
+            body { 
+                width: 100%; 
+                margin: 0; 
+                padding: 0; 
+            }
+            .ticket-box { 
+                border: none; 
+                border-bottom: 2px dashed #000; 
+                padding: 10px 0 25px 0; 
+                margin-bottom: 0; 
+                page-break-after: always;
+                break-after: page;
+            }
+            .no-print { display: none !important; }
         }
     </style>
 </head>
 <body onload="window.print()">
-    <div class="center">
-        <h2 style="margin:0;">AURA CINEMA</h2>
-        <p style="margin:5px 0;">Hóa đơn: @Model.OrderCode</p>
-    </div>
-    <div class="line"></div>
-    <div class="bold movie-title center">@Model.Showtime.Movie.Title</div>
-    <p><b>Phòng:</b> @Model.Showtime.Room.RoomName</p>
-    <p><b>Suất chiếu:</b> @Model.Showtime.StartTime.ToString("dd/MM/yyyy HH:mm")</p>
-    <p><b>Ghế:</b> @string.Join(", ", Model.OrderSeats.Select(s => s.Seat.SeatCode.Split('-').Last()))</p>
-    <div class="line"></div>
-    <p><b>Khách hàng:</b> @Model.User.FullName</p>
-    <p><b>Ngày in:</b> @DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")</p>
-    <div class="line"></div>
-    <div class="center">
-        <p>Chúc bạn xem phim vui vẻ!</p>
-        <p style="font-size: 0.8rem;">Vui lòng giữ vé để kiểm soát.</p>
-    </div>
-    <div class="center no-print" style="margin-top: 20px;">
-        <button onclick="window.close()">Đóng cửa sổ</button>
+
+    <!-- PHẦN 1: IN VÉ XEM PHIM - MỖI GHẾ 1 VÉ -->
+    @foreach (var orderSeat in Model.OrderSeats)
+    {
+        <div class="ticket-box">
+            <div class="center">
+                <h2 style="margin:0; font-size: 1.4rem; letter-spacing: 1px;">AURA CINEMA</h2>
+                <div class="ticket-type bold">VÉ XEM PHIM</div>
+                <p style="margin:5px 0; font-weight: bold;">Mã đơn: @Model.OrderCode</p>
+            </div>
+            
+            <div class="line"></div>
+            
+            <div class="bold movie-title center">@Model.Showtime.Movie.Title</div>
+            
+            <div class="line"></div>
+            
+            <p><b>Phòng chiếu:</b> @Model.Showtime.Room.RoomName</p>
+            <p>
+                <b>Ghế ngồi:</b><br/>
+                <span class="seat-highlight">@($"{orderSeat.Seat.RowLabel}{orderSeat.Seat.SeatNumber}")</span>
+            </p>
+            <p><b>Suất chiếu:</b> @Model.Showtime.StartTime.ToString("dd/MM/yyyy HH:mm")</p>
+            <p><b>Khách hàng:</b> @Model.User.FullName</p>
+            <p><b>Giá vé:</b> @orderSeat.Price.ToString("N0") đ</p>
+            
+            <div class="line"></div>
+            
+            <div class="center" style="font-size: 0.85rem;">
+                <p style="margin: 3px 0; font-weight: bold;">Chúc bạn xem phim vui vẻ!</p>
+                <p style="margin: 3px 0; font-size: 0.75rem; color: #333;">(Vui lòng xuất trình vé này tại cửa phòng chiếu)</p>
+            </div>
+        </div>
+    }
+
+    <!-- PHẦN 2: IN VOUCHER DỊCH VỤ - MỖI DỊCH VỤ / SỐ LƯỢNG LÀ 1 PHIẾU RIÊNG -->
+    @if (Model.OrderServices != null && Model.OrderServices.Any())
+    {
+        @foreach (var os in Model.OrderServices)
+        {
+            @for (int i = 1; i <= os.Quantity; i++)
+            {
+                <div class="ticket-box">
+                    <div class="center">
+                        <h2 style="margin:0; font-size: 1.4rem; letter-spacing: 1px;">AURA CINEMA</h2>
+                        <div class="ticket-type bold" style="border-style: dashed;">PHIẾU DỊCH VỤ</div>
+                        <p style="margin:5px 0; font-weight: bold;">Mã đơn: @Model.OrderCode</p>
+                    </div>
+                    
+                    <div class="line"></div>
+                    
+                    <div class="center">
+                        <p style="font-size: 0.95rem; margin: 3px 0;">Dịch vụ:</p>
+                        <h3 class="bold" style="margin: 5px 0; font-size: 1.25rem; line-height: 1.3;">@os.Service.ServiceName</h3>
+                        <span class="bold" style="font-size: 1rem; border: 1px dashed #000; padding: 2px 10px; display: inline-block; margin-top: 8px;">
+                            Phần @i / @os.Quantity
+                        </span>
+                    </div>
+                    
+                    <div class="line"></div>
+                    
+                    <p><b>Khách hàng:</b> @Model.User.FullName</p>
+                    <p><b>Ngày in:</b> @DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")</p>
+                    
+                    <div class="line"></div>
+                    
+                    <div class="center" style="font-size: 0.85rem;">
+                        <p style="margin: 3px 0; font-weight: bold;">Vui lòng xuất trình tại quầy Bắp Nước</p>
+                        <p style="margin: 3px 0; font-size: 0.75rem; color: #333;">(Phiếu chỉ có giá trị dùng trong ngày chiếu)</p>
+                    </div>
+                </div>
+            }
+        }
+    }
+
+    <div class="center no-print" style="margin-top: 15px; margin-bottom: 30px;">
+        <button onclick="window.print()" style="padding: 8px 16px; cursor: pointer; font-weight: bold; background: #000; color: #fff; border: none; border-radius: 4px; margin-right: 5px;">In Lại</button>
+        <button onclick="window.close()" style="padding: 8px 16px; cursor: pointer; background: #ccc; border: none; border-radius: 4px;">Đóng</button>
     </div>
 </body>
 </html>

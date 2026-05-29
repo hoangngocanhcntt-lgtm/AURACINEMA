@@ -4,6 +4,7 @@ public class Promotion {
     public string PromoCode { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
     public int DiscountValue { get; set; }
+    public int MinAmount { get; set; } = 0;
     public string Condition { get; set; } = string.Empty;
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }

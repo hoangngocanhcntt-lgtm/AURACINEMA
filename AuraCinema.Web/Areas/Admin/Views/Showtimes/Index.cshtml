@@ -13,6 +13,29 @@
     </a>
 </div>
 
+<div class="ac-card p-4 border-0 shadow-sm mb-4">
+    <form method="get" class="row g-3">
+        <div class="col-md-3">
+            <label class="form-label small fw-bold text-secondary">Mã suất chiếu</label>
+            <input type="text" name="searchCode" class="form-control border-light-subtle shadow-sm" placeholder="Mã..." value="@ViewBag.SearchCode" />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label small fw-bold text-secondary">Ngày chiếu</label>
+            <input type="date" name="searchDate" class="form-control border-light-subtle shadow-sm" value="@ViewBag.SearchDate" />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label small fw-bold text-secondary">Phòng chiếu</label>
+            <select name="roomId" asp-items="@(new SelectList(ViewBag.RoomList, "Value", "Text", ViewBag.SelectedRoomId))" class="form-select border-light-subtle shadow-sm">
+                <option value="">-- Tất cả --</option>
+            </select>
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary me-2 shadow-sm flex-grow-1" style="background-color: #0047AB; border: none;"><i class="bi bi-search me-2"></i>Tìm kiếm</button>
+            <a asp-action="Index" class="btn btn-outline-secondary shadow-sm">Xóa</a>
+        </div>
+    </form>
+</div>
+
 <div class="ac-card border-0 shadow-sm overflow-hidden">
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0">
@@ -21,7 +44,7 @@
                     <th class="ps-4">Mã suất</th>
                     <th>Phim</th>
                     <th>Phòng</th>
-                    <th>Thời gian bắt đầu</th>
+                    <th>Thời gian</th>
                     <th>Trạng thái</th>
                     <th class="text-end pe-4">Thao tác</th>
                 </tr>
@@ -41,38 +64,51 @@
                             <span class="badge bg-light text-dark border">@item.Room.RoomName</span>
                         </td>
                         <td>
-                            <div>@item.StartTime.ToString("dd/MM/yyyy")</div>
-                            <div class="fw-bold text-dark">@item.StartTime.ToString("HH:mm")</div>
+                            <div class="small text-muted">@item.StartTime.ToString("dd/MM/yyyy")</div>
+                            <div class="fw-bold text-dark">
+                                <i class="bi bi-clock me-1 text-primary"></i>@item.StartTime.ToString("HH:mm") 
+                                <span class="mx-1 text-muted">→</span> 
+                                <i class="bi bi-clock-fill me-1 text-secondary"></i>@item.EndTime.ToString("HH:mm")
+                            </div>
                         </td>
                         <td>
                             @switch (item.Status)
                             {
-                                case "Sap chieu":
-                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3">Sắp chiếu</span>
+                                case "Đã lên lịch":
+                                    <span class="badge bg-info-subtle text-info border border-info-subtle px-3">Đã lên lịch</span>
                                     break;
-                                case "Dang chieu":
-                                    <span class="badge bg-success-subtle text-success border border-success-subtle px-3">Đang chiếu</span>
+                                case "Đang mở bán":
+                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3">Đang mở bán</span>
                                     break;
-                                case "Da ket thuc":
+                                case "Đang chiếu":
+                                    <span class="badge bg-warning-subtle text-warning border border-warning-subtle px-3"><i class="bi bi-broadcast me-1"></i>Đang chiếu</span>
+                                    break;
+                                case "Đã kết thúc":
                                     <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle px-3">Đã kết thúc</span>
                                     break;
-                                case "Da huy":
+                                case "Đã hủy":
                                     <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3">Đã hủy</span>
+                                    break;
+                                default:
+                                    <span class="badge bg-light text-dark border px-3">@item.Status</span>
                                     break;
                             }
                         </td>
                         <td class="text-end pe-4">
                             <div class="btn-group">
-                                <a asp-action="Edit" asp-route-id="@item.ShowtimeID" class="btn btn-sm btn-outline-secondary" title="Sửa">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
-                                <form asp-action="Delete" asp-route-id="@item.ShowtimeID" method="post" 
-                                      onsubmit="return confirm('Bạn có chắc chắn muốn hủy suất chiếu này?');" class="d-inline">
-                                    @Html.AntiForgeryToken()
-                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Hủy suất">
-                                        <i class="bi bi-x-circle"></i>
-                                    </button>
-                                </form>
+                                @if (item.Status != "Đang mở bán" && item.Status != "Đang chiếu")
+                                {
+                                    <a asp-action="Edit" asp-route-id="@item.ShowtimeID" class="btn btn-sm btn-outline-secondary" title="Sửa">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <form asp-action="Delete" asp-route-id="@item.ShowtimeID" method="post" 
+                                          onsubmit="return confirm('Bạn có chắc chắn muốn XÓA suất chiếu này?');" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Xóa suất">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                }
                             </div>
                         </td>
                     </tr>
@@ -80,6 +116,8 @@
             </tbody>
         </table>
     </div>
+    
+    @await Html.PartialAsync("_Pagination")
 </div>
 
 <style>

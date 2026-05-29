@@ -2,6 +2,8 @@
    AURA CINEMA — DESIGN SYSTEM
    ═══════════════════════════════════════════════════════ */
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 :root {
   --ac-bg:        #000000; /* Đen thuần cho cảm giác rạp phim */
   --ac-surface:   #0d0d0d; /* Nền card tối */
@@ -10,14 +12,51 @@
   --ac-primary:   #0047AB; /* Xanh dương đậm (Cobalt/Navy) */
   --ac-primary2:  #002366; /* Royal Blue */
   --ac-accent:    #C0C0C0; /* Bạc (Silver) */
-  --ac-text:      #C0C0C0; /* Chữ màu Bạc sang trọng */
-  --ac-muted:     #808080; /* Xám bạc sẫm */
+  --ac-text:      #E0E0E0; /* Tăng độ sáng từ Bạc sang Xám trắng cho dễ đọc trên nền đen */
+  --ac-muted:     #A0A0A0; /* Xám bạc sáng hơn */
   --ac-gold:      #C0C0C0; /* Đổi vàng thành bạc luôn cho đồng bộ */
   --ac-gradient:  linear-gradient(135deg, #0047AB 0%, #002366 100%);
-  --ac-radius:    16px;
-  --ac-radius-sm: 10px;
-  --ac-shadow:    0 20px 60px rgba(0,71,171,0.2);
+  --ac-radius:    20px; /* Thay đổi thành 20px bo góc mềm mại */
+  --ac-radius-sm: 12px;
+  --ac-shadow:    0 10px 25px rgba(0,0,0,0.05); /* Bóng đổ mềm hiện đại */
   --ac-glow:      0 0 30px rgba(0,71,171,0.4);
+}
+
+/* ─── QUY TẮC 1: TYPOGRAPHY HỆ THỐNG ─── */
+body, .admin-page, html {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 400 !important;
+}
+h1, h2, h3, h4, h5, h6, .fw-bold, strong, b, th {
+  font-weight: 600 !important; /* Tiêu đề in đậm vừa phải */
+}
+
+/* ─── QUY TẮC 2 & 3: BO GÓC (BORDER-RADIUS) & CHIỀU SÂU (SHADOW) ─── */
+/* Loại bỏ border cứng nhắc, thay bằng bóng đổ và bo góc lớn */
+.card, .modal-content, .bg-white, .table-responsive {
+  border: none !important;
+  border-radius: 20px !important; /* Bo góc mềm mại cho Container/Card */
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05) !important; /* Bóng đổ nổi nhẹ */
+}
+
+/* Bo góc cho Button */
+.btn, .ac-btn-primary, .ac-btn-outline {
+  border-radius: 12px !important; /* Bo góc 12px cho nút bấm */
+  font-weight: 500 !important; /* Chữ thường mỏng dễ đọc */
+  border: none !important;
+}
+
+/* Bo góc cho Form Inputs */
+.form-control, .form-select {
+  border-radius: 12px !important;
+  border: 1px solid rgba(0,0,0,0.05) !important;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.02) !important;
+  font-weight: 400 !important;
+}
+
+/* Đảm bảo Dark Theme không bị chìm bóng đổ (Dùng border rất mờ hoặc shadow xám) */
+body:not(.admin-page) .card, body:not(.admin-page) .bg-surface {
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
 }
 
 /* ─── BASE ─── */
@@ -26,7 +65,6 @@
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: 'Inter', system-ui, sans-serif;
   background-color: var(--ac-bg);
   color: var(--ac-text);
   min-height: 100vh;
@@ -75,7 +113,7 @@ body {
 .ac-navbar .nav-link:hover,
 .ac-navbar .nav-link.active {
   color: #fff !important;
-  background: rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.12);
 }
 
 .ac-avatar {
@@ -131,9 +169,10 @@ body {
   border: 1px solid var(--ac-border);
   border-radius: var(--ac-radius);
   transition: all 0.3s;
+  color: var(--ac-text); /* Đảm bảo chữ luôn sáng trên nền tối */
 }
 .ac-card:hover {
-  border-color: rgba(233,30,140,0.3);
+  border-color: rgba(0,71,171,0.5);
   transform: translateY(-4px);
   box-shadow: var(--ac-shadow);
 }
@@ -314,11 +353,11 @@ body {
 .field-validation-error { color: #f87171; font-size: 0.8rem; }
 .validation-summary-errors ul { list-style: none; padding: 0; margin: 0; }
 .validation-summary-errors {
-  background: rgba(239,68,68,0.1);
-  border: 1px solid rgba(239,68,68,0.3);
+  background: rgba(239,68,68,0.15);
+  border: 1px solid rgba(239,68,68,0.4);
   border-radius: var(--ac-radius-sm);
   padding: 12px 16px;
-  color: #fca5a5;
+  color: #fecaca; /* Sáng hơn cho dễ đọc */
   font-size: 0.875rem;
   margin-bottom: 20px;
 }
@@ -405,11 +444,14 @@ body {
   box-shadow: 0 40px 80px rgba(0,0,0,0.6);
   transform: perspective(800px) rotateY(-5deg);
   transition: transform 0.4s;
+  max-width: 320px;
+  margin: 0 auto;
 }
-.ac-hero-poster:hover { transform: perspective(800px) rotateY(0deg); }
+.ac-hero-poster:hover { transform: perspective(800px) rotateY(0deg) scale(1.02); }
 .ac-hero-poster img {
   width: 100%;
-  height: 450px;
+  aspect-ratio: 2/3;
+  height: auto;
   object-fit: cover;
 }
 .ac-hero-poster-overlay {
@@ -775,4 +817,29 @@ body {
 /* ─── PLACEHOLDER IMAGE ─── */
 img[src*="placeholder"] {
   background: linear-gradient(135deg, var(--ac-surface2), var(--ac-surface));
+}
+
+/* --- CHECKOUT PROMOTION --- */
+.ac-promo-item:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(0, 71, 171, 0.4) !important;
+}
+.bg-primary-ac-light {
+  background: rgba(0, 71, 171, 0.08) !important;
+}
+.border-primary-ac {
+  border-color: var(--ac-primary) !important;
+}
+
+/* ─── CONTRAST OVERRIDES FOR CLIENT PAGES ─── */
+body:not(.admin-page) .text-muted {
+  color: var(--ac-muted) !important;
+}
+
+body:not(.admin-page) .text-secondary {
+  color: var(--ac-muted) !important;
+}
+
+body:not(.admin-page) .text-primary-ac {
+  color: #38bdf8 !important; /* Luminous Cyan Blue for high contrast on black background */
 }

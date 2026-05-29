@@ -34,6 +34,10 @@ namespace AuraCinema.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Director")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -82,6 +86,9 @@ namespace AuraCinema.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderID"));
+
+                    b.Property<DateTime?>("CheckInTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("FinalAmount")
                         .HasColumnType("int");
@@ -194,6 +201,9 @@ namespace AuraCinema.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<DateTime?>("EffectiveDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("SurchargeAmount")
                         .HasColumnType("int");
 
@@ -224,6 +234,9 @@ namespace AuraCinema.Infrastructure.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("MinAmount")
+                        .HasColumnType("int");
+
                     b.Property<string>("PromoCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -233,7 +246,8 @@ namespace AuraCinema.Infrastructure.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -246,6 +260,46 @@ namespace AuraCinema.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Promotions");
+                });
+
+            modelBuilder.Entity("AuraCinema.Domain.Entities.RefundRequest", b =>
+                {
+                    b.Property<int>("RefundID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RefundID"));
+
+                    b.Property<string>("AccountName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("AccountNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("BankName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ResolvedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("RefundID");
+
+                    b.HasIndex("OrderID")
+                        .IsUnique();
+
+                    b.ToTable("RefundRequests");
                 });
 
             modelBuilder.Entity("AuraCinema.Domain.Entities.Room", b =>
@@ -339,7 +393,8 @@ namespace AuraCinema.Infrastructure.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("ServiceID");
 
@@ -503,6 +558,17 @@ namespace AuraCinema.Infrastructure.Migrations
                     b.Navigation("Service");
                 });
 
+            modelBuilder.Entity("AuraCinema.Domain.Entities.RefundRequest", b =>
+                {
+                    b.HasOne("AuraCinema.Domain.Entities.Order", "Order")
+                        .WithOne("RefundRequest")
+                        .HasForeignKey("AuraCinema.Domain.Entities.RefundRequest", "OrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("AuraCinema.Domain.Entities.Seat", b =>
                 {
                     b.HasOne("AuraCinema.Domain.Entities.Room", "Room")
@@ -543,6 +609,8 @@ namespace AuraCinema.Infrastructure.Migrations
                     b.Navigation("OrderSeats");
 
                     b.Navigation("OrderServices");
+
+                    b.Navigation("RefundRequest");
                 });
 
             modelBuilder.Entity("AuraCinema.Domain.Entities.Promotion", b =>

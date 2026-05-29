@@ -1,0 +1,1107 @@
+2026-05-22 00:00:17.996 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:00:18.025 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:00:18.148 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:00:18.152 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:00:18.154 +07:00 [INF] Updated showtime status: 1 → Đang mở bán, 0 → Đang chiếu, 0 → Đã kết thúc.
+2026-05-22 00:00:18.370 +07:00 [INF] Executed DbCommand (11ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+UPDATE [Showtimes] SET [Status] = @p0
+OUTPUT 1
+WHERE [ShowtimeID] = @p1;
+2026-05-22 00:00:18.407 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:01:18.423 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:01:18.429 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:01:18.434 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:01:18.438 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:01:18.442 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:02:18.449 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:02:18.457 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:02:18.459 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:02:18.461 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:02:18.465 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:03:18.475 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:03:18.480 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:03:18.484 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:03:18.487 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:03:18.491 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:04:18.510 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:04:18.515 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:04:18.520 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:04:18.525 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:04:18.530 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:05:18.539 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:05:18.542 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:05:18.544 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:05:18.546 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:05:18.548 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:06:18.556 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:06:18.564 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:06:18.567 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:06:18.570 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:06:18.575 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:07:18.584 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:07:18.588 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:07:18.590 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:07:18.594 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:07:18.597 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:08:18.611 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:08:18.618 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:08:18.621 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:08:18.625 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:08:18.630 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:09:18.642 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:09:18.648 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:09:18.654 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:09:18.660 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:09:18.665 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:10:18.680 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:10:18.682 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:10:18.683 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:10:18.685 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:10:18.687 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:11:18.692 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:11:18.695 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:11:18.696 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:11:18.697 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:11:18.699 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:12:18.716 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:12:18.717 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:12:18.718 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:12:18.719 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:12:18.721 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:13:18.730 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:13:18.733 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:13:18.734 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:13:18.735 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:13:18.737 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:14:18.746 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:14:18.747 +07:00 [INF] Executed DbCommand (0ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:14:18.748 +07:00 [INF] Executed DbCommand (0ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:14:18.749 +07:00 [INF] Executed DbCommand (0ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:14:18.750 +07:00 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:15:18.762 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:15:18.764 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:15:18.766 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:15:18.767 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:15:18.771 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:16:18.791 +07:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:16:18.795 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:16:18.798 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:16:18.800 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:16:18.805 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:17:18.813 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:17:18.818 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:17:18.822 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:17:18.828 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:17:18.834 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:18:18.846 +07:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:18:18.852 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:18:18.855 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:18:18.859 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:18:18.864 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:19:18.870 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:19:18.873 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:19:18.876 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:19:18.881 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:19:18.885 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:20:18.895 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:20:18.897 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:20:18.898 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:20:18.898 +07:00 [INF] Executed DbCommand (0ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:20:18.900 +07:00 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:21:18.915 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:21:18.921 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:21:18.926 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:21:18.932 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:21:18.937 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:22:18.961 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:22:18.968 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:22:18.974 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:22:18.979 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:22:18.983 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:23:18.987 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:23:18.990 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:23:18.991 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:23:18.992 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:23:18.994 +07:00 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:24:19.003 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:24:19.004 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:24:19.005 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:24:19.006 +07:00 [INF] Executed DbCommand (0ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:24:19.007 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:25:19.021 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:25:19.031 +07:00 [INF] Executed DbCommand (9ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:25:19.037 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:25:19.042 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:25:19.054 +07:00 [INF] Executed DbCommand (11ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:26:19.063 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:26:19.065 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:26:19.066 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:26:19.067 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:26:19.069 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:27:19.072 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:27:19.074 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:27:19.075 +07:00 [INF] Executed DbCommand (0ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:27:19.076 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:27:19.078 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:28:19.089 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:28:19.095 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:28:19.096 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:28:19.098 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:28:19.100 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:29:19.106 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:29:19.113 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:29:19.119 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:29:19.121 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:29:19.124 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:30:19.132 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:30:19.134 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:30:19.135 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:30:19.136 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:30:19.137 +07:00 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:31:19.142 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:31:19.145 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:31:19.146 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:31:19.147 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:31:19.150 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:32:19.157 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:32:19.162 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:32:19.165 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:32:19.168 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:32:19.172 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:33:19.187 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:33:19.193 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:33:19.196 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:33:19.199 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:33:19.204 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:34:19.218 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:34:19.220 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:34:19.221 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:34:19.222 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:34:19.224 +07:00 [INF] Executed DbCommand (0ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:35:19.232 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:35:19.236 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:35:19.241 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:35:19.243 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:35:19.244 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:36:19.256 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:36:19.257 +07:00 [INF] Executed DbCommand (0ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:36:19.259 +07:00 [INF] Executed DbCommand (0ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:36:19.260 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:36:19.262 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:37:19.274 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:37:19.281 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:37:19.285 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:37:19.288 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:37:19.291 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:38:19.302 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:38:19.309 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:38:19.312 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:38:19.317 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:38:19.322 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:39:19.333 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:39:19.340 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:39:19.343 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:39:19.346 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:39:19.350 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:40:19.355 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:40:19.359 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:40:19.362 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:40:19.365 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:40:19.368 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:41:19.376 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:41:19.385 +07:00 [INF] Executed DbCommand (7ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:41:19.390 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:41:19.392 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:41:19.395 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:42:19.403 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:42:19.410 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:42:19.414 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:42:19.417 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:42:19.424 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:43:19.446 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:43:19.452 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:43:19.457 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:43:19.459 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:43:19.462 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:44:19.481 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:44:19.490 +07:00 [INF] Executed DbCommand (8ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:44:19.494 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:44:19.496 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:44:19.501 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:45:19.513 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:45:19.519 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:45:19.523 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:45:19.528 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:45:19.532 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:46:19.547 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:46:19.557 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:46:19.562 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:46:19.566 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:46:19.571 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:47:19.587 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:47:19.591 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:47:19.594 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:47:19.597 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:47:19.600 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:48:19.613 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:48:19.621 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:48:19.625 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:48:19.631 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:48:19.634 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:49:19.645 +07:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:49:19.654 +07:00 [INF] Executed DbCommand (7ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:49:19.660 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:49:19.666 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:49:19.672 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:50:19.689 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:50:19.695 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:50:19.701 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:50:19.704 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:50:19.710 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:51:19.721 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:51:19.729 +07:00 [INF] Executed DbCommand (7ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:51:19.735 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:51:19.739 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:51:19.744 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:52:19.767 +07:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:52:19.780 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:52:19.784 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:52:19.788 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:52:19.794 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:53:19.815 +07:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:53:19.822 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:53:19.828 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:53:19.833 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:53:19.838 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-22 00:54:19.858 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-22 00:54:19.863 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-22 00:54:19.866 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-22 00:54:19.870 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-22 00:54:19.876 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0

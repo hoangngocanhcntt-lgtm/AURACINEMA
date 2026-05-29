@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AuraCinema.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9ee6e3667793464bd36b4d99c82a6199c122bc34")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2a4f8d5b5e3a756155fa3788b057f2b1de07e518")]
 [assembly: System.Reflection.AssemblyProductAttribute("AuraCinema.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AuraCinema.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

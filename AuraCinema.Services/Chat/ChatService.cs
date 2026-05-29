@@ -35,7 +35,7 @@ public class ChatService : IChatService
             new LlmMessage { Role = "system", Content = SystemPrompt.Build(DateTime.Now) }
         };
 
-        foreach (var msg in history.TakeLast(6))
+        foreach (var msg in history.TakeLast(4))
         {
             messages.Add(new LlmMessage { Role = msg.Role, Content = msg.Content });
         }
@@ -46,7 +46,7 @@ public class ChatService : IChatService
         var ctx = new ChatToolContext(userId, null);
 
         var loopCount = 0;
-        const int MAX_LOOPS = 5;
+        const int MAX_LOOPS = 3;
         var disableTools = false; // bật khi gặp tool_use_failed để model trả lời bằng text
 
         try

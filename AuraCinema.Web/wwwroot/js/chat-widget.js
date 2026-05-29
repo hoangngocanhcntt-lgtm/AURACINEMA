@@ -1,5 +1,9 @@
 const AURA_HISTORY_KEY = 'aura_chat_history';
 let chatHistory = JSON.parse(localStorage.getItem(AURA_HISTORY_KEY) || '[]');
+let isSending = false;
+let lastSendTime = 0;
+let currentAbort = null;
+const COOLDOWN_MS = 3000; // 3 giây cooldown giữa các tin nhắn
 
 function toggleChat() {
     const panel = document.getElementById('aura-chat-panel');
@@ -37,6 +41,22 @@ async function sendChatMessage() {
     const text = input.value.trim();
     if (!text) return;
 
+    // Chặn spam: đang gửi hoặc chưa hết cooldown
+    const now = Date.now();
+    if (isSending) return;
+    if (now - lastSendTime < COOLDOWN_MS) {
+        const remaining = Math.ceil((COOLDOWN_MS - (now - lastSendTime)) / 1000);
+        return;
+    }
+
+    // Cancel request cũ nếu còn pending
+    if (currentAbort) {
+        currentAbort.abort();
+        currentAbort = null;
+    }
+
+    isSending = true;
+    lastSendTime = now;
     input.value = '';
     input.disabled = true;
     const btn = document.getElementById('aura-chat-send-btn');
@@ -45,7 +65,7 @@ async function sendChatMessage() {
     // Add user message
     const userMsg = { role: 'user', content: text };
     chatHistory.push(userMsg);
-    if (chatHistory.length > 20) chatHistory.shift();
+    if (chatHistory.length > 10) chatHistory.shift();
     
     renderMessages();
     scrollToBottom();
@@ -60,24 +80,28 @@ async function sendChatMessage() {
     scrollToBottom();
 
     try {
+        currentAbort = new AbortController();
+        // Chỉ gửi tối đa 4 tin nhắn history gần nhất lên server
+        const historyToSend = chatHistory.slice(0, -1).slice(-4);
+        
         const response = await fetch('/api/chat', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                history: chatHistory.slice(0, -1), // Send history without current msg
+                history: historyToSend,
                 message: text
-            })
+            }),
+            signal: currentAbort.signal
         });
 
         const result = await response.json();
+        currentAbort = null;
         
         document.getElementById('aura-chat-loading')?.remove();
 
         if (result.reply) {
             chatHistory.push({ role: 'assistant', content: result.reply });
-            if (chatHistory.length > 20) chatHistory.shift();
+            if (chatHistory.length > 10) chatHistory.shift();
         }
         
         localStorage.setItem(AURA_HISTORY_KEY, JSON.stringify(chatHistory));
@@ -106,10 +130,15 @@ async function sendChatMessage() {
         }
 
     } catch (error) {
+        currentAbort = null;
         document.getElementById('aura-chat-loading')?.remove();
+        if (error.name === 'AbortError') return; // User cancelled, không hiện lỗi
         console.error('Chat error:', error);
-        alert('Đã có lỗi xảy ra, vui lòng thử lại sau!');
+        chatHistory.push({ role: 'assistant', content: 'Đã có lỗi xảy ra, vui lòng thử lại sau!' });
+        renderMessages();
+        scrollToBottom();
     } finally {
+        isSending = false;
         input.disabled = false;
         btn.disabled = false;
         input.focus();

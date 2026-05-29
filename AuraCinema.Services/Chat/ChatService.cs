@@ -44,6 +44,7 @@ public class ChatService : IChatService
 
         var tools = _toolRegistry.GetAllDeclarations();
         var ctx = new ChatToolContext(userId, null);
+        var collectedNames = new List<string>(); // Tên đúng từ DB để post-process
 
         var loopCount = 0;
         const int MAX_LOOPS = 3;
@@ -92,7 +93,7 @@ public class ChatService : IChatService
                 if (choice.Message.ToolCalls != null && choice.Message.ToolCalls.Count > 0)
                 {
                     messages.Add(choice.Message);
-                    await ExecuteToolCallsAsync(choice.Message.ToolCalls!, messages, ctx, cancellationToken);
+                    await ExecuteToolCallsAsync(choice.Message.ToolCalls!, messages, ctx, collectedNames, cancellationToken);
                     loopCount++;
                     continue;
                 }
@@ -103,7 +104,7 @@ public class ChatService : IChatService
                 if (leaked.Count > 0)
                 {
                     messages.Add(new LlmMessage { Role = "assistant", ToolCalls = leaked });
-                    await ExecuteToolCallsAsync(leaked, messages, ctx, cancellationToken);
+                    await ExecuteToolCallsAsync(leaked, messages, ctx, collectedNames, cancellationToken);
                     loopCount++;
                     continue;
                 }
@@ -112,7 +113,9 @@ public class ChatService : IChatService
                 var cleaned = CleanContent(content);
                 if (!string.IsNullOrEmpty(cleaned))
                 {
-                    return new ChatResponse { Reply = cleaned };
+                    // Post-process: sửa tên phim bị LLM viết sai dấu
+                    var corrected = ResponseCorrector.CorrectNames(cleaned, collectedNames);
+                    return new ChatResponse { Reply = corrected };
                 }
 
                 break;
@@ -131,7 +134,7 @@ public class ChatService : IChatService
         }
     }
 
-    private async Task ExecuteToolCallsAsync(List<LlmToolCall> calls, List<LlmMessage> messages, ChatToolContext ctx, CancellationToken ct)
+    private async Task ExecuteToolCallsAsync(List<LlmToolCall> calls, List<LlmMessage> messages, ChatToolContext ctx, List<string> collectedNames, CancellationToken ct)
     {
         foreach (var call in calls)
         {
@@ -152,12 +155,18 @@ public class ChatService : IChatService
             {
                 var args = JsonSerializer.Deserialize<JsonElement>(call.Function.Arguments);
                 var result = await tool.ExecuteAsync(args, ctx, ct);
+                var resultJson = JsonSerializer.Serialize(result);
+
+                // Thu thập tên đúng từ DB để post-process sau
+                var names = ResponseCorrector.ExtractNames(call.Function.Name, resultJson);
+                collectedNames.AddRange(names);
+
                 messages.Add(new LlmMessage
                 {
                     Role = "tool",
                     ToolCallId = call.Id,
                     Name = call.Function.Name,
-                    Content = JsonSerializer.Serialize(result)
+                    Content = resultJson
                 });
             }
             catch (Exception ex)

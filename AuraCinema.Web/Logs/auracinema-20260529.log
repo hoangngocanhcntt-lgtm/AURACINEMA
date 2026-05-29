@@ -1140,3 +1140,1820 @@ WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu'
 SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
 FROM [Movies] AS [m]
 WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:21:15.334 +07:00 [INF] Executed DbCommand (24ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-05-29 23:21:15.399 +07:00 [INF] Executed DbCommand (16ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-05-29 23:21:15.402 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-05-29 23:21:15.403 +07:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-05-29 23:21:15.418 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-05-29 23:21:15.431 +07:00 [INF] No migrations were applied. The database is already up to date.
+2026-05-29 23:21:15.581 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Users] AS [u]
+        WHERE [u].[Email] = N'admin@auracinema.vn') THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-29 23:21:15.587 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Users] AS [u]
+        WHERE [u].[Email] = N'staff@auracinema.vn') THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-29 23:21:15.591 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Users] AS [u]
+        WHERE [u].[Email] = N'customer@gmail.com') THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-29 23:21:15.646 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [u].[UserID], [u].[Email], [u].[FullName], [u].[OtpCode], [u].[OtpExpiry], [u].[Password], [u].[Phone], [u].[Role], [u].[Status], [u].[UserCode]
+FROM [Users] AS [u]
+WHERE [u].[UserCode] LIKE N''
+2026-05-29 23:21:15.653 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Rooms] AS [r]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-29 23:21:15.660 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [PriceConfigs] AS [p]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-29 23:21:15.666 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Movies] AS [m]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-29 23:21:15.671 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Services] AS [s]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-29 23:21:15.675 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Promotions] AS [p]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-29 23:21:15.679 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Showtimes] AS [s]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-29 23:21:15.691 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Orders] AS [o]
+        WHERE [o].[Status] IN (N'Da thanh toan', N'Đã thanh toán')) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-29 23:21:15.762 +07:00 [INF] Executed DbCommand (11ms) [Parameters=[@__startDate_0='?' (DbType = DateTime2), @__AddDays_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [Showtimes] AS [s]
+WHERE [s].[StartTime] >= @__startDate_0 AND [s].[StartTime] <= @__AddDays_1
+2026-05-29 23:21:15.851 +07:00 [INF] User profile is available. Using 'C:\Users\lqhie\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-05-29 23:21:15.879 +07:00 [INF] Booking Cleanup Service is starting.
+2026-05-29 23:21:15.898 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:21:15.918 +07:00 [INF] Now listening on: http://localhost:5231
+2026-05-29 23:21:15.918 +07:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-29 23:21:15.919 +07:00 [INF] Hosting environment: Development
+2026-05-29 23:21:15.919 +07:00 [INF] Content root path: D:\AURACINEMA\AuraCinema.Web
+2026-05-29 23:21:15.949 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:21:15.954 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:21:15.958 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:21:15.966 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:21:30.022 +07:00 [WRN] As of ""2026-05-29T16:21:30.0189644+00:00"", the heartbeat has been running for ""00:00:04.0199947"" which is longer than ""00:00:01"". This could be caused by thread pool starvation.
+2026-05-29 23:21:59.150 +07:00 [INF] Request starting HTTP/1.1 POST http://localhost:5231/api/chat - application/json 36
+2026-05-29 23:21:59.152 +07:00 [WRN] Failed to determine the https port for redirect.
+2026-05-29 23:21:59.189 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:21:59.204 +07:00 [INF] Route matched with {action = "Post", controller = "Chat", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Post(AuraCinema.Domain.Models.Chat.ChatRequest) on controller AuraCinema.Web.Controllers.ChatController (AuraCinema.Web).
+2026-05-29 23:21:59.296 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:21:59.299 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:22:00.052 +07:00 [INF] Received HTTP response headers after 750.9283ms - 200
+2026-05-29 23:22:00.054 +07:00 [INF] End processing HTTP request after 760.33ms - 200
+2026-05-29 23:22:00.070 +07:00 [INF] Executing OkObjectResult, writing value of type 'AuraCinema.Domain.Models.Chat.ChatResponse'.
+2026-05-29 23:22:00.080 +07:00 [INF] Executed action AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web) in 873.9452ms
+2026-05-29 23:22:00.081 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:22:00.083 +07:00 [INF] Request finished HTTP/1.1 POST http://localhost:5231/api/chat - 200 null application/json; charset=utf-8 935.2191ms
+2026-05-29 23:22:03.093 +07:00 [INF] Request starting HTTP/1.1 POST http://localhost:5231/api/chat - application/json 61
+2026-05-29 23:22:03.096 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:22:03.097 +07:00 [INF] Route matched with {action = "Post", controller = "Chat", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Post(AuraCinema.Domain.Models.Chat.ChatRequest) on controller AuraCinema.Web.Controllers.ChatController (AuraCinema.Web).
+2026-05-29 23:22:03.110 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:22:03.111 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:22:03.625 +07:00 [INF] Received HTTP response headers after 514.3695ms - 200
+2026-05-29 23:22:03.625 +07:00 [INF] End processing HTTP request after 514.8835ms - 200
+2026-05-29 23:22:03.666 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__p_2='?' (DbType = Int32), @__now_3='?' (DbType = DateTime2), @__genre_0_contains='?' (Size = 4000), @__status_1='?' (Size = 50)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(@__p_2) [m].[MovieID] AS [movieId], [m].[Title] AS [title], [m].[Genre] AS [genre], [m].[Duration] AS [duration], [m].[ReleaseDate] AS [releaseDate], [m].[Poster] AS [poster], [m].[Status] AS [status], (
+    SELECT COUNT(*)
+    FROM [Showtimes] AS [s]
+    WHERE [m].[MovieID] = [s].[MovieID] AND [s].[StartTime] >= @__now_3) AS [showtimeCount]
+FROM [Movies] AS [m]
+WHERE [m].[Genre] LIKE @__genre_0_contains ESCAPE N'\' AND [m].[Status] = @__status_1
+ORDER BY [m].[ReleaseDate] DESC
+2026-05-29 23:22:03.677 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:22:03.678 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:22:04.120 +07:00 [INF] Received HTTP response headers after 441.744ms - 200
+2026-05-29 23:22:04.120 +07:00 [INF] End processing HTTP request after 442.6944ms - 200
+2026-05-29 23:22:04.128 +07:00 [INF] Executing OkObjectResult, writing value of type 'AuraCinema.Domain.Models.Chat.ChatResponse'.
+2026-05-29 23:22:04.129 +07:00 [INF] Executed action AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web) in 1032.4228ms
+2026-05-29 23:22:04.129 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:22:04.131 +07:00 [INF] Request finished HTTP/1.1 POST http://localhost:5231/api/chat - 200 null application/json; charset=utf-8 1037.5281ms
+2026-05-29 23:22:07.147 +07:00 [INF] Request starting HTTP/1.1 POST http://localhost:5231/api/chat - application/json 55
+2026-05-29 23:22:07.149 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:22:07.150 +07:00 [INF] Route matched with {action = "Post", controller = "Chat", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Post(AuraCinema.Domain.Models.Chat.ChatRequest) on controller AuraCinema.Web.Controllers.ChatController (AuraCinema.Web).
+2026-05-29 23:22:07.157 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:22:07.157 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:22:07.596 +07:00 [INF] Received HTTP response headers after 438.5422ms - 200
+2026-05-29 23:22:07.596 +07:00 [INF] End processing HTTP request after 439.1661ms - 200
+2026-05-29 23:22:07.615 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__p_2='?' (DbType = Int32), @__now_0='?' (DbType = DateTime2), @__minOrderAmount_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(@__p_2) [p].[PromoCode], [p].[Title], [p].[DiscountValue], [p].[MinAmount], [p].[Condition], [p].[EndDate]
+FROM [Promotions] AS [p]
+WHERE [p].[Status] = N'Hoat dong' AND [p].[StartDate] <= @__now_0 AND [p].[EndDate] >= @__now_0 AND [p].[MinAmount] <= @__minOrderAmount_1
+ORDER BY [p].[MinAmount]
+2026-05-29 23:22:07.618 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:22:07.618 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:22:08.517 +07:00 [INF] Received HTTP response headers after 898.9264ms - 200
+2026-05-29 23:22:08.518 +07:00 [INF] End processing HTTP request after 899.303ms - 200
+2026-05-29 23:22:08.532 +07:00 [INF] Executing OkObjectResult, writing value of type 'AuraCinema.Domain.Models.Chat.ChatResponse'.
+2026-05-29 23:22:08.533 +07:00 [INF] Executed action AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web) in 1382.6829ms
+2026-05-29 23:22:08.533 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:22:08.533 +07:00 [INF] Request finished HTTP/1.1 POST http://localhost:5231/api/chat - 200 null application/json; charset=utf-8 1385.8682ms
+2026-05-29 23:22:15.974 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:22:15.976 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:22:15.977 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:22:15.978 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:22:15.980 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:23:15.994 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:23:15.999 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:23:16.001 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:23:16.005 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:23:16.008 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:24:16.031 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:24:16.036 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:24:16.039 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:24:16.043 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:24:16.047 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:25:16.056 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:25:16.062 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:25:16.065 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:25:16.068 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:25:16.072 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:25:38.983 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5231/ - null null
+2026-05-29 23:25:38.984 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.HomeController.Index (AuraCinema.Web)'
+2026-05-29 23:25:38.991 +07:00 [INF] Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller AuraCinema.Web.Controllers.HomeController (AuraCinema.Web).
+2026-05-29 23:25:39.012 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Title], [m].[Genre], [m].[Poster], [m].[Duration], [m].[Status], [m].[ReleaseDate], [m].[Director]
+FROM [Movies] AS [m]
+WHERE [m].[Status] IN (N'Dang chieu', N'Sap chieu')
+ORDER BY [m].[ReleaseDate] DESC
+2026-05-29 23:25:39.028 +07:00 [INF] Executing ViewResult, running view Index.
+2026-05-29 23:25:39.146 +07:00 [INF] Executed ViewResult - view Index executed in 122.7383ms.
+2026-05-29 23:25:39.146 +07:00 [INF] Executed action AuraCinema.Web.Controllers.HomeController.Index (AuraCinema.Web) in 155.1594ms
+2026-05-29 23:25:39.146 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.HomeController.Index (AuraCinema.Web)'
+2026-05-29 23:25:39.147 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5231/ - 200 null text/html; charset=utf-8 163.818ms
+2026-05-29 23:25:39.196 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - null null
+2026-05-29 23:25:39.210 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 13.8806ms
+2026-05-29 23:25:39.211 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2026-05-29 23:25:57.379 +07:00 [INF] Request starting HTTP/1.1 POST http://localhost:5231/api/chat - application/json 37
+2026-05-29 23:25:57.379 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:25:57.379 +07:00 [INF] Route matched with {action = "Post", controller = "Chat", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Post(AuraCinema.Domain.Models.Chat.ChatRequest) on controller AuraCinema.Web.Controllers.ChatController (AuraCinema.Web).
+2026-05-29 23:25:57.382 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:25:57.382 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:25:57.810 +07:00 [INF] Received HTTP response headers after 427.6298ms - 200
+2026-05-29 23:25:57.810 +07:00 [INF] End processing HTTP request after 428.3779ms - 200
+2026-05-29 23:25:57.836 +07:00 [INF] Executed DbCommand (15ms) [Parameters=[@__p_1='?' (DbType = Int32), @__now_2='?' (DbType = DateTime2), @__genre_0_contains='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(@__p_1) [m].[MovieID] AS [movieId], [m].[Title] AS [title], [m].[Genre] AS [genre], [m].[Duration] AS [duration], [m].[ReleaseDate] AS [releaseDate], [m].[Poster] AS [poster], [m].[Status] AS [status], (
+    SELECT COUNT(*)
+    FROM [Showtimes] AS [s]
+    WHERE [m].[MovieID] = [s].[MovieID] AND [s].[StartTime] >= @__now_2) AS [showtimeCount]
+FROM [Movies] AS [m]
+WHERE [m].[Genre] LIKE @__genre_0_contains ESCAPE N'\' AND [m].[Status] IN (N'Dang chieu', N'Sap chieu')
+ORDER BY [m].[ReleaseDate] DESC
+2026-05-29 23:25:57.838 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:25:57.838 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:25:58.199 +07:00 [INF] Received HTTP response headers after 360.966ms - 200
+2026-05-29 23:25:58.199 +07:00 [INF] End processing HTTP request after 361.6691ms - 200
+2026-05-29 23:25:58.200 +07:00 [INF] Executing OkObjectResult, writing value of type 'AuraCinema.Domain.Models.Chat.ChatResponse'.
+2026-05-29 23:25:58.200 +07:00 [INF] Executed action AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web) in 820.8166ms
+2026-05-29 23:25:58.200 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:25:58.201 +07:00 [INF] Request finished HTTP/1.1 POST http://localhost:5231/api/chat - 200 null application/json; charset=utf-8 822.0138ms
+2026-05-29 23:26:15.642 +07:00 [INF] Request starting HTTP/1.1 POST http://localhost:5231/api/chat - application/json 282
+2026-05-29 23:26:15.642 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:26:15.642 +07:00 [INF] Route matched with {action = "Post", controller = "Chat", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Post(AuraCinema.Domain.Models.Chat.ChatRequest) on controller AuraCinema.Web.Controllers.ChatController (AuraCinema.Web).
+2026-05-29 23:26:15.646 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:26:15.646 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:26:16.093 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:26:16.100 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:26:16.104 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:26:16.107 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:26:16.111 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:26:16.153 +07:00 [INF] Received HTTP response headers after 507.2003ms - 200
+2026-05-29 23:26:16.153 +07:00 [INF] End processing HTTP request after 507.5051ms - 200
+2026-05-29 23:26:16.161 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[@__p_1='?' (DbType = Int32), @__now_2='?' (DbType = DateTime2), @__genre_0_contains='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(@__p_1) [m].[MovieID] AS [movieId], [m].[Title] AS [title], [m].[Genre] AS [genre], [m].[Duration] AS [duration], [m].[ReleaseDate] AS [releaseDate], [m].[Poster] AS [poster], [m].[Status] AS [status], (
+    SELECT COUNT(*)
+    FROM [Showtimes] AS [s]
+    WHERE [m].[MovieID] = [s].[MovieID] AND [s].[StartTime] >= @__now_2) AS [showtimeCount]
+FROM [Movies] AS [m]
+WHERE [m].[Genre] LIKE @__genre_0_contains ESCAPE N'\' AND [m].[Status] IN (N'Dang chieu', N'Sap chieu')
+ORDER BY [m].[ReleaseDate] DESC
+2026-05-29 23:26:16.187 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Title]
+FROM [Movies] AS [m]
+2026-05-29 23:26:16.227 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__id_0='?' (DbType = Int32), @__startDate_1='?' (DbType = DateTime2), @__maxDate_2='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status], [r].[RoomID], [r].[Capacity], [r].[RoomCode], [r].[RoomName], [r].[Status]
+FROM [Showtimes] AS [s]
+INNER JOIN [Rooms] AS [r] ON [s].[RoomID] = [r].[RoomID]
+WHERE [s].[MovieID] = @__id_0 AND [s].[Status] = N'Đang mở bán' AND [s].[StartTime] >= @__startDate_1 AND [s].[StartTime] < @__maxDate_2
+ORDER BY [s].[StartTime]
+2026-05-29 23:26:16.432 +07:00 [INF] Executed DbCommand (42ms) [Parameters=[@__showtimeIds_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT [o1].[ShowtimeID], COUNT(*) AS [Sold]
+FROM [Orders] AS [o]
+INNER JOIN [OrderSeats] AS [o0] ON [o].[OrderID] = [o0].[OrderID]
+INNER JOIN [Orders] AS [o1] ON [o0].[OrderID] = [o1].[OrderID]
+WHERE [o].[ShowtimeID] IN (
+    SELECT [s].[value]
+    FROM OPENJSON(@__showtimeIds_0) WITH ([value] int '$') AS [s]
+) AND ([o].[Status] IN (N'Đã thanh toán', N'Da thanh toan') OR ([o].[Status] IN (N'Chờ thanh toán', N'Cho thanh toan') AND [o].[HoldExpiryTime] > GETDATE()))
+GROUP BY [o1].[ShowtimeID]
+2026-05-29 23:26:16.450 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:26:16.450 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:26:16.950 +07:00 [INF] Received HTTP response headers after 499.9617ms - 200
+2026-05-29 23:26:16.950 +07:00 [INF] End processing HTTP request after 500.2983ms - 200
+2026-05-29 23:26:16.950 +07:00 [INF] Executing OkObjectResult, writing value of type 'AuraCinema.Domain.Models.Chat.ChatResponse'.
+2026-05-29 23:26:16.951 +07:00 [INF] Executed action AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web) in 1308.3934ms
+2026-05-29 23:26:16.951 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:26:16.951 +07:00 [INF] Request finished HTTP/1.1 POST http://localhost:5231/api/chat - 200 null application/json; charset=utf-8 1309.272ms
+2026-05-29 23:26:39.048 +07:00 [INF] Request starting HTTP/1.1 POST http://localhost:5231/api/chat - application/json 533
+2026-05-29 23:26:39.048 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:26:39.049 +07:00 [INF] Route matched with {action = "Post", controller = "Chat", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Post(AuraCinema.Domain.Models.Chat.ChatRequest) on controller AuraCinema.Web.Controllers.ChatController (AuraCinema.Web).
+2026-05-29 23:26:39.050 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:26:39.050 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:26:39.369 +07:00 [INF] Received HTTP response headers after 318.6328ms - 200
+2026-05-29 23:26:39.369 +07:00 [INF] End processing HTTP request after 319.0537ms - 200
+2026-05-29 23:26:39.382 +07:00 [INF] Executed DbCommand (8ms) [Parameters=[@__p_1='?' (DbType = Int32), @__now_2='?' (DbType = DateTime2), @__status_0='?' (Size = 50)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(@__p_1) [m].[MovieID] AS [movieId], [m].[Title] AS [title], [m].[Genre] AS [genre], [m].[Duration] AS [duration], [m].[ReleaseDate] AS [releaseDate], [m].[Poster] AS [poster], [m].[Status] AS [status], (
+    SELECT COUNT(*)
+    FROM [Showtimes] AS [s]
+    WHERE [m].[MovieID] = [s].[MovieID] AND [s].[StartTime] >= @__now_2) AS [showtimeCount]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = @__status_0
+ORDER BY [m].[ReleaseDate] DESC
+2026-05-29 23:26:39.384 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:26:39.384 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:26:39.876 +07:00 [INF] Received HTTP response headers after 492.5525ms - 200
+2026-05-29 23:26:39.877 +07:00 [INF] End processing HTTP request after 493.0283ms - 200
+2026-05-29 23:26:39.877 +07:00 [INF] Executing OkObjectResult, writing value of type 'AuraCinema.Domain.Models.Chat.ChatResponse'.
+2026-05-29 23:26:39.877 +07:00 [INF] Executed action AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web) in 828.3745ms
+2026-05-29 23:26:39.877 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:26:39.877 +07:00 [INF] Request finished HTTP/1.1 POST http://localhost:5231/api/chat - 200 null application/json; charset=utf-8 829.3942ms
+2026-05-29 23:27:16.140 +07:00 [INF] Executed DbCommand (16ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:27:16.144 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:27:16.147 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:27:16.149 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:27:16.152 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:27:27.646 +07:00 [INF] Request starting HTTP/1.1 POST http://localhost:5231/api/chat - application/json 931
+2026-05-29 23:27:27.647 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:27:27.647 +07:00 [INF] Route matched with {action = "Post", controller = "Chat", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Post(AuraCinema.Domain.Models.Chat.ChatRequest) on controller AuraCinema.Web.Controllers.ChatController (AuraCinema.Web).
+2026-05-29 23:27:27.659 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:27:27.659 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:27:28.091 +07:00 [INF] Received HTTP response headers after 431.4401ms - 200
+2026-05-29 23:27:28.091 +07:00 [INF] End processing HTTP request after 432.167ms - 200
+2026-05-29 23:27:28.101 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__p_2='?' (DbType = Int32), @__now_0='?' (DbType = DateTime2), @__minOrderAmount_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(@__p_2) [p].[PromoCode], [p].[Title], [p].[DiscountValue], [p].[MinAmount], [p].[Condition], [p].[EndDate]
+FROM [Promotions] AS [p]
+WHERE [p].[Status] = N'Hoat dong' AND [p].[StartDate] <= @__now_0 AND [p].[EndDate] >= @__now_0 AND [p].[MinAmount] <= @__minOrderAmount_1
+ORDER BY [p].[MinAmount]
+2026-05-29 23:27:28.103 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:27:28.104 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:27:28.653 +07:00 [INF] Received HTTP response headers after 549.1901ms - 200
+2026-05-29 23:27:28.653 +07:00 [INF] End processing HTTP request after 549.7662ms - 200
+2026-05-29 23:27:28.654 +07:00 [INF] Executing OkObjectResult, writing value of type 'AuraCinema.Domain.Models.Chat.ChatResponse'.
+2026-05-29 23:27:28.654 +07:00 [INF] Executed action AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web) in 1007.0049ms
+2026-05-29 23:27:28.654 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:27:28.655 +07:00 [INF] Request finished HTTP/1.1 POST http://localhost:5231/api/chat - 200 null application/json; charset=utf-8 1008.2017ms
+2026-05-29 23:28:08.573 +07:00 [INF] Request starting HTTP/1.1 POST http://localhost:5231/api/chat - application/json 1307
+2026-05-29 23:28:08.573 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:28:08.574 +07:00 [INF] Route matched with {action = "Post", controller = "Chat", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Post(AuraCinema.Domain.Models.Chat.ChatRequest) on controller AuraCinema.Web.Controllers.ChatController (AuraCinema.Web).
+2026-05-29 23:28:08.577 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:28:08.577 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:28:09.266 +07:00 [INF] Received HTTP response headers after 689.6601ms - 200
+2026-05-29 23:28:09.267 +07:00 [INF] End processing HTTP request after 690.0113ms - 200
+2026-05-29 23:28:09.267 +07:00 [INF] Executing OkObjectResult, writing value of type 'AuraCinema.Domain.Models.Chat.ChatResponse'.
+2026-05-29 23:28:09.267 +07:00 [INF] Executed action AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web) in 693.5054ms
+2026-05-29 23:28:09.267 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:28:09.268 +07:00 [INF] Request finished HTTP/1.1 POST http://localhost:5231/api/chat - 200 null application/json; charset=utf-8 694.8778ms
+2026-05-29 23:28:16.173 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:28:16.177 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:28:16.180 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:28:16.184 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:28:16.188 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:29:16.201 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:29:16.207 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:29:16.210 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:29:16.213 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:29:16.218 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:30:16.228 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:30:16.233 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:30:16.235 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:30:16.237 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:30:16.239 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:31:16.249 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:31:16.253 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:31:16.255 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:31:16.257 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:31:16.260 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:32:08.693 +07:00 [INF] Request starting HTTP/1.1 POST http://localhost:5231/api/chat - application/json 1736
+2026-05-29 23:32:08.694 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:32:08.694 +07:00 [INF] Route matched with {action = "Post", controller = "Chat", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Post(AuraCinema.Domain.Models.Chat.ChatRequest) on controller AuraCinema.Web.Controllers.ChatController (AuraCinema.Web).
+2026-05-29 23:32:08.697 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:32:08.697 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:32:09.801 +07:00 [INF] Received HTTP response headers after 1104.0569ms - 200
+2026-05-29 23:32:09.801 +07:00 [INF] End processing HTTP request after 1104.3813ms - 200
+2026-05-29 23:32:09.819 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[ConfigID], [p].[ConfigCode], [p].[ConfigName], [p].[ConfigType], [p].[EffectiveDate], [p].[SurchargeAmount]
+FROM [PriceConfigs] AS [p]
+2026-05-29 23:32:09.845 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:32:09.845 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:32:11.195 +07:00 [INF] Received HTTP response headers after 1349.506ms - 200
+2026-05-29 23:32:11.195 +07:00 [INF] End processing HTTP request after 1349.9654ms - 200
+2026-05-29 23:32:11.196 +07:00 [INF] Executing OkObjectResult, writing value of type 'AuraCinema.Domain.Models.Chat.ChatResponse'.
+2026-05-29 23:32:11.196 +07:00 [INF] Executed action AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web) in 2501.751ms
+2026-05-29 23:32:11.196 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:32:11.196 +07:00 [INF] Request finished HTTP/1.1 POST http://localhost:5231/api/chat - 200 null application/json; charset=utf-8 2503.0825ms
+2026-05-29 23:32:16.274 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:32:16.279 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:32:16.282 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:32:16.285 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:32:16.288 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:32:24.466 +07:00 [INF] Request starting HTTP/1.1 POST http://localhost:5231/api/chat - application/json 2654
+2026-05-29 23:32:24.466 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:32:24.467 +07:00 [INF] Route matched with {action = "Post", controller = "Chat", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Post(AuraCinema.Domain.Models.Chat.ChatRequest) on controller AuraCinema.Web.Controllers.ChatController (AuraCinema.Web).
+2026-05-29 23:32:24.467 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:32:24.468 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:32:25.300 +07:00 [INF] Received HTTP response headers after 832.1226ms - 200
+2026-05-29 23:32:25.300 +07:00 [INF] End processing HTTP request after 832.4917ms - 200
+2026-05-29 23:32:25.314 +07:00 [INF] Executed DbCommand (10ms) [Parameters=[@__p_1='?' (DbType = Int32), @__now_2='?' (DbType = DateTime2), @__status_0='?' (Size = 50)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(@__p_1) [m].[MovieID] AS [movieId], [m].[Title] AS [title], [m].[Genre] AS [genre], [m].[Duration] AS [duration], [m].[ReleaseDate] AS [releaseDate], [m].[Poster] AS [poster], [m].[Status] AS [status], (
+    SELECT COUNT(*)
+    FROM [Showtimes] AS [s]
+    WHERE [m].[MovieID] = [s].[MovieID] AND [s].[StartTime] >= @__now_2) AS [showtimeCount]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = @__status_0
+ORDER BY [m].[ReleaseDate] DESC
+2026-05-29 23:32:25.315 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:32:25.315 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:32:26.391 +07:00 [INF] Received HTTP response headers after 1076.1307ms - 200
+2026-05-29 23:32:26.391 +07:00 [INF] End processing HTTP request after 1076.6178ms - 200
+2026-05-29 23:32:26.392 +07:00 [INF] Executing OkObjectResult, writing value of type 'AuraCinema.Domain.Models.Chat.ChatResponse'.
+2026-05-29 23:32:26.392 +07:00 [INF] Executed action AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web) in 1925.5062ms
+2026-05-29 23:32:26.392 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:32:26.393 +07:00 [INF] Request finished HTTP/1.1 POST http://localhost:5231/api/chat - 200 null application/json; charset=utf-8 1926.9316ms
+2026-05-29 23:33:16.295 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:33:16.298 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:33:16.300 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:33:16.302 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:33:16.304 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:34:16.316 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:34:16.319 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:34:16.321 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:34:16.324 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:34:16.328 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:35:16.348 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:35:16.352 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:35:16.354 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:35:16.356 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:35:16.359 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:36:16.380 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:36:16.383 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:36:16.385 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:36:16.387 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:36:16.391 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:37:16.400 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:37:16.404 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:37:16.407 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:37:16.409 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:37:16.412 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:38:16.422 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:38:16.428 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:38:16.432 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:38:16.435 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:38:16.438 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:39:16.451 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:39:16.455 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:39:16.457 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:39:16.459 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:39:16.462 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:40:16.483 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:40:16.488 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:40:16.492 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:40:16.494 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:40:16.496 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:41:16.515 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:41:16.518 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:41:16.521 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:41:16.523 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:41:16.525 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:42:16.541 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:42:16.543 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:42:16.546 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:42:16.549 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:42:16.554 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:42:42.093 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - null null
+2026-05-29 23:42:42.094 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 0.8225ms
+2026-05-29 23:42:42.094 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2026-05-29 23:42:53.656 +07:00 [INF] Request starting HTTP/1.1 POST http://localhost:5231/api/chat - application/json 3098
+2026-05-29 23:42:53.657 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:42:53.657 +07:00 [INF] Route matched with {action = "Post", controller = "Chat", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Post(AuraCinema.Domain.Models.Chat.ChatRequest) on controller AuraCinema.Web.Controllers.ChatController (AuraCinema.Web).
+2026-05-29 23:42:53.658 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:42:53.658 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:42:55.245 +07:00 [INF] Received HTTP response headers after 1586.4111ms - 200
+2026-05-29 23:42:55.245 +07:00 [INF] End processing HTTP request after 1586.8147ms - 200
+2026-05-29 23:42:55.256 +07:00 [INF] Executed DbCommand (9ms) [Parameters=[@__p_1='?' (DbType = Int32), @__now_2='?' (DbType = DateTime2), @__status_0='?' (Size = 50)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(@__p_1) [m].[MovieID] AS [movieId], [m].[Title] AS [title], [m].[Genre] AS [genre], [m].[Duration] AS [duration], [m].[ReleaseDate] AS [releaseDate], [m].[Poster] AS [poster], [m].[Status] AS [status], (
+    SELECT COUNT(*)
+    FROM [Showtimes] AS [s]
+    WHERE [m].[MovieID] = [s].[MovieID] AND [s].[StartTime] >= @__now_2) AS [showtimeCount]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = @__status_0
+ORDER BY [m].[ReleaseDate] DESC
+2026-05-29 23:42:55.258 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_1='?' (DbType = Int32), @__now_2='?' (DbType = DateTime2), @__status_0='?' (Size = 50)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(@__p_1) [m].[MovieID] AS [movieId], [m].[Title] AS [title], [m].[Genre] AS [genre], [m].[Duration] AS [duration], [m].[ReleaseDate] AS [releaseDate], [m].[Poster] AS [poster], [m].[Status] AS [status], (
+    SELECT COUNT(*)
+    FROM [Showtimes] AS [s]
+    WHERE [m].[MovieID] = [s].[MovieID] AND [s].[StartTime] >= @__now_2) AS [showtimeCount]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = @__status_0
+ORDER BY [m].[ReleaseDate] DESC
+2026-05-29 23:42:55.258 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:42:55.258 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:42:56.108 +07:00 [INF] Received HTTP response headers after 849.9684ms - 200
+2026-05-29 23:42:56.108 +07:00 [INF] End processing HTTP request after 850.3179ms - 200
+2026-05-29 23:42:56.109 +07:00 [INF] Executing OkObjectResult, writing value of type 'AuraCinema.Domain.Models.Chat.ChatResponse'.
+2026-05-29 23:42:56.110 +07:00 [INF] Executed action AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web) in 2452.6157ms
+2026-05-29 23:42:56.110 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:42:56.110 +07:00 [INF] Request finished HTTP/1.1 POST http://localhost:5231/api/chat - 200 null application/json; charset=utf-8 2453.6479ms
+2026-05-29 23:43:16.578 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:43:16.584 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:43:16.586 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:43:16.591 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:43:16.595 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:44:16.603 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:44:16.607 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:44:16.611 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:44:16.614 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:44:16.617 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:45:16.622 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:45:16.626 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:45:16.628 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:45:16.630 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:45:16.633 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:46:16.644 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:46:16.649 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:46:16.652 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:46:16.656 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:46:16.658 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:47:16.674 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:47:16.678 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:47:16.683 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:47:16.691 +07:00 [INF] Executed DbCommand (7ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:47:16.699 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:48:16.714 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:48:16.719 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:48:16.720 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:48:16.722 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:48:16.725 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:49:16.746 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:49:16.756 +07:00 [INF] Executed DbCommand (9ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:49:16.760 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:49:16.768 +07:00 [INF] Executed DbCommand (7ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:49:16.775 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:49:39.668 +07:00 [INF] Executed DbCommand (87ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-05-29 23:49:39.847 +07:00 [INF] Executed DbCommand (49ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-05-29 23:49:39.856 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-05-29 23:49:39.861 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-05-29 23:49:39.919 +07:00 [INF] Executed DbCommand (24ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-05-29 23:49:39.981 +07:00 [INF] No migrations were applied. The database is already up to date.
+2026-05-29 23:49:40.536 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Users] AS [u]
+        WHERE [u].[Email] = N'admin@auracinema.vn') THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-29 23:49:40.554 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Users] AS [u]
+        WHERE [u].[Email] = N'staff@auracinema.vn') THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-29 23:49:40.567 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Users] AS [u]
+        WHERE [u].[Email] = N'customer@gmail.com') THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-29 23:49:40.737 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [u].[UserID], [u].[Email], [u].[FullName], [u].[OtpCode], [u].[OtpExpiry], [u].[Password], [u].[Phone], [u].[Role], [u].[Status], [u].[UserCode]
+FROM [Users] AS [u]
+WHERE [u].[UserCode] LIKE N''
+2026-05-29 23:49:40.750 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Rooms] AS [r]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-29 23:49:40.758 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [PriceConfigs] AS [p]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-29 23:49:40.784 +07:00 [INF] Executed DbCommand (21ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Movies] AS [m]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-29 23:49:40.797 +07:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Services] AS [s]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-29 23:49:40.806 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Promotions] AS [p]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-29 23:49:40.816 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Showtimes] AS [s]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-29 23:49:40.843 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Orders] AS [o]
+        WHERE [o].[Status] IN (N'Da thanh toan', N'Đã thanh toán')) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-05-29 23:49:40.982 +07:00 [INF] Executed DbCommand (40ms) [Parameters=[@__startDate_0='?' (DbType = DateTime2), @__AddDays_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [Showtimes] AS [s]
+WHERE [s].[StartTime] >= @__startDate_0 AND [s].[StartTime] <= @__AddDays_1
+2026-05-29 23:49:41.289 +07:00 [INF] User profile is available. Using 'C:\Users\lqhie\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-05-29 23:49:41.431 +07:00 [INF] Booking Cleanup Service is starting.
+2026-05-29 23:49:41.488 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:49:41.599 +07:00 [INF] Now listening on: http://localhost:5231
+2026-05-29 23:49:41.600 +07:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-29 23:49:41.600 +07:00 [INF] Hosting environment: Development
+2026-05-29 23:49:41.600 +07:00 [INF] Content root path: D:\AURACINEMA\AuraCinema.Web
+2026-05-29 23:49:41.660 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:49:41.686 +07:00 [INF] Executed DbCommand (14ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:49:41.702 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:49:41.731 +07:00 [INF] Executed DbCommand (9ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:50:41.746 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:50:41.753 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:50:41.757 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:50:41.760 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:50:41.765 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:51:41.790 +07:00 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:51:41.805 +07:00 [INF] Executed DbCommand (8ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:51:41.828 +07:00 [INF] Executed DbCommand (21ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:51:41.844 +07:00 [INF] Executed DbCommand (11ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:51:41.853 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:51:58.267 +07:00 [INF] Request starting HTTP/1.1 POST http://localhost:5231/api/chat - application/json 50
+2026-05-29 23:51:58.271 +07:00 [WRN] Failed to determine the https port for redirect.
+2026-05-29 23:51:58.368 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:51:58.402 +07:00 [INF] Route matched with {action = "Post", controller = "Chat", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Post(AuraCinema.Domain.Models.Chat.ChatRequest) on controller AuraCinema.Web.Controllers.ChatController (AuraCinema.Web).
+2026-05-29 23:51:58.643 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:51:58.650 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:51:59.356 +07:00 [INF] Received HTTP response headers after 702.5293ms - 200
+2026-05-29 23:51:59.362 +07:00 [INF] End processing HTTP request after 729.1809ms - 200
+2026-05-29 23:51:59.466 +07:00 [INF] Executed DbCommand (14ms) [Parameters=[@__p_1='?' (DbType = Int32), @__now_2='?' (DbType = DateTime2), @__status_0='?' (Size = 50)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(@__p_1) [m].[MovieID] AS [movieId], [m].[Title] AS [title], [m].[Genre] AS [genre], [m].[Duration] AS [duration], [m].[ReleaseDate] AS [releaseDate], [m].[Poster] AS [poster], [m].[Status] AS [status], (
+    SELECT COUNT(*)
+    FROM [Showtimes] AS [s]
+    WHERE [m].[MovieID] = [s].[MovieID] AND [s].[StartTime] >= @__now_2) AS [showtimeCount]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = @__status_0
+ORDER BY [m].[ReleaseDate] DESC
+2026-05-29 23:51:59.523 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:51:59.523 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:52:00.050 +07:00 [INF] Received HTTP response headers after 526.3847ms - 200
+2026-05-29 23:52:00.050 +07:00 [INF] End processing HTTP request after 527.5072ms - 200
+2026-05-29 23:52:00.114 +07:00 [INF] Executing OkObjectResult, writing value of type 'AuraCinema.Domain.Models.Chat.ChatResponse'.
+2026-05-29 23:52:00.136 +07:00 [INF] Executed action AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web) in 1728.6973ms
+2026-05-29 23:52:00.137 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:52:00.145 +07:00 [INF] Request finished HTTP/1.1 POST http://localhost:5231/api/chat - 200 null application/json; charset=utf-8 1881.0761ms
+2026-05-29 23:52:42.162 +07:00 [INF] Executed DbCommand (261ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:52:42.324 +07:00 [INF] Executed DbCommand (153ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:52:42.484 +07:00 [INF] Executed DbCommand (158ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:52:42.575 +07:00 [INF] Executed DbCommand (89ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:52:42.749 +07:00 [INF] Executed DbCommand (157ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:53:42.769 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:53:42.776 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:53:42.779 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:53:42.782 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:53:42.787 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:54:06.707 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5231/ - null null
+2026-05-29 23:54:06.710 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.HomeController.Index (AuraCinema.Web)'
+2026-05-29 23:54:06.718 +07:00 [INF] Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller AuraCinema.Web.Controllers.HomeController (AuraCinema.Web).
+2026-05-29 23:54:06.739 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Title], [m].[Genre], [m].[Poster], [m].[Duration], [m].[Status], [m].[ReleaseDate], [m].[Director]
+FROM [Movies] AS [m]
+WHERE [m].[Status] IN (N'Dang chieu', N'Sap chieu')
+ORDER BY [m].[ReleaseDate] DESC
+2026-05-29 23:54:06.755 +07:00 [INF] Executing ViewResult, running view Index.
+2026-05-29 23:54:06.949 +07:00 [INF] Executed ViewResult - view Index executed in 198.6063ms.
+2026-05-29 23:54:06.950 +07:00 [INF] Executed action AuraCinema.Web.Controllers.HomeController.Index (AuraCinema.Web) in 231.3651ms
+2026-05-29 23:54:06.950 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.HomeController.Index (AuraCinema.Web)'
+2026-05-29 23:54:06.952 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5231/ - 200 null text/html; charset=utf-8 245.0046ms
+2026-05-29 23:54:07.011 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - null null
+2026-05-29 23:54:07.024 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 13.5369ms
+2026-05-29 23:54:07.026 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2026-05-29 23:54:15.325 +07:00 [INF] Request starting HTTP/1.1 POST http://localhost:5231/api/chat - application/json 36
+2026-05-29 23:54:15.327 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:54:15.328 +07:00 [INF] Route matched with {action = "Post", controller = "Chat", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Post(AuraCinema.Domain.Models.Chat.ChatRequest) on controller AuraCinema.Web.Controllers.ChatController (AuraCinema.Web).
+2026-05-29 23:54:15.345 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:54:15.345 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:54:15.737 +07:00 [INF] Received HTTP response headers after 391.4335ms - 200
+2026-05-29 23:54:15.737 +07:00 [INF] End processing HTTP request after 392.0676ms - 200
+2026-05-29 23:54:15.742 +07:00 [INF] Executing OkObjectResult, writing value of type 'AuraCinema.Domain.Models.Chat.ChatResponse'.
+2026-05-29 23:54:15.743 +07:00 [INF] Executed action AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web) in 414.9672ms
+2026-05-29 23:54:15.743 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:54:15.743 +07:00 [INF] Request finished HTTP/1.1 POST http://localhost:5231/api/chat - 200 null application/json; charset=utf-8 419.0982ms
+2026-05-29 23:54:19.783 +07:00 [INF] Request starting HTTP/1.1 POST http://localhost:5231/api/chat - application/json 216
+2026-05-29 23:54:19.784 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:54:19.784 +07:00 [INF] Route matched with {action = "Post", controller = "Chat", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Post(AuraCinema.Domain.Models.Chat.ChatRequest) on controller AuraCinema.Web.Controllers.ChatController (AuraCinema.Web).
+2026-05-29 23:54:19.800 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:54:19.801 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:54:20.291 +07:00 [INF] Received HTTP response headers after 490.0656ms - 200
+2026-05-29 23:54:20.291 +07:00 [INF] End processing HTTP request after 491.1006ms - 200
+2026-05-29 23:54:20.340 +07:00 [INF] Executed DbCommand (10ms) [Parameters=[@__p_1='?' (DbType = Int32), @__now_2='?' (DbType = DateTime2), @__genre_0_contains='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(@__p_1) [m].[MovieID] AS [movieId], [m].[Title] AS [title], [m].[Genre] AS [genre], [m].[Duration] AS [duration], [m].[ReleaseDate] AS [releaseDate], [m].[Poster] AS [poster], [m].[Status] AS [status], (
+    SELECT COUNT(*)
+    FROM [Showtimes] AS [s]
+    WHERE [m].[MovieID] = [s].[MovieID] AND [s].[StartTime] >= @__now_2) AS [showtimeCount]
+FROM [Movies] AS [m]
+WHERE [m].[Genre] LIKE @__genre_0_contains ESCAPE N'\' AND [m].[Status] IN (N'Dang chieu', N'Sap chieu')
+ORDER BY [m].[ReleaseDate] DESC
+2026-05-29 23:54:20.342 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:54:20.342 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:54:20.650 +07:00 [INF] Received HTTP response headers after 307.821ms - 200
+2026-05-29 23:54:20.650 +07:00 [INF] End processing HTTP request after 308.5099ms - 200
+2026-05-29 23:54:20.666 +07:00 [INF] Executing OkObjectResult, writing value of type 'AuraCinema.Domain.Models.Chat.ChatResponse'.
+2026-05-29 23:54:20.667 +07:00 [INF] Executed action AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web) in 882.7075ms
+2026-05-29 23:54:20.667 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:54:20.667 +07:00 [INF] Request finished HTTP/1.1 POST http://localhost:5231/api/chat - 200 null application/json; charset=utf-8 883.7779ms
+2026-05-29 23:54:32.604 +07:00 [INF] Request starting HTTP/1.1 POST http://localhost:5231/api/chat - application/json 449
+2026-05-29 23:54:32.605 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:54:32.605 +07:00 [INF] Route matched with {action = "Post", controller = "Chat", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Post(AuraCinema.Domain.Models.Chat.ChatRequest) on controller AuraCinema.Web.Controllers.ChatController (AuraCinema.Web).
+2026-05-29 23:54:32.606 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:54:32.606 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:54:32.913 +07:00 [INF] Received HTTP response headers after 306.8192ms - 200
+2026-05-29 23:54:32.913 +07:00 [INF] End processing HTTP request after 307.304ms - 200
+2026-05-29 23:54:32.932 +07:00 [INF] Executed DbCommand (15ms) [Parameters=[@__p_1='?' (DbType = Int32), @__now_2='?' (DbType = DateTime2), @__genre_0_contains='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(@__p_1) [m].[MovieID] AS [movieId], [m].[Title] AS [title], [m].[Genre] AS [genre], [m].[Duration] AS [duration], [m].[ReleaseDate] AS [releaseDate], [m].[Poster] AS [poster], [m].[Status] AS [status], (
+    SELECT COUNT(*)
+    FROM [Showtimes] AS [s]
+    WHERE [m].[MovieID] = [s].[MovieID] AND [s].[StartTime] >= @__now_2) AS [showtimeCount]
+FROM [Movies] AS [m]
+WHERE [m].[Genre] LIKE @__genre_0_contains ESCAPE N'\' AND [m].[Status] IN (N'Dang chieu', N'Sap chieu')
+ORDER BY [m].[ReleaseDate] DESC
+2026-05-29 23:54:32.936 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_1='?' (DbType = Int32), @__now_2='?' (DbType = DateTime2), @__genre_0_contains='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(@__p_1) [m].[MovieID] AS [movieId], [m].[Title] AS [title], [m].[Genre] AS [genre], [m].[Duration] AS [duration], [m].[ReleaseDate] AS [releaseDate], [m].[Poster] AS [poster], [m].[Status] AS [status], (
+    SELECT COUNT(*)
+    FROM [Showtimes] AS [s]
+    WHERE [m].[MovieID] = [s].[MovieID] AND [s].[StartTime] >= @__now_2) AS [showtimeCount]
+FROM [Movies] AS [m]
+WHERE [m].[Genre] LIKE @__genre_0_contains ESCAPE N'\' AND [m].[Status] IN (N'Dang chieu', N'Sap chieu')
+ORDER BY [m].[ReleaseDate] DESC
+2026-05-29 23:54:32.939 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_1='?' (DbType = Int32), @__now_2='?' (DbType = DateTime2), @__genre_0_contains='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(@__p_1) [m].[MovieID] AS [movieId], [m].[Title] AS [title], [m].[Genre] AS [genre], [m].[Duration] AS [duration], [m].[ReleaseDate] AS [releaseDate], [m].[Poster] AS [poster], [m].[Status] AS [status], (
+    SELECT COUNT(*)
+    FROM [Showtimes] AS [s]
+    WHERE [m].[MovieID] = [s].[MovieID] AND [s].[StartTime] >= @__now_2) AS [showtimeCount]
+FROM [Movies] AS [m]
+WHERE [m].[Genre] LIKE @__genre_0_contains ESCAPE N'\' AND [m].[Status] IN (N'Dang chieu', N'Sap chieu')
+ORDER BY [m].[ReleaseDate] DESC
+2026-05-29 23:54:32.953 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:54:32.953 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:54:33.265 +07:00 [INF] Received HTTP response headers after 311.4637ms - 200
+2026-05-29 23:54:33.265 +07:00 [INF] End processing HTTP request after 312.0273ms - 200
+2026-05-29 23:54:33.268 +07:00 [INF] Executing OkObjectResult, writing value of type 'AuraCinema.Domain.Models.Chat.ChatResponse'.
+2026-05-29 23:54:33.268 +07:00 [INF] Executed action AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web) in 663.12ms
+2026-05-29 23:54:33.268 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:54:33.268 +07:00 [INF] Request finished HTTP/1.1 POST http://localhost:5231/api/chat - 200 null application/json; charset=utf-8 664.0285ms
+2026-05-29 23:54:42.801 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:54:42.808 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:54:42.812 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:54:42.816 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:54:42.820 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:54:48.855 +07:00 [INF] Request starting HTTP/1.1 POST http://localhost:5231/api/chat - application/json 711
+2026-05-29 23:54:48.855 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:54:48.856 +07:00 [INF] Route matched with {action = "Post", controller = "Chat", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Post(AuraCinema.Domain.Models.Chat.ChatRequest) on controller AuraCinema.Web.Controllers.ChatController (AuraCinema.Web).
+2026-05-29 23:54:48.857 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:54:48.857 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:54:49.387 +07:00 [INF] Received HTTP response headers after 528.9872ms - 200
+2026-05-29 23:54:49.387 +07:00 [INF] End processing HTTP request after 529.6057ms - 200
+2026-05-29 23:54:49.405 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[@__p_1='?' (DbType = Int32), @__now_2='?' (DbType = DateTime2), @__status_0='?' (Size = 50)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(@__p_1) [m].[MovieID] AS [movieId], [m].[Title] AS [title], [m].[Genre] AS [genre], [m].[Duration] AS [duration], [m].[ReleaseDate] AS [releaseDate], [m].[Poster] AS [poster], [m].[Status] AS [status], (
+    SELECT COUNT(*)
+    FROM [Showtimes] AS [s]
+    WHERE [m].[MovieID] = [s].[MovieID] AND [s].[StartTime] >= @__now_2) AS [showtimeCount]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = @__status_0
+ORDER BY [m].[ReleaseDate] DESC
+2026-05-29 23:54:49.406 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:54:49.406 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:54:50.888 +07:00 [INF] Received HTTP response headers after 1482.1691ms - 200
+2026-05-29 23:54:50.888 +07:00 [INF] End processing HTTP request after 1482.5522ms - 200
+2026-05-29 23:54:50.912 +07:00 [INF] Executing OkObjectResult, writing value of type 'AuraCinema.Domain.Models.Chat.ChatResponse'.
+2026-05-29 23:54:50.912 +07:00 [INF] Executed action AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web) in 2056.3611ms
+2026-05-29 23:54:50.912 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:54:50.912 +07:00 [INF] Request finished HTTP/1.1 POST http://localhost:5231/api/chat - 200 null application/json; charset=utf-8 2057.3671ms
+2026-05-29 23:55:20.108 +07:00 [INF] Request starting HTTP/1.1 POST http://localhost:5231/api/chat - application/json 1167
+2026-05-29 23:55:20.109 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:55:20.109 +07:00 [INF] Route matched with {action = "Post", controller = "Chat", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Post(AuraCinema.Domain.Models.Chat.ChatRequest) on controller AuraCinema.Web.Controllers.ChatController (AuraCinema.Web).
+2026-05-29 23:55:20.110 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:55:20.110 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:55:20.562 +07:00 [INF] Received HTTP response headers after 451.5459ms - 200
+2026-05-29 23:55:20.562 +07:00 [INF] End processing HTTP request after 452.0226ms - 200
+2026-05-29 23:55:20.591 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__movieId_Value_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [m].[MovieID], [m].[Title]
+FROM [Movies] AS [m]
+WHERE [m].[MovieID] = @__movieId_Value_0
+2026-05-29 23:55:20.599 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:55:20.599 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:55:21.289 +07:00 [INF] Received HTTP response headers after 689.2937ms - 200
+2026-05-29 23:55:21.289 +07:00 [INF] End processing HTTP request after 689.9345ms - 200
+2026-05-29 23:55:21.289 +07:00 [INF] Executing OkObjectResult, writing value of type 'AuraCinema.Domain.Models.Chat.ChatResponse'.
+2026-05-29 23:55:21.289 +07:00 [INF] Executed action AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web) in 1180.3515ms
+2026-05-29 23:55:21.289 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:55:21.290 +07:00 [INF] Request finished HTTP/1.1 POST http://localhost:5231/api/chat - 200 null application/json; charset=utf-8 1181.2765ms
+2026-05-29 23:55:42.830 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:55:42.835 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:55:42.839 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:55:42.843 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:55:42.846 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:56:15.138 +07:00 [INF] Request starting HTTP/1.1 POST http://localhost:5231/api/chat - application/json 1520
+2026-05-29 23:56:15.139 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:56:15.139 +07:00 [INF] Route matched with {action = "Post", controller = "Chat", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Post(AuraCinema.Domain.Models.Chat.ChatRequest) on controller AuraCinema.Web.Controllers.ChatController (AuraCinema.Web).
+2026-05-29 23:56:15.141 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:56:15.141 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:56:15.656 +07:00 [INF] Received HTTP response headers after 514.631ms - 200
+2026-05-29 23:56:15.656 +07:00 [INF] End processing HTTP request after 515.3037ms - 200
+2026-05-29 23:56:15.677 +07:00 [INF] Executed DbCommand (9ms) [Parameters=[@__p_2='?' (DbType = Int32), @__now_3='?' (DbType = DateTime2), @__genre_0_contains='?' (Size = 4000), @__status_1='?' (Size = 50)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(@__p_2) [m].[MovieID] AS [movieId], [m].[Title] AS [title], [m].[Genre] AS [genre], [m].[Duration] AS [duration], [m].[ReleaseDate] AS [releaseDate], [m].[Poster] AS [poster], [m].[Status] AS [status], (
+    SELECT COUNT(*)
+    FROM [Showtimes] AS [s]
+    WHERE [m].[MovieID] = [s].[MovieID] AND [s].[StartTime] >= @__now_3) AS [showtimeCount]
+FROM [Movies] AS [m]
+WHERE [m].[Genre] LIKE @__genre_0_contains ESCAPE N'\' AND [m].[Status] = @__status_1
+ORDER BY [m].[ReleaseDate] DESC
+2026-05-29 23:56:15.678 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:56:15.678 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:56:16.201 +07:00 [INF] Received HTTP response headers after 522.545ms - 200
+2026-05-29 23:56:16.202 +07:00 [INF] End processing HTTP request after 523.241ms - 200
+2026-05-29 23:56:16.202 +07:00 [INF] Executing OkObjectResult, writing value of type 'AuraCinema.Domain.Models.Chat.ChatResponse'.
+2026-05-29 23:56:16.202 +07:00 [INF] Executed action AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web) in 1063.3104ms
+2026-05-29 23:56:16.203 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:56:16.203 +07:00 [INF] Request finished HTTP/1.1 POST http://localhost:5231/api/chat - 200 null application/json; charset=utf-8 1064.2439ms
+2026-05-29 23:56:42.650 +07:00 [INF] Request starting HTTP/1.1 POST http://localhost:5231/api/chat - application/json 1851
+2026-05-29 23:56:42.651 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:56:42.651 +07:00 [INF] Route matched with {action = "Post", controller = "Chat", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Post(AuraCinema.Domain.Models.Chat.ChatRequest) on controller AuraCinema.Web.Controllers.ChatController (AuraCinema.Web).
+2026-05-29 23:56:42.652 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:56:42.652 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:56:42.862 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:56:42.869 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:56:42.873 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:56:42.877 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:56:42.881 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:56:43.223 +07:00 [INF] Received HTTP response headers after 571.0653ms - 200
+2026-05-29 23:56:43.224 +07:00 [INF] End processing HTTP request after 571.5014ms - 200
+2026-05-29 23:56:43.233 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Title]
+FROM [Movies] AS [m]
+2026-05-29 23:56:43.236 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:56:43.236 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:56:43.946 +07:00 [INF] Received HTTP response headers after 709.1485ms - 200
+2026-05-29 23:56:43.946 +07:00 [INF] End processing HTTP request after 709.7993ms - 200
+2026-05-29 23:56:43.946 +07:00 [INF] Executing OkObjectResult, writing value of type 'AuraCinema.Domain.Models.Chat.ChatResponse'.
+2026-05-29 23:56:43.947 +07:00 [INF] Executed action AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web) in 1295.7769ms
+2026-05-29 23:56:43.947 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:56:43.947 +07:00 [INF] Request finished HTTP/1.1 POST http://localhost:5231/api/chat - 200 null application/json; charset=utf-8 1296.6856ms
+2026-05-29 23:57:14.556 +07:00 [INF] Request starting HTTP/1.1 POST http://localhost:5231/api/chat - application/json 2134
+2026-05-29 23:57:14.556 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:57:14.557 +07:00 [INF] Route matched with {action = "Post", controller = "Chat", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Post(AuraCinema.Domain.Models.Chat.ChatRequest) on controller AuraCinema.Web.Controllers.ChatController (AuraCinema.Web).
+2026-05-29 23:57:14.558 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:57:14.558 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:57:15.024 +07:00 [INF] Received HTTP response headers after 465.7182ms - 400
+2026-05-29 23:57:15.024 +07:00 [INF] End processing HTTP request after 466.2402ms - 400
+2026-05-29 23:57:15.026 +07:00 [WRN] Groq tool_use_failed: {"error":{"message":"tool call validation failed: parameters for tool get_showtimes did not match schema: errors: [`/movie_id`: expected integer, but got string]","type":"invalid_request_error","code":"tool_use_failed","failed_generation":"\u003cfunction=get_showtimes\u003e{\"movie_id\": \"\", \"from_date\": \"2026-05-25\", \"days\": 2, \"title\": \"Yêu nữ thích hàng hiệu 2\"}\u003c/function\u003e"}}
+
+2026-05-29 23:57:15.026 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:57:15.026 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:57:15.476 +07:00 [INF] Received HTTP response headers after 449.2814ms - 200
+2026-05-29 23:57:15.476 +07:00 [INF] End processing HTTP request after 449.6095ms - 200
+2026-05-29 23:57:15.478 +07:00 [INF] Executing OkObjectResult, writing value of type 'AuraCinema.Domain.Models.Chat.ChatResponse'.
+2026-05-29 23:57:15.479 +07:00 [INF] Executed action AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web) in 922.2046ms
+2026-05-29 23:57:15.479 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:57:15.479 +07:00 [INF] Request finished HTTP/1.1 POST http://localhost:5231/api/chat - 200 null application/json; charset=utf-8 923.655ms
+2026-05-29 23:57:22.875 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5231/Movies/Details/1 - null null
+2026-05-29 23:57:22.876 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.MoviesController.Details (AuraCinema.Web)'
+2026-05-29 23:57:22.883 +07:00 [INF] Route matched with {action = "Details", controller = "Movies", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Details(Int32) on controller AuraCinema.Web.Controllers.MoviesController (AuraCinema.Web).
+2026-05-29 23:57:22.910 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[MovieID] = @__p_0
+2026-05-29 23:57:23.016 +07:00 [INF] Executed DbCommand (5ms) [Parameters=[@__id_0='?' (DbType = Int32), @__now_1='?' (DbType = DateTime2), @__maxDate_2='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status], [r].[RoomID], [r].[Capacity], [r].[RoomCode], [r].[RoomName], [r].[Status]
+FROM [Showtimes] AS [s]
+INNER JOIN [Rooms] AS [r] ON [s].[RoomID] = [r].[RoomID]
+WHERE [s].[MovieID] = @__id_0 AND [s].[Status] = N'Đang mở bán' AND [s].[StartTime] >= @__now_1 AND [s].[StartTime] < @__maxDate_2
+ORDER BY [s].[StartTime]
+2026-05-29 23:57:23.164 +07:00 [INF] Executed DbCommand (29ms) [Parameters=[@__showtimeIds_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT [o1].[ShowtimeID], COUNT(*) AS [Sold]
+FROM [Orders] AS [o]
+INNER JOIN [OrderSeats] AS [o0] ON [o].[OrderID] = [o0].[OrderID]
+INNER JOIN [Orders] AS [o1] ON [o0].[OrderID] = [o1].[OrderID]
+WHERE [o].[ShowtimeID] IN (
+    SELECT [s].[value]
+    FROM OPENJSON(@__showtimeIds_0) WITH ([value] int '$') AS [s]
+) AND ([o].[Status] = N'Đã thanh toán' OR ([o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] > GETDATE()))
+GROUP BY [o1].[ShowtimeID]
+2026-05-29 23:57:23.173 +07:00 [INF] Executing ViewResult, running view Details.
+2026-05-29 23:57:23.189 +07:00 [INF] Executed ViewResult - view Details executed in 16.3904ms.
+2026-05-29 23:57:23.189 +07:00 [INF] Executed action AuraCinema.Web.Controllers.MoviesController.Details (AuraCinema.Web) in 306.1218ms
+2026-05-29 23:57:23.189 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.MoviesController.Details (AuraCinema.Web)'
+2026-05-29 23:57:23.189 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5231/Movies/Details/1 - 200 null text/html; charset=utf-8 314.1004ms
+2026-05-29 23:57:23.239 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - null null
+2026-05-29 23:57:23.241 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 3.0401ms
+2026-05-29 23:57:23.242 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2026-05-29 23:57:37.506 +07:00 [INF] Request starting HTTP/1.1 POST http://localhost:5231/api/chat - application/json 2549
+2026-05-29 23:57:37.507 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:57:37.508 +07:00 [INF] Route matched with {action = "Post", controller = "Chat", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Post(AuraCinema.Domain.Models.Chat.ChatRequest) on controller AuraCinema.Web.Controllers.ChatController (AuraCinema.Web).
+2026-05-29 23:57:37.510 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:57:37.510 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:57:37.871 +07:00 [INF] Received HTTP response headers after 361.2009ms - 200
+2026-05-29 23:57:37.872 +07:00 [INF] End processing HTTP request after 361.772ms - 200
+2026-05-29 23:57:37.875 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Title]
+FROM [Movies] AS [m]
+2026-05-29 23:57:37.876 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:57:37.877 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:57:38.187 +07:00 [INF] Received HTTP response headers after 310.2607ms - 200
+2026-05-29 23:57:38.187 +07:00 [INF] End processing HTTP request after 310.8241ms - 200
+2026-05-29 23:57:38.187 +07:00 [INF] Executing OkObjectResult, writing value of type 'AuraCinema.Domain.Models.Chat.ChatResponse'.
+2026-05-29 23:57:38.188 +07:00 [INF] Executed action AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web) in 680.1645ms
+2026-05-29 23:57:38.188 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:57:38.188 +07:00 [INF] Request finished HTTP/1.1 POST http://localhost:5231/api/chat - 200 null application/json; charset=utf-8 682.1004ms
+2026-05-29 23:57:41.832 +07:00 [INF] Request starting HTTP/1.1 POST http://localhost:5231/api/chat - application/json 2816
+2026-05-29 23:57:41.832 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:57:41.832 +07:00 [INF] Route matched with {action = "Post", controller = "Chat", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Post(AuraCinema.Domain.Models.Chat.ChatRequest) on controller AuraCinema.Web.Controllers.ChatController (AuraCinema.Web).
+2026-05-29 23:57:41.834 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:57:41.834 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:57:42.283 +07:00 [INF] Received HTTP response headers after 448.9339ms - 200
+2026-05-29 23:57:42.283 +07:00 [INF] End processing HTTP request after 449.744ms - 200
+2026-05-29 23:57:42.302 +07:00 [INF] Executed DbCommand (16ms) [Parameters=[@__p_1='?' (DbType = Int32), @__now_2='?' (DbType = DateTime2), @__genre_0_contains='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(@__p_1) [m].[MovieID] AS [movieId], [m].[Title] AS [title], [m].[Genre] AS [genre], [m].[Duration] AS [duration], [m].[ReleaseDate] AS [releaseDate], [m].[Poster] AS [poster], [m].[Status] AS [status], (
+    SELECT COUNT(*)
+    FROM [Showtimes] AS [s]
+    WHERE [m].[MovieID] = [s].[MovieID] AND [s].[StartTime] >= @__now_2) AS [showtimeCount]
+FROM [Movies] AS [m]
+WHERE [m].[Genre] LIKE @__genre_0_contains ESCAPE N'\' AND [m].[Status] IN (N'Dang chieu', N'Sap chieu')
+ORDER BY [m].[ReleaseDate] DESC
+2026-05-29 23:57:42.303 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:57:42.303 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:57:42.811 +07:00 [INF] Received HTTP response headers after 507.8003ms - 200
+2026-05-29 23:57:42.811 +07:00 [INF] End processing HTTP request after 508.2014ms - 200
+2026-05-29 23:57:42.815 +07:00 [INF] Executing OkObjectResult, writing value of type 'AuraCinema.Domain.Models.Chat.ChatResponse'.
+2026-05-29 23:57:42.816 +07:00 [INF] Executed action AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web) in 983.3076ms
+2026-05-29 23:57:42.816 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:57:42.817 +07:00 [INF] Request finished HTTP/1.1 POST http://localhost:5231/api/chat - 200 null application/json; charset=utf-8 985.1255ms
+2026-05-29 23:57:42.894 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:57:42.897 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:57:42.901 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:57:42.904 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:57:42.907 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:57:57.072 +07:00 [INF] Request starting HTTP/1.1 POST http://localhost:5231/api/chat - application/json 3179
+2026-05-29 23:57:57.073 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:57:57.074 +07:00 [INF] Route matched with {action = "Post", controller = "Chat", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Post(AuraCinema.Domain.Models.Chat.ChatRequest) on controller AuraCinema.Web.Controllers.ChatController (AuraCinema.Web).
+2026-05-29 23:57:57.075 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:57:57.075 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:57:57.449 +07:00 [INF] Received HTTP response headers after 373.5006ms - 200
+2026-05-29 23:57:57.449 +07:00 [INF] End processing HTTP request after 373.85ms - 200
+2026-05-29 23:57:57.461 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:57:57.461 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:57:58.146 +07:00 [INF] Received HTTP response headers after 685.6432ms - 200
+2026-05-29 23:57:58.147 +07:00 [INF] End processing HTTP request after 686.4148ms - 200
+2026-05-29 23:57:58.149 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Title]
+FROM [Movies] AS [m]
+2026-05-29 23:57:58.170 +07:00 [INF] Executed DbCommand (7ms) [Parameters=[@__id_0='?' (DbType = Int32), @__startDate_1='?' (DbType = DateTime2), @__maxDate_2='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status], [r].[RoomID], [r].[Capacity], [r].[RoomCode], [r].[RoomName], [r].[Status]
+FROM [Showtimes] AS [s]
+INNER JOIN [Rooms] AS [r] ON [s].[RoomID] = [r].[RoomID]
+WHERE [s].[MovieID] = @__id_0 AND [s].[Status] = N'Đang mở bán' AND [s].[StartTime] >= @__startDate_1 AND [s].[StartTime] < @__maxDate_2
+ORDER BY [s].[StartTime]
+2026-05-29 23:57:58.233 +07:00 [INF] Executed DbCommand (49ms) [Parameters=[@__showtimeIds_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT [o1].[ShowtimeID], COUNT(*) AS [Sold]
+FROM [Orders] AS [o]
+INNER JOIN [OrderSeats] AS [o0] ON [o].[OrderID] = [o0].[OrderID]
+INNER JOIN [Orders] AS [o1] ON [o0].[OrderID] = [o1].[OrderID]
+WHERE [o].[ShowtimeID] IN (
+    SELECT [s].[value]
+    FROM OPENJSON(@__showtimeIds_0) WITH ([value] int '$') AS [s]
+) AND ([o].[Status] IN (N'Đã thanh toán', N'Da thanh toan') OR ([o].[Status] IN (N'Chờ thanh toán', N'Cho thanh toan') AND [o].[HoldExpiryTime] > GETDATE()))
+GROUP BY [o1].[ShowtimeID]
+2026-05-29 23:57:58.241 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:57:58.242 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:57:58.762 +07:00 [INF] Received HTTP response headers after 519.9774ms - 200
+2026-05-29 23:57:58.762 +07:00 [INF] End processing HTTP request after 520.7316ms - 200
+2026-05-29 23:57:58.763 +07:00 [INF] Executing OkObjectResult, writing value of type 'AuraCinema.Domain.Models.Chat.ChatResponse'.
+2026-05-29 23:57:58.763 +07:00 [INF] Executed action AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web) in 1689.3212ms
+2026-05-29 23:57:58.763 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:57:58.764 +07:00 [INF] Request finished HTTP/1.1 POST http://localhost:5231/api/chat - 200 null application/json; charset=utf-8 1691.4224ms
+2026-05-29 23:58:13.100 +07:00 [INF] Request starting HTTP/1.1 POST http://localhost:5231/api/chat - application/json 3253
+2026-05-29 23:58:13.101 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:58:13.101 +07:00 [INF] Route matched with {action = "Post", controller = "Chat", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Post(AuraCinema.Domain.Models.Chat.ChatRequest) on controller AuraCinema.Web.Controllers.ChatController (AuraCinema.Web).
+2026-05-29 23:58:13.102 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:58:13.102 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:58:13.768 +07:00 [INF] Received HTTP response headers after 665.1426ms - 200
+2026-05-29 23:58:13.768 +07:00 [INF] End processing HTTP request after 665.7954ms - 200
+2026-05-29 23:58:13.771 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Title]
+FROM [Movies] AS [m]
+2026-05-29 23:58:13.779 +07:00 [INF] Executed DbCommand (7ms) [Parameters=[@__id_0='?' (DbType = Int32), @__startDate_1='?' (DbType = DateTime2), @__maxDate_2='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status], [r].[RoomID], [r].[Capacity], [r].[RoomCode], [r].[RoomName], [r].[Status]
+FROM [Showtimes] AS [s]
+INNER JOIN [Rooms] AS [r] ON [s].[RoomID] = [r].[RoomID]
+WHERE [s].[MovieID] = @__id_0 AND [s].[Status] = N'Đang mở bán' AND [s].[StartTime] >= @__startDate_1 AND [s].[StartTime] < @__maxDate_2
+ORDER BY [s].[StartTime]
+2026-05-29 23:58:13.811 +07:00 [INF] Executed DbCommand (30ms) [Parameters=[@__showtimeIds_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT [o1].[ShowtimeID], COUNT(*) AS [Sold]
+FROM [Orders] AS [o]
+INNER JOIN [OrderSeats] AS [o0] ON [o].[OrderID] = [o0].[OrderID]
+INNER JOIN [Orders] AS [o1] ON [o0].[OrderID] = [o1].[OrderID]
+WHERE [o].[ShowtimeID] IN (
+    SELECT [s].[value]
+    FROM OPENJSON(@__showtimeIds_0) WITH ([value] int '$') AS [s]
+) AND ([o].[Status] IN (N'Đã thanh toán', N'Da thanh toan') OR ([o].[Status] IN (N'Chờ thanh toán', N'Cho thanh toan') AND [o].[HoldExpiryTime] > GETDATE()))
+GROUP BY [o1].[ShowtimeID]
+2026-05-29 23:58:13.812 +07:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Title]
+FROM [Movies] AS [m]
+2026-05-29 23:58:13.813 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__id_0='?' (DbType = Int32), @__startDate_1='?' (DbType = DateTime2), @__maxDate_2='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status], [r].[RoomID], [r].[Capacity], [r].[RoomCode], [r].[RoomName], [r].[Status]
+FROM [Showtimes] AS [s]
+INNER JOIN [Rooms] AS [r] ON [s].[RoomID] = [r].[RoomID]
+WHERE [s].[MovieID] = @__id_0 AND [s].[Status] = N'Đang mở bán' AND [s].[StartTime] >= @__startDate_1 AND [s].[StartTime] < @__maxDate_2
+ORDER BY [s].[StartTime]
+2026-05-29 23:58:13.814 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__showtimeIds_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT [o1].[ShowtimeID], COUNT(*) AS [Sold]
+FROM [Orders] AS [o]
+INNER JOIN [OrderSeats] AS [o0] ON [o].[OrderID] = [o0].[OrderID]
+INNER JOIN [Orders] AS [o1] ON [o0].[OrderID] = [o1].[OrderID]
+WHERE [o].[ShowtimeID] IN (
+    SELECT [s].[value]
+    FROM OPENJSON(@__showtimeIds_0) WITH ([value] int '$') AS [s]
+) AND ([o].[Status] IN (N'Đã thanh toán', N'Da thanh toan') OR ([o].[Status] IN (N'Chờ thanh toán', N'Cho thanh toan') AND [o].[HoldExpiryTime] > GETDATE()))
+GROUP BY [o1].[ShowtimeID]
+2026-05-29 23:58:13.815 +07:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Title]
+FROM [Movies] AS [m]
+2026-05-29 23:58:13.816 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__id_0='?' (DbType = Int32), @__startDate_1='?' (DbType = DateTime2), @__maxDate_2='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status], [r].[RoomID], [r].[Capacity], [r].[RoomCode], [r].[RoomName], [r].[Status]
+FROM [Showtimes] AS [s]
+INNER JOIN [Rooms] AS [r] ON [s].[RoomID] = [r].[RoomID]
+WHERE [s].[MovieID] = @__id_0 AND [s].[Status] = N'Đang mở bán' AND [s].[StartTime] >= @__startDate_1 AND [s].[StartTime] < @__maxDate_2
+ORDER BY [s].[StartTime]
+2026-05-29 23:58:13.818 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__showtimeIds_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT [o1].[ShowtimeID], COUNT(*) AS [Sold]
+FROM [Orders] AS [o]
+INNER JOIN [OrderSeats] AS [o0] ON [o].[OrderID] = [o0].[OrderID]
+INNER JOIN [Orders] AS [o1] ON [o0].[OrderID] = [o1].[OrderID]
+WHERE [o].[ShowtimeID] IN (
+    SELECT [s].[value]
+    FROM OPENJSON(@__showtimeIds_0) WITH ([value] int '$') AS [s]
+) AND ([o].[Status] IN (N'Đã thanh toán', N'Da thanh toan') OR ([o].[Status] IN (N'Chờ thanh toán', N'Cho thanh toan') AND [o].[HoldExpiryTime] > GETDATE()))
+GROUP BY [o1].[ShowtimeID]
+2026-05-29 23:58:13.820 +07:00 [INF] Start processing HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:58:13.820 +07:00 [INF] Sending HTTP request POST https://api.groq.com/openai/v1/chat/completions
+2026-05-29 23:58:14.246 +07:00 [INF] Received HTTP response headers after 425.4691ms - 200
+2026-05-29 23:58:14.246 +07:00 [INF] End processing HTTP request after 425.7755ms - 200
+2026-05-29 23:58:14.246 +07:00 [INF] Executing OkObjectResult, writing value of type 'AuraCinema.Domain.Models.Chat.ChatResponse'.
+2026-05-29 23:58:14.246 +07:00 [INF] Executed action AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web) in 1145.5937ms
+2026-05-29 23:58:14.247 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.ChatController.Post (AuraCinema.Web)'
+2026-05-29 23:58:14.247 +07:00 [INF] Request finished HTTP/1.1 POST http://localhost:5231/api/chat - 200 null application/json; charset=utf-8 1146.8487ms
+2026-05-29 23:58:30.592 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - null null
+2026-05-29 23:58:30.593 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 1.0194ms
+2026-05-29 23:58:30.594 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2026-05-29 23:58:30.774 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - null null
+2026-05-29 23:58:30.775 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 0.8247ms
+2026-05-29 23:58:30.775 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2026-05-29 23:58:34.506 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5231/Movies/Details/7 - null null
+2026-05-29 23:58:34.507 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.MoviesController.Details (AuraCinema.Web)'
+2026-05-29 23:58:34.507 +07:00 [INF] Route matched with {action = "Details", controller = "Movies", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Details(Int32) on controller AuraCinema.Web.Controllers.MoviesController (AuraCinema.Web).
+2026-05-29 23:58:34.514 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[MovieID] = @__p_0
+2026-05-29 23:58:34.518 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__id_0='?' (DbType = Int32), @__now_1='?' (DbType = DateTime2), @__maxDate_2='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status], [r].[RoomID], [r].[Capacity], [r].[RoomCode], [r].[RoomName], [r].[Status]
+FROM [Showtimes] AS [s]
+INNER JOIN [Rooms] AS [r] ON [s].[RoomID] = [r].[RoomID]
+WHERE [s].[MovieID] = @__id_0 AND [s].[Status] = N'Đang mở bán' AND [s].[StartTime] >= @__now_1 AND [s].[StartTime] < @__maxDate_2
+ORDER BY [s].[StartTime]
+2026-05-29 23:58:34.542 +07:00 [INF] Executed DbCommand (22ms) [Parameters=[@__showtimeIds_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT [o1].[ShowtimeID], COUNT(*) AS [Sold]
+FROM [Orders] AS [o]
+INNER JOIN [OrderSeats] AS [o0] ON [o].[OrderID] = [o0].[OrderID]
+INNER JOIN [Orders] AS [o1] ON [o0].[OrderID] = [o1].[OrderID]
+WHERE [o].[ShowtimeID] IN (
+    SELECT [s].[value]
+    FROM OPENJSON(@__showtimeIds_0) WITH ([value] int '$') AS [s]
+) AND ([o].[Status] = N'Đã thanh toán' OR ([o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] > GETDATE()))
+GROUP BY [o1].[ShowtimeID]
+2026-05-29 23:58:34.542 +07:00 [INF] Executing ViewResult, running view Details.
+2026-05-29 23:58:34.545 +07:00 [INF] Executed ViewResult - view Details executed in 2.6244ms.
+2026-05-29 23:58:34.545 +07:00 [INF] Executed action AuraCinema.Web.Controllers.MoviesController.Details (AuraCinema.Web) in 37.7604ms
+2026-05-29 23:58:34.545 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.MoviesController.Details (AuraCinema.Web)'
+2026-05-29 23:58:34.545 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5231/Movies/Details/7 - 200 null text/html; charset=utf-8 39.3831ms
+2026-05-29 23:58:34.592 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - null null
+2026-05-29 23:58:34.593 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 0.5271ms
+2026-05-29 23:58:34.593 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2026-05-29 23:58:38.549 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - null null
+2026-05-29 23:58:38.549 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 0.6384ms
+2026-05-29 23:58:38.549 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2026-05-29 23:58:38.619 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - null null
+2026-05-29 23:58:38.620 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 0.8934ms
+2026-05-29 23:58:38.620 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2026-05-29 23:58:39.651 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5231/Movies/Details/5 - null null
+2026-05-29 23:58:39.651 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.MoviesController.Details (AuraCinema.Web)'
+2026-05-29 23:58:39.652 +07:00 [INF] Route matched with {action = "Details", controller = "Movies", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Details(Int32) on controller AuraCinema.Web.Controllers.MoviesController (AuraCinema.Web).
+2026-05-29 23:58:39.654 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[MovieID] = @__p_0
+2026-05-29 23:58:39.658 +07:00 [INF] Executed DbCommand (2ms) [Parameters=[@__id_0='?' (DbType = Int32), @__now_1='?' (DbType = DateTime2), @__maxDate_2='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status], [r].[RoomID], [r].[Capacity], [r].[RoomCode], [r].[RoomName], [r].[Status]
+FROM [Showtimes] AS [s]
+INNER JOIN [Rooms] AS [r] ON [s].[RoomID] = [r].[RoomID]
+WHERE [s].[MovieID] = @__id_0 AND [s].[Status] = N'Đang mở bán' AND [s].[StartTime] >= @__now_1 AND [s].[StartTime] < @__maxDate_2
+ORDER BY [s].[StartTime]
+2026-05-29 23:58:39.659 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__showtimeIds_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT [o1].[ShowtimeID], COUNT(*) AS [Sold]
+FROM [Orders] AS [o]
+INNER JOIN [OrderSeats] AS [o0] ON [o].[OrderID] = [o0].[OrderID]
+INNER JOIN [Orders] AS [o1] ON [o0].[OrderID] = [o1].[OrderID]
+WHERE [o].[ShowtimeID] IN (
+    SELECT [s].[value]
+    FROM OPENJSON(@__showtimeIds_0) WITH ([value] int '$') AS [s]
+) AND ([o].[Status] = N'Đã thanh toán' OR ([o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] > GETDATE()))
+GROUP BY [o1].[ShowtimeID]
+2026-05-29 23:58:39.660 +07:00 [INF] Executing ViewResult, running view Details.
+2026-05-29 23:58:39.663 +07:00 [INF] Executed ViewResult - view Details executed in 2.8617ms.
+2026-05-29 23:58:39.663 +07:00 [INF] Executed action AuraCinema.Web.Controllers.MoviesController.Details (AuraCinema.Web) in 10.6657ms
+2026-05-29 23:58:39.663 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.MoviesController.Details (AuraCinema.Web)'
+2026-05-29 23:58:39.663 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5231/Movies/Details/5 - 200 null text/html; charset=utf-8 11.9748ms
+2026-05-29 23:58:39.710 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - null null
+2026-05-29 23:58:39.711 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 0.6543ms
+2026-05-29 23:58:39.711 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2026-05-29 23:58:42.921 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:58:42.925 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:58:42.929 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:58:42.934 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:58:42.937 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0
+2026-05-29 23:58:43.835 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - null null
+2026-05-29 23:58:43.835 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 0.9211ms
+2026-05-29 23:58:43.836 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2026-05-29 23:58:43.863 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - null null
+2026-05-29 23:58:43.864 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 0.8518ms
+2026-05-29 23:58:43.865 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2026-05-29 23:59:02.314 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5231/Movies/Details/3 - null null
+2026-05-29 23:59:02.315 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.MoviesController.Details (AuraCinema.Web)'
+2026-05-29 23:59:02.315 +07:00 [INF] Route matched with {action = "Details", controller = "Movies", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Details(Int32) on controller AuraCinema.Web.Controllers.MoviesController (AuraCinema.Web).
+2026-05-29 23:59:02.321 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[MovieID] = @__p_0
+2026-05-29 23:59:02.325 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__id_0='?' (DbType = Int32), @__now_1='?' (DbType = DateTime2), @__maxDate_2='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status], [r].[RoomID], [r].[Capacity], [r].[RoomCode], [r].[RoomName], [r].[Status]
+FROM [Showtimes] AS [s]
+INNER JOIN [Rooms] AS [r] ON [s].[RoomID] = [r].[RoomID]
+WHERE [s].[MovieID] = @__id_0 AND [s].[Status] = N'Đang mở bán' AND [s].[StartTime] >= @__now_1 AND [s].[StartTime] < @__maxDate_2
+ORDER BY [s].[StartTime]
+2026-05-29 23:59:02.347 +07:00 [INF] Executed DbCommand (21ms) [Parameters=[@__showtimeIds_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT [o1].[ShowtimeID], COUNT(*) AS [Sold]
+FROM [Orders] AS [o]
+INNER JOIN [OrderSeats] AS [o0] ON [o].[OrderID] = [o0].[OrderID]
+INNER JOIN [Orders] AS [o1] ON [o0].[OrderID] = [o1].[OrderID]
+WHERE [o].[ShowtimeID] IN (
+    SELECT [s].[value]
+    FROM OPENJSON(@__showtimeIds_0) WITH ([value] int '$') AS [s]
+) AND ([o].[Status] = N'Đã thanh toán' OR ([o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] > GETDATE()))
+GROUP BY [o1].[ShowtimeID]
+2026-05-29 23:59:02.348 +07:00 [INF] Executing ViewResult, running view Details.
+2026-05-29 23:59:02.349 +07:00 [INF] Executed ViewResult - view Details executed in 1.5304ms.
+2026-05-29 23:59:02.349 +07:00 [INF] Executed action AuraCinema.Web.Controllers.MoviesController.Details (AuraCinema.Web) in 34.0511ms
+2026-05-29 23:59:02.349 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.MoviesController.Details (AuraCinema.Web)'
+2026-05-29 23:59:02.350 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5231/Movies/Details/3 - 200 null text/html; charset=utf-8 35.1797ms
+2026-05-29 23:59:02.394 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - null null
+2026-05-29 23:59:02.394 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 0.554ms
+2026-05-29 23:59:02.394 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2026-05-29 23:59:05.486 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - null null
+2026-05-29 23:59:05.486 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 0.501ms
+2026-05-29 23:59:05.486 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2026-05-29 23:59:05.503 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - null null
+2026-05-29 23:59:05.503 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 0.7847ms
+2026-05-29 23:59:05.503 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2026-05-29 23:59:13.851 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5231/Movies/Details/4 - null null
+2026-05-29 23:59:13.852 +07:00 [INF] Executing endpoint 'AuraCinema.Web.Controllers.MoviesController.Details (AuraCinema.Web)'
+2026-05-29 23:59:13.852 +07:00 [INF] Route matched with {action = "Details", controller = "Movies", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Details(Int32) on controller AuraCinema.Web.Controllers.MoviesController (AuraCinema.Web).
+2026-05-29 23:59:13.857 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[MovieID] = @__p_0
+2026-05-29 23:59:13.859 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__id_0='?' (DbType = Int32), @__now_1='?' (DbType = DateTime2), @__maxDate_2='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status], [r].[RoomID], [r].[Capacity], [r].[RoomCode], [r].[RoomName], [r].[Status]
+FROM [Showtimes] AS [s]
+INNER JOIN [Rooms] AS [r] ON [s].[RoomID] = [r].[RoomID]
+WHERE [s].[MovieID] = @__id_0 AND [s].[Status] = N'Đang mở bán' AND [s].[StartTime] >= @__now_1 AND [s].[StartTime] < @__maxDate_2
+ORDER BY [s].[StartTime]
+2026-05-29 23:59:13.861 +07:00 [INF] Executed DbCommand (1ms) [Parameters=[@__showtimeIds_0='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SELECT [o1].[ShowtimeID], COUNT(*) AS [Sold]
+FROM [Orders] AS [o]
+INNER JOIN [OrderSeats] AS [o0] ON [o].[OrderID] = [o0].[OrderID]
+INNER JOIN [Orders] AS [o1] ON [o0].[OrderID] = [o1].[OrderID]
+WHERE [o].[ShowtimeID] IN (
+    SELECT [s].[value]
+    FROM OPENJSON(@__showtimeIds_0) WITH ([value] int '$') AS [s]
+) AND ([o].[Status] = N'Đã thanh toán' OR ([o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] > GETDATE()))
+GROUP BY [o1].[ShowtimeID]
+2026-05-29 23:59:13.861 +07:00 [INF] Executing ViewResult, running view Details.
+2026-05-29 23:59:13.864 +07:00 [INF] Executed ViewResult - view Details executed in 2.8366ms.
+2026-05-29 23:59:13.864 +07:00 [INF] Executed action AuraCinema.Web.Controllers.MoviesController.Details (AuraCinema.Web) in 12.2085ms
+2026-05-29 23:59:13.864 +07:00 [INF] Executed endpoint 'AuraCinema.Web.Controllers.MoviesController.Details (AuraCinema.Web)'
+2026-05-29 23:59:13.865 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5231/Movies/Details/4 - 200 null text/html; charset=utf-8 13.0767ms
+2026-05-29 23:59:13.902 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - null null
+2026-05-29 23:59:13.905 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 2.2722ms
+2026-05-29 23:59:13.908 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2026-05-29 23:59:17.882 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - null null
+2026-05-29 23:59:17.883 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 0.3657ms
+2026-05-29 23:59:17.883 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2026-05-29 23:59:17.914 +07:00 [INF] Request starting HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - null null
+2026-05-29 23:59:17.915 +07:00 [INF] Request finished HTTP/1.1 GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 0.4879ms
+2026-05-29 23:59:17.915 +07:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5231/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2026-05-29 23:59:42.952 +07:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [o].[OrderID], [o].[CheckInTime], [o].[FinalAmount], [o].[HoldExpiryTime], [o].[OrderCode], [o].[PayOSTransID], [o].[PromoID], [o].[QrCode], [o].[ShowtimeID], [o].[Status], [o].[TotalAmount], [o].[UserID]
+FROM [Orders] AS [o]
+WHERE [o].[Status] = N'Chờ thanh toán' AND [o].[HoldExpiryTime] <= GETDATE()
+2026-05-29 23:59:42.957 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__maxSellingDate_0='?' (DbType = DateTime2), @__now_1='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Sap chieu') AND CONVERT(date, [s].[StartTime]) <= @__maxSellingDate_0 AND [s].[StartTime] > @__now_1
+2026-05-29 23:59:42.961 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Sap chieu') AND [s].[StartTime] <= @__now_0 AND [s].[EndTime] > @__now_0
+2026-05-29 23:59:42.966 +07:00 [INF] Executed DbCommand (4ms) [Parameters=[@__now_0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[ShowtimeID], [s].[EndTime], [s].[MovieID], [s].[RoomID], [s].[ShowtimeCode], [s].[StartTime], [s].[Status]
+FROM [Showtimes] AS [s]
+WHERE [s].[Status] IN (N'Đã lên lịch', N'Đang mở bán', N'Đang chiếu', N'Sap chieu', N'Dang dien ra') AND [s].[EndTime] <= @__now_0
+2026-05-29 23:59:42.971 +07:00 [INF] Executed DbCommand (3ms) [Parameters=[@__today_0='?' (DbType = Date)], CommandType='"Text"', CommandTimeout='30']
+SELECT [m].[MovieID], [m].[Actors], [m].[Description], [m].[Director], [m].[Duration], [m].[Genre], [m].[MovieCode], [m].[Poster], [m].[ReleaseDate], [m].[Status], [m].[Title], [m].[Trailer]
+FROM [Movies] AS [m]
+WHERE [m].[Status] = N'Sap chieu' AND [m].[ReleaseDate] <= @__today_0

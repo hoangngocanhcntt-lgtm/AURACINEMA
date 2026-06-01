@@ -8,7 +8,8 @@
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Bootstrap 5 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
@@ -23,7 +24,7 @@
 <body>
 
 <!-- ═══ NAVBAR ═══ -->
-<nav class="navbar navbar-expand-lg navbar-dark ac-navbar" id="mainNavbar">
+<nav class="navbar navbar-expand-lg ac-navbar" id="mainNavbar">
     <div class="container">
         <a class="navbar-brand ac-brand" asp-controller="Home" asp-action="Index">
             <span class="ac-logo-icon">🎬</span>
@@ -110,7 +111,7 @@
 </main>
 
 <!-- ═══ FOOTER ═══ -->
-<footer class="ac-footer mt-5">
+<footer class="ac-footer mt-auto">
     <div class="container py-5">
         <div class="row g-4">
             <div class="col-lg-4">
@@ -121,21 +122,21 @@
                 <p class="text-muted small">Trải nghiệm điện ảnh đỉnh cao. Đặt vé dễ dàng, thanh toán nhanh chóng.</p>
             </div>
             <div class="col-lg-2 col-6">
-                <h6 class="fw-semibold mb-3">Khám phá</h6>
+                <h6 class="fw-semibold mb-3" style="color: var(--ac-heading);">Khám phá</h6>
                 <ul class="list-unstyled small text-muted">
                     <li class="mb-2"><a class="footer-link" asp-controller="Movies" asp-action="Index">Phim đang chiếu</a></li>
                     <li class="mb-2"><a class="footer-link" asp-controller="Promotions" asp-action="Index">Khuyến mãi</a></li>
                 </ul>
             </div>
             <div class="col-lg-2 col-6">
-                <h6 class="fw-semibold mb-3">Hỗ trợ</h6>
+                <h6 class="fw-semibold mb-3" style="color: var(--ac-heading);">Hỗ trợ</h6>
                 <ul class="list-unstyled small text-muted">
                     <li class="mb-2"><a class="footer-link" href="#">Liên hệ</a></li>
                     <li class="mb-2"><a class="footer-link" href="#">Câu hỏi thường gặp</a></li>
                 </ul>
             </div>
             <div class="col-lg-4">
-                <h6 class="fw-semibold mb-3">Kết nối với chúng tôi</h6>
+                <h6 class="fw-semibold mb-3" style="color: var(--ac-heading);">Kết nối với chúng tôi</h6>
                 <div class="d-flex gap-3">
                     <a href="#" class="ac-social-link"><i class="bi bi-facebook"></i></a>
                     <a href="#" class="ac-social-link"><i class="bi bi-instagram"></i></a>

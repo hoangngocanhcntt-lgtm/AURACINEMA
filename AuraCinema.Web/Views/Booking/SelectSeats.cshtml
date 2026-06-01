@@ -10,7 +10,7 @@
         <div class="col-lg-8">
             <div class="ac-card p-4">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h4 class="mb-0 text-white">Sơ đồ phòng chiếu</h4>
+                    <h4 class="mb-0">Sơ đồ phòng chiếu</h4>
                     <span class="ac-badge" style="font-size:0.9rem;">@Model.RoomName</span>
                 </div>
 
@@ -88,7 +88,7 @@
                 <div class="d-flex">
                     <img src="@Model.MoviePoster" alt="@Model.MovieTitle" style="width: 100px; height: 150px; object-fit: cover;" onerror="this.src='/images/placeholder-movie.jpg'" />
                     <div class="p-3">
-                        <h5 class="fw-bold text-white mb-1">@Model.MovieTitle</h5>
+                        <h5 class="fw-bold mb-1">@Model.MovieTitle</h5>
                         <p class="text-muted small mb-2">@Model.ShowtimeLabel</p>
                         <p class="ac-badge m-0">@Model.RoomName</p>
                     </div>
@@ -97,7 +97,7 @@
                 <div class="p-4 border-top border-ac bg-surface">
                     <div class="d-flex justify-content-between mb-3">
                         <span class="text-muted">Ghế chọn:</span>
-                        <span id="selectedSeatsList" class="fw-bold text-white text-end" style="max-width: 60%;">-</span>
+                        <span id="selectedSeatsList" class="fw-bold text-end" style="max-width: 60%;">-</span>
                     </div>
                     
                     <div class="d-flex justify-content-between mb-3">
@@ -115,61 +115,7 @@
     </div>
 </div>
 
-@section Styles {
-    <style>
-        .ac-seat {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            color: rgba(255,255,255,0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            user-select: none;
-        }
-        .ac-seat:hover:not(.sold) {
-            background: rgba(255,255,255,0.2);
-            border-color: rgba(255,255,255,0.4);
-            transform: translateY(-2px);
-        }
-        .ac-seat.vip {
-            background: rgba(255, 107, 53, 0.15);
-            border-color: rgba(255, 107, 53, 0.4);
-            color: #ff6b35;
-        }
-        .ac-seat.couple {
-            width: 72px;
-            background: rgba(156, 39, 176, 0.15);
-            border-color: rgba(156, 39, 176, 0.4);
-            color: #9c27b0;
-        }
-        .ac-seat.selected {
-            background: var(--ac-gradient);
-            border-color: transparent;
-            color: #fff;
-            box-shadow: 0 4px 10px rgba(233,30,140,0.3);
-        }
-        .ac-seat.sold {
-            background: rgba(255,255,255,0.05);
-            border-color: rgba(255,255,255,0.05);
-            color: transparent;
-            cursor: not-allowed;
-            position: relative;
-        }
-        .ac-seat.sold::after {
-            content: 'X';
-            position: absolute;
-            color: rgba(255,255,255,0.2);
-            font-weight: bold;
-        }
-        .tracking-widest { letter-spacing: 0.25em; }
-    </style>
-}
+
 
 @section Scripts {
     <script>

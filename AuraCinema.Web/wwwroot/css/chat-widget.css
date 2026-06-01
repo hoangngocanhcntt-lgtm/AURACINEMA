@@ -1,11 +1,12 @@
 :root {
-  --aura-chat-bg:       #1a1a1a;
-  --aura-chat-header:   #87CEEB;
-  --aura-chat-bubble-bot:  #87CEEB;
-  --aura-chat-bubble-user: #ffffff;
-  --aura-chat-text:     #ffffff;
-  --aura-chat-text-dark:#1a1a1a;
-  --aura-chat-button:   #87CEEB;
+  --aura-chat-bg:       #FFFFFF;
+  --aura-chat-header:   #0EA5E9;
+  --aura-chat-bubble-bot:  #F0F9FF;
+  --aura-chat-bubble-user: #0EA5E9;
+  --aura-chat-text:     #1E293B;
+  --aura-chat-text-dark:#1E293B;
+  --aura-chat-text-light:#FFFFFF;
+  --aura-chat-button:   #0EA5E9;
 }
 
 #aura-chat-widget {
@@ -16,85 +17,93 @@
 }
 
 #aura-chat-bubble {
-    width: 60px;
-    height: 60px;
-    background-color: var(--aura-chat-button);
-    color: var(--aura-chat-text-dark);
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #0EA5E9, #0284C7);
+    color: #fff;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    font-size: 22px;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    transition: transform 0.3s;
+    box-shadow: 0 4px 20px rgba(14,165,233,0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
 #aura-chat-bubble:hover {
     transform: scale(1.1);
+    box-shadow: 0 6px 24px rgba(14,165,233,0.4);
 }
 
 #aura-chat-panel {
-    width: 350px;
+    width: 360px;
     height: 500px;
     background-color: var(--aura-chat-bg);
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
     display: flex;
     flex-direction: column;
     overflow: hidden;
     position: absolute;
-    bottom: 80px;
+    bottom: 72px;
     right: 0;
+    border: 1px solid #E2E8F0;
 }
 
 .aura-chat-header {
-    background-color: var(--aura-chat-header);
-    color: var(--aura-chat-text-dark);
-    padding: 15px;
+    background: linear-gradient(135deg, #0EA5E9, #0284C7);
+    color: #fff;
+    padding: 16px;
+    font-weight: 600;
 }
 
 #aura-chat-messages {
     flex-grow: 1;
     overflow-y: auto;
-    padding: 15px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    background: #F8FAFC;
 }
 
 .aura-msg {
     max-width: 80%;
-    padding: 10px;
-    border-radius: 15px;
+    padding: 10px 14px;
+    border-radius: 16px;
     word-wrap: break-word;
+    font-size: 0.9rem;
+    line-height: 1.5;
 }
 
 .aura-msg-user {
     align-self: flex-end;
-    background-color: var(--aura-chat-bubble-user);
-    color: var(--aura-chat-text-dark);
-    border-bottom-right-radius: 5px;
+    background: linear-gradient(135deg, #0EA5E9, #0284C7);
+    color: #fff;
+    border-bottom-right-radius: 4px;
 }
 
 .aura-msg-bot {
     align-self: flex-start;
-    background-color: var(--aura-chat-bubble-bot);
-    color: var(--aura-chat-text-dark);
-    border-bottom-left-radius: 5px;
+    background-color: #fff;
+    color: var(--aura-chat-text);
+    border-bottom-left-radius: 4px;
+    border: 1px solid #E2E8F0;
 }
 
 .aura-chat-input {
-    padding: 10px;
-    background-color: #2a2a2a;
-    border-top: 1px solid #333;
+    padding: 12px;
+    background-color: #fff;
+    border-top: 1px solid #E2E8F0;
 }
 
 #aura-chat-input-text {
     border-radius: 20px 0 0 20px;
-    background-color: #1a1a1a;
+    background-color: #F8FAFC;
     color: var(--aura-chat-text);
-    border: 1px solid #444;
+    border: 1.5px solid #E2E8F0;
+    font-size: 0.9rem;
 }
 
 #aura-chat-input-text:focus {
@@ -104,7 +113,8 @@
 
 #aura-chat-send-btn {
     border-radius: 0 20px 20px 0;
-    background-color: var(--aura-chat-button);
-    color: var(--aura-chat-text-dark);
-    border: 1px solid var(--aura-chat-button);
+    background: linear-gradient(135deg, #0EA5E9, #0284C7);
+    color: #fff;
+    border: 1.5px solid var(--aura-chat-button);
+    font-weight: 500;
 }

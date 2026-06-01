@@ -266,6 +266,6 @@ d:\AURACINEMA\AuraCinema.Web\bin\Debug\net9.0\Microsoft.Extensions.Options.dll
 d:\AURACINEMA\AuraCinema.Web\bin\Debug\net9.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll
 d:\AURACINEMA\AuraCinema.Web\bin\Debug\net9.0\Microsoft.Extensions.Primitives.dll
 d:\AURACINEMA\AuraCinema.Web\bin\Debug\net9.0\System.Diagnostics.DiagnosticSource.dll
-D:\AURACINEMA\AuraCinema.Web\obj\Debug\net9.0\compressed\vxc05vx0nd-lvnfr7x379.gz
-D:\AURACINEMA\AuraCinema.Web\obj\Debug\net9.0\compressed\8iez480kk3-d7ipsj8q4o.gz
 D:\AURACINEMA\AuraCinema.Web\obj\Debug\net9.0\compressed\snbqgy9gly-l4kyf3lt4w.gz
+D:\AURACINEMA\AuraCinema.Web\obj\Debug\net9.0\compressed\vxc05vx0nd-gkf06g1ajq.gz
+D:\AURACINEMA\AuraCinema.Web\obj\Debug\net9.0\compressed\8iez480kk3-p8f69jbbu1.gz

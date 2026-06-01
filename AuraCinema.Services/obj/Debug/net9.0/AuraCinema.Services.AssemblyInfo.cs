@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AuraCinema.Services")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+904db50a0a174e8283ad0e0dab6142e0a1b18733")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f6f70c0d23a9c3c66ccb3dcbc4c1a116abb53fa7")]
 [assembly: System.Reflection.AssemblyProductAttribute("AuraCinema.Services")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AuraCinema.Services")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

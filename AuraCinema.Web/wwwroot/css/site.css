@@ -1,119 +1,127 @@
 /* ═══════════════════════════════════════════════════════
-   AURA CINEMA — DESIGN SYSTEM
+   AURA CINEMA — DESIGN SYSTEM (Light Theme)
+   Modern · Premium · Natural
    ═══════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --ac-bg:        #000000; /* Đen thuần cho cảm giác rạp phim */
-  --ac-surface:   #0d0d0d; /* Nền card tối */
-  --ac-surface2:  #1a1a1a;
-  --ac-border:    rgba(192,192,192,0.1); /* Viền Bạc mờ */
-  --ac-primary:   #0047AB; /* Xanh dương đậm (Cobalt/Navy) */
-  --ac-primary2:  #002366; /* Royal Blue */
-  --ac-accent:    #C0C0C0; /* Bạc (Silver) */
-  --ac-text:      #E0E0E0; /* Tăng độ sáng từ Bạc sang Xám trắng cho dễ đọc trên nền đen */
-  --ac-muted:     #A0A0A0; /* Xám bạc sáng hơn */
-  --ac-gold:      #C0C0C0; /* Đổi vàng thành bạc luôn cho đồng bộ */
-  --ac-gradient:  linear-gradient(135deg, #0047AB 0%, #002366 100%);
-  --ac-radius:    20px; /* Thay đổi thành 20px bo góc mềm mại */
+  --ac-bg:        #FFFFFF;
+  --ac-surface:   #F8FAFC;
+  --ac-surface2:  #F1F5F9;
+  --ac-border:    #E2E8F0;
+  --ac-primary:   #0EA5E9;
+  --ac-primary2:  #0284C7;
+  --ac-accent:    #CBD5E1;
+  --ac-text:      #1E293B;
+  --ac-heading:   #0F172A;
+  --ac-muted:     #64748B;
+  --ac-gradient:  linear-gradient(135deg, #0EA5E9 0%, #0284C7 100%);
+  --ac-radius:    16px;
   --ac-radius-sm: 12px;
-  --ac-shadow:    0 10px 25px rgba(0,0,0,0.05); /* Bóng đổ mềm hiện đại */
-  --ac-glow:      0 0 30px rgba(0,71,171,0.4);
+  --ac-radius-xs: 8px;
+  --ac-shadow:    0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.04);
+  --ac-shadow-md: 0 4px 16px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+  --ac-shadow-lg: 0 10px 40px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+  --ac-glow:      0 4px 20px rgba(14,165,233,0.25);
 }
 
-/* ─── QUY TẮC 1: TYPOGRAPHY HỆ THỐNG ─── */
-body, .admin-page, html {
-  font-family: 'Inter', sans-serif !important;
+/* ─── TYPOGRAPHY ─── */
+body, html {
+  font-family: 'Be Vietnam Pro', sans-serif !important;
   font-weight: 400 !important;
 }
 h1, h2, h3, h4, h5, h6, .fw-bold, strong, b, th {
-  font-weight: 600 !important; /* Tiêu đề in đậm vừa phải */
+  font-weight: 600 !important;
+  color: var(--ac-heading);
 }
 
-/* ─── QUY TẮC 2 & 3: BO GÓC (BORDER-RADIUS) & CHIỀU SÂU (SHADOW) ─── */
-/* Loại bỏ border cứng nhắc, thay bằng bóng đổ và bo góc lớn */
-.card, .modal-content, .bg-white, .table-responsive {
-  border: none !important;
-  border-radius: 20px !important; /* Bo góc mềm mại cho Container/Card */
-  box-shadow: 0 10px 25px rgba(0,0,0,0.05) !important; /* Bóng đổ nổi nhẹ */
+/* ─── GLOBAL RESETS ─── */
+.card, .modal-content, .table-responsive {
+  border: 1px solid var(--ac-border) !important;
+  border-radius: var(--ac-radius) !important;
+  box-shadow: var(--ac-shadow) !important;
+  background: #fff !important;
 }
-
-/* Bo góc cho Button */
 .btn, .ac-btn-primary, .ac-btn-outline {
-  border-radius: 12px !important; /* Bo góc 12px cho nút bấm */
-  font-weight: 500 !important; /* Chữ thường mỏng dễ đọc */
-  border: none !important;
+  border-radius: var(--ac-radius-sm) !important;
+  font-weight: 500 !important;
 }
-
-/* Bo góc cho Form Inputs */
 .form-control, .form-select {
-  border-radius: 12px !important;
-  border: 1px solid rgba(0,0,0,0.05) !important;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.02) !important;
+  border-radius: var(--ac-radius-sm) !important;
+  border: 1.5px solid var(--ac-border) !important;
+  box-shadow: none !important;
   font-weight: 400 !important;
+  color: var(--ac-text) !important;
+  background: #fff !important;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
-
-/* Đảm bảo Dark Theme không bị chìm bóng đổ (Dùng border rất mờ hoặc shadow xám) */
-body:not(.admin-page) .card, body:not(.admin-page) .bg-surface {
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+.form-control:focus, .form-select:focus {
+  border-color: var(--ac-primary) !important;
+  box-shadow: 0 0 0 3px rgba(14,165,233,0.12) !important;
+  outline: none;
 }
 
 /* ─── BASE ─── */
 *, *::before, *::after { box-sizing: border-box; }
-
 html { scroll-behavior: smooth; }
-
 body {
   background-color: var(--ac-bg);
   color: var(--ac-text);
   min-height: 100vh;
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
 /* ─── NAVBAR ─── */
 .ac-navbar {
-  background: rgba(10, 8, 18, 0.85) !important;
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--ac-border);
+  background: rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(226,232,240,0.6);
   transition: all 0.3s ease;
-  padding: 14px 0;
+  padding: 10px 0;
   position: sticky;
   top: 0;
   z-index: 1050;
 }
 .ac-navbar.scrolled {
-  background: rgba(10, 8, 18, 0.97) !important;
-  box-shadow: 0 4px 30px rgba(0,0,0,0.4);
+  background: rgba(255, 255, 255, 0.92) !important;
+  box-shadow: 0 1px 12px rgba(0,0,0,0.06);
+  border-bottom-color: transparent;
 }
 .ac-brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   text-decoration: none;
 }
-.ac-logo-icon { font-size: 1.4rem; }
+.ac-logo-icon { font-size: 1.3rem; }
 .ac-logo-text {
-  font-family: 'Outfit', sans-serif;
-  font-size: 1.4rem;
-  font-weight: 900;
-  color: #fff;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 800 !important;
+  color: var(--ac-heading);
   letter-spacing: -0.5px;
 }
 .ac-logo-accent { color: var(--ac-primary); }
 
 .ac-navbar .nav-link {
-  color: rgba(255,255,255,0.75) !important;
+  color: var(--ac-muted) !important;
   font-weight: 500;
   font-size: 0.9rem;
   padding: 8px 14px !important;
-  border-radius: 8px;
+  border-radius: var(--ac-radius-xs);
   transition: all 0.2s;
 }
 .ac-navbar .nav-link:hover,
 .ac-navbar .nav-link.active {
-  color: #fff !important;
-  background: rgba(255,255,255,0.12);
+  color: var(--ac-primary) !important;
+  background: rgba(14,165,233,0.06);
+}
+
+/* Navbar toggler for mobile — dark icon for light bg */
+.ac-navbar .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(30,41,59,0.8)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
 }
 
 .ac-avatar {
@@ -142,6 +150,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  box-shadow: 0 2px 8px rgba(14,165,233,0.2);
 }
 .ac-btn-primary:hover {
   transform: translateY(-2px);
@@ -150,7 +159,7 @@ body {
 }
 .ac-btn-outline {
   background: transparent;
-  border: 1.5px solid var(--ac-primary);
+  border: 1.5px solid var(--ac-primary) !important;
   color: var(--ac-primary) !important;
   font-weight: 600;
   border-radius: 50px;
@@ -161,45 +170,46 @@ body {
 .ac-btn-outline:hover {
   background: var(--ac-primary);
   color: #fff !important;
+  box-shadow: var(--ac-glow);
 }
 
 /* ─── CARDS ─── */
 .ac-card {
-  background: var(--ac-surface);
+  background: #fff;
   border: 1px solid var(--ac-border);
   border-radius: var(--ac-radius);
   transition: all 0.3s;
-  color: var(--ac-text); /* Đảm bảo chữ luôn sáng trên nền tối */
+  color: var(--ac-text);
+  box-shadow: var(--ac-shadow);
 }
 .ac-card:hover {
-  border-color: rgba(0,71,171,0.5);
+  border-color: rgba(14,165,233,0.3);
   transform: translateY(-4px);
-  box-shadow: var(--ac-shadow);
+  box-shadow: var(--ac-shadow-md);
 }
 
 /* ─── FORM STYLES ─── */
 .ac-form-control {
-  background: rgba(255,255,255,0.05) !important;
-  border: 1.5px solid rgba(255,255,255,0.1) !important;
+  background: #fff !important;
+  border: 1.5px solid var(--ac-border) !important;
   border-radius: var(--ac-radius-sm) !important;
   color: var(--ac-text) !important;
   padding: 12px 16px !important;
   font-size: 0.95rem;
-  transition: all 0.3s;
+  transition: all 0.2s;
 }
 .ac-form-control:focus {
-  background: rgba(255,255,255,0.08) !important;
+  background: #fff !important;
   border-color: var(--ac-primary) !important;
-  box-shadow: 0 0 0 3px rgba(233,30,140,0.15) !important;
-  color: var(--ac-text) !important;
+  box-shadow: 0 0 0 3px rgba(14,165,233,0.12) !important;
 }
 .ac-form-control::placeholder { color: var(--ac-muted) !important; }
-.ac-form-control.is-invalid { border-color: #dc3545 !important; }
+.ac-form-control.is-invalid { border-color: #ef4444 !important; }
 
 .ac-form-label {
   font-size: 0.875rem;
   font-weight: 500;
-  color: rgba(255,255,255,0.8);
+  color: var(--ac-text);
   margin-bottom: 8px;
 }
 
@@ -210,18 +220,19 @@ body {
   align-items: center;
   justify-content: center;
   padding: 40px 16px;
-  background: radial-gradient(ellipse at 20% 50%, rgba(233,30,140,0.07) 0%, transparent 60%),
-              radial-gradient(ellipse at 80% 50%, rgba(156,39,176,0.07) 0%, transparent 60%),
-              var(--ac-bg);
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(14,165,233,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 50%, rgba(2,132,199,0.03) 0%, transparent 60%),
+    var(--ac-surface);
 }
 .ac-auth-card {
   width: 100%;
   max-width: 460px;
-  background: var(--ac-surface);
+  background: #fff;
   border: 1px solid var(--ac-border);
   border-radius: 24px;
   padding: 48px 40px;
-  box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+  box-shadow: var(--ac-shadow-lg);
 }
 @media (max-width: 480px) {
   .ac-auth-card { padding: 32px 24px; }
@@ -231,10 +242,10 @@ body {
   margin-bottom: 32px;
 }
 .ac-auth-title {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Be Vietnam Pro', sans-serif;
   font-size: 1.6rem;
-  font-weight: 800;
-  color: #fff;
+  font-weight: 700 !important;
+  color: var(--ac-heading);
   margin-bottom: 6px;
 }
 .ac-auth-subtitle {
@@ -266,63 +277,69 @@ body {
   text-align: center;
   letter-spacing: 12px;
   font-weight: 700;
-  font-family: 'Outfit', monospace;
+  font-family: 'Be Vietnam Pro', monospace;
 }
 
 /* ─── ALERTS ─── */
 .ac-alert-success {
-  background: rgba(34,197,94,0.12);
+  background: #f0fdf4;
   border: none;
-  border-left: 3px solid #22c55e;
-  color: #86efac;
-  border-radius: 0;
-  padding: 14px 24px;
+  border-left: 4px solid #22c55e;
+  color: #166534;
+  border-radius: var(--ac-radius-xs);
+  padding: 14px 20px;
 }
 .ac-alert-error {
-  background: rgba(239,68,68,0.12);
+  background: #fef2f2;
   border: none;
-  border-left: 3px solid #ef4444;
-  color: #fca5a5;
-  border-radius: 0;
-  padding: 14px 24px;
+  border-left: 4px solid #ef4444;
+  color: #991b1b;
+  border-radius: var(--ac-radius-xs);
+  padding: 14px 20px;
 }
 .ac-alert-info {
-  background: rgba(59,130,246,0.12);
+  background: #eff6ff;
   border: none;
-  border-left: 3px solid #3b82f6;
-  color: #93c5fd;
-  border-radius: 0;
-  padding: 14px 24px;
+  border-left: 4px solid #3b82f6;
+  color: #1e40af;
+  border-radius: var(--ac-radius-xs);
+  padding: 14px 20px;
 }
 
 /* ─── DROPDOWN ─── */
 .ac-dropdown {
-  background: var(--ac-surface2) !important;
+  background: #fff !important;
   border: 1px solid var(--ac-border) !important;
-  border-radius: var(--ac-radius-sm);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.5) !important;
-  min-width: 180px;
+  border-radius: var(--ac-radius-sm) !important;
+  box-shadow: var(--ac-shadow-lg) !important;
+  min-width: 200px;
+  padding: 8px !important;
 }
 .ac-dropdown .dropdown-item {
-  color: rgba(255,255,255,0.8) !important;
+  color: var(--ac-text) !important;
   font-size: 0.9rem;
-  padding: 10px 16px;
-  transition: all 0.2s;
+  padding: 10px 14px;
+  border-radius: var(--ac-radius-xs);
+  transition: all 0.15s;
 }
 .ac-dropdown .dropdown-item:hover {
-  background: rgba(255,255,255,0.07) !important;
-  color: #fff !important;
+  background: var(--ac-surface) !important;
+  color: var(--ac-primary) !important;
 }
 .ac-dropdown .dropdown-header {
   color: var(--ac-muted) !important;
   font-size: 0.8rem;
+  padding: 8px 14px;
 }
 .ac-dropdown .dropdown-divider { border-color: var(--ac-border) !important; }
 
 /* ─── FOOTER ─── */
 .ac-footer {
-  background: var(--ac-surface);
+  background: #F1F5F9;
   border-top: 1px solid var(--ac-border);
+}
+.ac-footer h6 {
+  color: var(--ac-heading) !important;
 }
 .footer-link {
   color: var(--ac-muted);
@@ -336,9 +353,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255,255,255,0.06);
+  background: rgba(14,165,233,0.08);
   border-radius: 50%;
-  color: var(--ac-muted);
+  color: var(--ac-primary);
   text-decoration: none;
   transition: all 0.3s;
   font-size: 1.1rem;
@@ -347,34 +364,38 @@ body {
   background: var(--ac-gradient);
   color: #fff;
   transform: translateY(-2px);
+  box-shadow: var(--ac-glow);
 }
 
 /* ─── VALIDATION ─── */
-.field-validation-error { color: #f87171; font-size: 0.8rem; }
+.field-validation-error { color: #ef4444; font-size: 0.8rem; }
 .validation-summary-errors ul { list-style: none; padding: 0; margin: 0; }
 .validation-summary-errors {
-  background: rgba(239,68,68,0.15);
-  border: 1px solid rgba(239,68,68,0.4);
+  background: #fef2f2;
+  border: 1px solid rgba(239,68,68,0.2);
   border-radius: var(--ac-radius-sm);
   padding: 12px 16px;
-  color: #fecaca; /* Sáng hơn cho dễ đọc */
+  color: #991b1b;
   font-size: 0.875rem;
   margin-bottom: 20px;
 }
 
 /* ─── SCROLLBAR ─── */
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--ac-bg); }
-::-webkit-scrollbar-thumb { background: var(--ac-surface2); border-radius: 3px; }
+::-webkit-scrollbar-track { background: var(--ac-surface); }
+::-webkit-scrollbar-thumb { background: var(--ac-accent); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--ac-primary); }
 
 /* ─── UTILITY ─── */
 .text-primary-ac { color: var(--ac-primary) !important; }
 .bg-surface { background: var(--ac-surface); }
 .border-ac { border-color: var(--ac-border) !important; }
+.hover-scale { transition: transform 0.2s; }
+.hover-scale:hover { transform: translateY(-2px); }
+
 
 /* ═══════════════════════════════════════════════════════
-   PHASE 3 — PUBLIC SITE STYLES
+   PUBLIC SITE STYLES
    ═══════════════════════════════════════════════════════ */
 
 /* ─── HERO ─── */
@@ -387,16 +408,16 @@ body {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 30% 20%, rgba(233,30,140,0.12) 0%, transparent 50%),
-    radial-gradient(ellipse at 70% 80%, rgba(156,39,176,0.1) 0%, transparent 50%);
+    radial-gradient(ellipse at 30% 20%, rgba(14,165,233,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(2,132,199,0.04) 0%, transparent 50%);
   z-index: 1;
 }
 .min-vh-75 { min-height: 75vh; }
 .ac-badge {
   display: inline-block;
   padding: 6px 16px;
-  background: rgba(233,30,140,0.12);
-  border: 1px solid rgba(233,30,140,0.3);
+  background: rgba(14,165,233,0.08);
+  border: 1px solid rgba(14,165,233,0.2);
   border-radius: 50px;
   font-size: 0.78rem;
   font-weight: 600;
@@ -404,11 +425,11 @@ body {
   letter-spacing: 1px;
 }
 .ac-hero-title {
-  font-family: 'Outfit', sans-serif;
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 900;
-  line-height: 1.1;
-  color: #fff;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 800 !important;
+  line-height: 1.15;
+  color: var(--ac-heading);
 }
 .ac-gradient-text {
   background: var(--ac-gradient);
@@ -420,13 +441,13 @@ body {
   font-size: 1.05rem;
   color: var(--ac-muted);
   max-width: 480px;
-  line-height: 1.7;
+  line-height: 1.8;
 }
 .ac-stat-number {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Be Vietnam Pro', sans-serif;
   font-size: 1.8rem;
-  font-weight: 800;
-  color: #fff;
+  font-weight: 800 !important;
+  color: var(--ac-heading);
 }
 .ac-stat-label { font-size: 0.8rem; color: var(--ac-muted); }
 .ac-stat-divider {
@@ -436,18 +457,17 @@ body {
   align-self: center;
 }
 
-/* Hero poster */
+/* Hero poster (legacy - kept for compatibility) */
 .ac-hero-poster {
   position: relative;
-  border-radius: 20px;
+  border-radius: var(--ac-radius);
   overflow: hidden;
-  box-shadow: 0 40px 80px rgba(0,0,0,0.6);
-  transform: perspective(800px) rotateY(-5deg);
+  box-shadow: var(--ac-shadow-lg);
   transition: transform 0.4s;
   max-width: 320px;
   margin: 0 auto;
 }
-.ac-hero-poster:hover { transform: perspective(800px) rotateY(0deg) scale(1.02); }
+.ac-hero-poster:hover { transform: scale(1.02); }
 .ac-hero-poster img {
   width: 100%;
   aspect-ratio: 2/3;
@@ -456,31 +476,30 @@ body {
 }
 .ac-hero-poster-overlay {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: 0; left: 0; right: 0;
   padding: 24px;
-  background: linear-gradient(transparent, rgba(0,0,0,0.9));
+  background: linear-gradient(transparent, rgba(0,0,0,0.8));
   color: #fff;
 }
-.ac-hero-poster-overlay h4 { font-weight: 700; margin-bottom: 4px; }
+.ac-hero-poster-overlay h4 { font-weight: 700; margin-bottom: 4px; color: #fff !important; }
 .ac-hero-poster-overlay p { color: rgba(255,255,255,0.7); font-size: 0.85rem; margin: 0; }
 .ac-badge-live {
   background: var(--ac-primary);
+  color: #fff;
   font-size: 0.7rem;
   padding: 4px 10px;
-  border-radius: 4px;
+  border-radius: 6px;
   margin-bottom: 8px;
   display: inline-block;
 }
 
 /* ─── SECTIONS ─── */
-.ac-section { padding: 60px 0; }
+.ac-section { padding: 64px 0; }
 .ac-section-title {
-  font-family: 'Outfit', sans-serif;
-  font-size: 1.6rem;
-  font-weight: 800;
-  color: #fff;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700 !important;
+  color: var(--ac-heading);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -498,12 +517,12 @@ body {
 }
 .ac-dot-live {
   background: #22c55e;
-  box-shadow: 0 0 8px rgba(34,197,94,0.6);
+  box-shadow: 0 0 8px rgba(34,197,94,0.5);
   animation: pulse-dot 2s infinite;
 }
 .ac-dot-soon {
-  background: var(--ac-accent);
-  box-shadow: 0 0 8px rgba(255,107,53,0.6);
+  background: #f97316;
+  box-shadow: 0 0 8px rgba(249,115,22,0.4);
 }
 @keyframes pulse-dot {
   0%, 100% { opacity: 1; }
@@ -524,6 +543,7 @@ body {
   aspect-ratio: 2/3;
   overflow: hidden;
   border-radius: var(--ac-radius);
+  box-shadow: var(--ac-shadow);
 }
 .ac-movie-poster img {
   width: 100%;
@@ -532,12 +552,12 @@ body {
   transition: transform 0.5s;
 }
 .ac-movie-card:hover .ac-movie-poster img {
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 .ac-movie-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.4);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -557,6 +577,7 @@ body {
   color: #fff;
   transform: scale(0.8);
   transition: transform 0.3s;
+  box-shadow: var(--ac-glow);
 }
 .ac-movie-card:hover .ac-play-btn { transform: scale(1); }
 .ac-movie-badge {
@@ -570,13 +591,13 @@ body {
   letter-spacing: 0.5px;
 }
 .ac-badge-now { background: rgba(34,197,94,0.9); color: #fff; }
-.ac-badge-coming { background: rgba(255,107,53,0.9); color: #fff; }
+.ac-badge-coming { background: rgba(249,115,22,0.9); color: #fff; }
 
 .ac-movie-info { padding: 14px 4px; }
 .ac-movie-title {
   font-weight: 600;
   font-size: 0.95rem;
-  color: #fff;
+  color: var(--ac-heading);
   margin-bottom: 6px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -590,27 +611,28 @@ body {
 /* ─── CTA Section ─── */
 .ac-cta-section {
   background:
-    radial-gradient(ellipse at 50% 50%, rgba(233,30,140,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 50%, rgba(14,165,233,0.04) 0%, transparent 60%),
     var(--ac-surface);
 }
 
 /* ─── FILTER BAR ─── */
 .ac-filter-bar {
-  background: var(--ac-surface);
+  background: #fff;
   border: 1px solid var(--ac-border);
   border-radius: var(--ac-radius);
   padding: 16px 20px;
+  box-shadow: var(--ac-shadow);
 }
 .ac-tab-group {
   display: flex;
   gap: 4px;
-  background: rgba(255,255,255,0.04);
+  background: var(--ac-surface);
   border-radius: 10px;
   padding: 4px;
 }
 .ac-tab {
   padding: 8px 18px;
-  border-radius: 8px;
+  border-radius: var(--ac-radius-xs);
   font-size: 0.85rem;
   font-weight: 500;
   color: var(--ac-muted);
@@ -621,20 +643,21 @@ body {
 }
 .ac-tab.active,
 .ac-tab:hover {
-  background: rgba(233,30,140,0.15);
+  background: rgba(14,165,233,0.1);
   color: var(--ac-primary);
 }
 
 /* ─── PAGINATION ─── */
 .ac-pagination .page-link {
-  background: var(--ac-surface);
+  background: #fff;
   border: 1px solid var(--ac-border);
   color: var(--ac-muted);
   padding: 10px 16px;
   transition: all 0.2s;
+  border-radius: var(--ac-radius-xs) !important;
 }
 .ac-pagination .page-link:hover {
-  background: rgba(233,30,140,0.12);
+  background: rgba(14,165,233,0.06);
   color: var(--ac-primary);
   border-color: var(--ac-primary);
 }
@@ -642,6 +665,7 @@ body {
   background: var(--ac-gradient);
   border-color: transparent;
   color: #fff;
+  box-shadow: var(--ac-glow);
 }
 
 /* ─── MOVIE DETAIL ─── */
@@ -654,22 +678,23 @@ body {
   inset: 0;
   background-size: cover;
   background-position: center;
-  filter: blur(40px) brightness(0.2);
-  transform: scale(1.2);
+  filter: blur(60px) brightness(1.1) saturate(0.4);
+  transform: scale(1.3);
   z-index: 0;
+  opacity: 0.25;
 }
 .ac-movie-hero::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(10,8,18,0.6), var(--ac-bg));
+  background: linear-gradient(to bottom, rgba(255,255,255,0.7), var(--ac-bg));
   z-index: 1;
 }
 .ac-detail-poster {
   position: relative;
   border-radius: var(--ac-radius);
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  box-shadow: var(--ac-shadow-lg);
 }
 .ac-detail-poster img {
   border-radius: var(--ac-radius);
@@ -677,15 +702,15 @@ body {
 .ac-genre-tag {
   display: inline-block;
   padding: 5px 14px;
-  background: rgba(255,255,255,0.06);
+  background: var(--ac-surface);
   border: 1px solid var(--ac-border);
   border-radius: 50px;
   font-size: 0.8rem;
-  color: rgba(255,255,255,0.8);
+  color: var(--ac-text);
 }
 .ac-info-item {
   padding: 12px 16px;
-  background: rgba(255,255,255,0.04);
+  background: var(--ac-surface);
   border-radius: 10px;
   border: 1px solid var(--ac-border);
 }
@@ -697,7 +722,7 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
-.ac-info-value { font-weight: 500; }
+.ac-info-value { font-weight: 500; color: var(--ac-text); }
 
 /* ─── SHOWTIMES ─── */
 .ac-day-tabs {
@@ -709,19 +734,19 @@ body {
 .ac-day-tab {
   flex-shrink: 0;
   padding: 12px 24px;
-  background: var(--ac-surface);
+  background: #fff;
   border: 1.5px solid var(--ac-border);
-  border-radius: 12px;
+  border-radius: var(--ac-radius-sm);
   text-align: center;
   cursor: pointer;
   transition: all 0.2s;
 }
-.ac-day-tab:hover { border-color: rgba(233,30,140,0.4); }
+.ac-day-tab:hover { border-color: rgba(14,165,233,0.4); }
 .ac-day-tab.active {
   border-color: var(--ac-primary);
-  background: rgba(233,30,140,0.08);
+  background: rgba(14,165,233,0.06);
 }
-.ac-day-name { display: block; font-weight: 600; font-size: 0.9rem; }
+.ac-day-name { display: block; font-weight: 600; font-size: 0.9rem; color: var(--ac-text); }
 .ac-day-date { display: block; font-size: 0.75rem; color: var(--ac-muted); }
 .ac-day-tab.active .ac-day-name { color: var(--ac-primary); }
 
@@ -730,9 +755,9 @@ body {
   flex-direction: column;
   align-items: center;
   padding: 16px 24px;
-  background: var(--ac-surface);
+  background: #fff;
   border: 1.5px solid var(--ac-border);
-  border-radius: 12px;
+  border-radius: var(--ac-radius-sm);
   text-decoration: none;
   color: var(--ac-text);
   min-width: 120px;
@@ -740,30 +765,32 @@ body {
 }
 .ac-showtime-slot:hover {
   border-color: var(--ac-primary);
-  background: rgba(233,30,140,0.06);
+  background: rgba(14,165,233,0.04);
   transform: translateY(-2px);
   color: var(--ac-text);
+  box-shadow: var(--ac-shadow);
 }
 .ac-showtime-slot.soldout {
   opacity: 0.4;
   pointer-events: none;
 }
-.ac-slot-time { font-weight: 700; font-size: 1.1rem; }
+.ac-slot-time { font-weight: 700; font-size: 1.1rem; color: var(--ac-heading); }
 .ac-slot-info { font-size: 0.78rem; color: var(--ac-muted); }
 .ac-slot-seats { font-size: 0.72rem; color: #22c55e; margin-top: 4px; }
 
 /* ─── PROMOTIONS ─── */
 .ac-promo-card {
-  background: var(--ac-surface);
+  background: #fff;
   border: 1px solid var(--ac-border);
   border-radius: var(--ac-radius);
   overflow: hidden;
   transition: all 0.3s;
+  box-shadow: var(--ac-shadow);
 }
 .ac-promo-card:hover {
-  border-color: rgba(233,30,140,0.3);
+  border-color: rgba(14,165,233,0.3);
   transform: translateY(-4px);
-  box-shadow: var(--ac-shadow);
+  box-shadow: var(--ac-shadow-md);
 }
 .ac-promo-header {
   background: var(--ac-gradient);
@@ -774,20 +801,20 @@ body {
 }
 .ac-promo-icon { font-size: 2.5rem; }
 .ac-promo-discount {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Be Vietnam Pro', sans-serif;
   font-size: 1.8rem;
-  font-weight: 900;
+  font-weight: 800 !important;
   color: #fff;
 }
 .ac-promo-body { padding: 20px; }
 .ac-promo-code {
-  font-family: 'Outfit', monospace;
+  font-family: 'Be Vietnam Pro', monospace;
   font-size: 1.2rem;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--ac-primary);
-  background: rgba(233,30,140,0.08);
-  border: 1.5px dashed rgba(233,30,140,0.4);
-  border-radius: 8px;
+  background: rgba(14,165,233,0.06);
+  border: 1.5px dashed rgba(14,165,233,0.3);
+  border-radius: var(--ac-radius-xs);
   padding: 10px 16px;
   text-align: center;
   letter-spacing: 3px;
@@ -799,10 +826,10 @@ body {
 }
 .ac-promo-expiry { font-size: 0.8rem; color: var(--ac-muted); }
 .ac-btn-copy {
-  background: rgba(255,255,255,0.06);
+  background: var(--ac-surface);
   border: 1px solid var(--ac-border);
   color: var(--ac-muted);
-  border-radius: 8px;
+  border-radius: var(--ac-radius-xs);
   font-size: 0.8rem;
   padding: 6px 14px;
   transition: all 0.2s;
@@ -819,13 +846,13 @@ img[src*="placeholder"] {
   background: linear-gradient(135deg, var(--ac-surface2), var(--ac-surface));
 }
 
-/* --- CHECKOUT PROMOTION --- */
+/* ─── CHECKOUT PROMOTION ─── */
 .ac-promo-item:hover {
-  background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(0, 71, 171, 0.4) !important;
+  background: var(--ac-surface);
+  border-color: rgba(14,165,233,0.3) !important;
 }
 .bg-primary-ac-light {
-  background: rgba(0, 71, 171, 0.08) !important;
+  background: rgba(14,165,233,0.06) !important;
 }
 .border-primary-ac {
   border-color: var(--ac-primary) !important;
@@ -835,11 +862,63 @@ img[src*="placeholder"] {
 body:not(.admin-page) .text-muted {
   color: var(--ac-muted) !important;
 }
-
 body:not(.admin-page) .text-secondary {
   color: var(--ac-muted) !important;
 }
-
-body:not(.admin-page) .text-primary-ac {
-  color: #38bdf8 !important; /* Luminous Cyan Blue for high contrast on black background */
+body:not(.admin-page) .text-white {
+  color: var(--ac-heading) !important;
 }
+
+/* ─── SEAT MAP ─── */
+.ac-seat {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: var(--ac-surface2);
+  border: 1.5px solid var(--ac-border);
+  color: var(--ac-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+.ac-seat:hover:not(.sold) {
+  background: rgba(14,165,233,0.08);
+  border-color: var(--ac-primary);
+  transform: translateY(-2px);
+}
+.ac-seat.vip {
+  background: rgba(249,115,22,0.08);
+  border-color: rgba(249,115,22,0.3);
+  color: #f97316;
+}
+.ac-seat.couple {
+  width: 72px;
+  background: rgba(168,85,247,0.08);
+  border-color: rgba(168,85,247,0.3);
+  color: #a855f7;
+}
+.ac-seat.selected {
+  background: var(--ac-gradient);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: var(--ac-glow);
+}
+.ac-seat.sold {
+  background: var(--ac-surface);
+  border-color: var(--ac-surface);
+  color: transparent;
+  cursor: not-allowed;
+  position: relative;
+}
+.ac-seat.sold::after {
+  content: '×';
+  position: absolute;
+  color: var(--ac-accent);
+  font-weight: bold;
+  font-size: 1rem;
+}
+.tracking-widest { letter-spacing: 0.25em; }

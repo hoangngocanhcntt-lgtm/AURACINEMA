@@ -1,4 +1,4 @@
-﻿@model AuraCinema.Web.ViewModels.Account.RegisterViewModel
+@model AuraCinema.Web.ViewModels.Account.RegisterViewModel
 @{
     ViewData["Title"] = "Đăng ký tài khoản";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -64,10 +64,10 @@
                 <span asp-validation-for="Password" class="field-validation-error"></span>
                 <!-- Password strength -->
                 <div class="mt-2 d-flex gap-1" id="strengthBar" style="display:none!important;">
-                    <div class="flex-fill rounded" style="height:3px;background:rgba(255,255,255,0.1);" id="s1"></div>
-                    <div class="flex-fill rounded" style="height:3px;background:rgba(255,255,255,0.1);" id="s2"></div>
-                    <div class="flex-fill rounded" style="height:3px;background:rgba(255,255,255,0.1);" id="s3"></div>
-                    <div class="flex-fill rounded" style="height:3px;background:rgba(255,255,255,0.1);" id="s4"></div>
+                    <div class="flex-fill rounded" style="height:3px;background:var(--ac-border);" id="s1"></div>
+                    <div class="flex-fill rounded" style="height:3px;background:var(--ac-border);" id="s2"></div>
+                    <div class="flex-fill rounded" style="height:3px;background:var(--ac-border);" id="s3"></div>
+                    <div class="flex-fill rounded" style="height:3px;background:var(--ac-border);" id="s4"></div>
                 </div>
             </div>
 
@@ -119,7 +119,7 @@
             if (/[^A-Za-z0-9]/.test(v)) score++;
             bars.forEach((id, i) => {
                 document.getElementById(id).style.background =
-                    i < score ? colors[score - 1] : 'rgba(255,255,255,0.1)';
+                    i < score ? colors[score - 1] : '#E2E8F0';
             });
             document.getElementById('strengthBar').style.display = v ? 'flex' : 'none';
         });

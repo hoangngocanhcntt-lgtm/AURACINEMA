@@ -7,6 +7,7 @@ using AuraCinema.Services.Email;
 using AuraCinema.Web.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -50,7 +51,22 @@ builder.Services.AddHostedService<BookingCleanupService>();
 
 builder.Services.AddHttpClient();
 builder.Services.Configure<AuraCinema.Domain.Models.Chat.LlmOptions>(builder.Configuration.GetSection("Llm"));
-builder.Services.AddScoped<ILlmClient, AuraCinema.Services.Chat.GroqClient>();
+
+// ===== Chat anti-overload =====
+builder.Services.AddSingleton<AuraCinema.Services.Chat.ApiKeyRotator>(sp =>
+{
+    var options = sp.GetRequiredService<IOptions<AuraCinema.Domain.Models.Chat.LlmOptions>>().Value;
+    var logger = sp.GetRequiredService<ILogger<AuraCinema.Services.Chat.ApiKeyRotator>>();
+    return new AuraCinema.Services.Chat.ApiKeyRotator(options.GetAllKeys(), logger);
+});
+builder.Services.AddSingleton<AuraCinema.Services.Chat.ChatRateLimiter>(sp =>
+{
+    var options = sp.GetRequiredService<IOptions<AuraCinema.Domain.Models.Chat.LlmOptions>>().Value;
+    var logger = sp.GetRequiredService<ILogger<AuraCinema.Services.Chat.ChatRateLimiter>>();
+    return new AuraCinema.Services.Chat.ChatRateLimiter(options.RateLimitMaxRequests, options.RateLimitWindowSeconds, logger);
+});
+
+builder.Services.AddScoped<ILlmClient, AuraCinema.Services.Chat.GeminiClient>();
 builder.Services.AddScoped<IChatService, AuraCinema.Services.Chat.ChatService>();
 builder.Services.AddScoped<AuraCinema.Services.Chat.Tools.ToolRegistry>();
 builder.Services.AddControllersWithViews();

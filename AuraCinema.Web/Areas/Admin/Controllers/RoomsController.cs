@@ -108,6 +108,16 @@ public class RoomsController : AdminBaseController
         var room = await _db.Rooms.FindAsync(id);
         if (room == null) return NotFound();
 
+        if (room.Status != "Ngung hoat dong" && model.Status == "Ngung hoat dong")
+        {
+            bool hasActiveShowtimes = await _db.Showtimes.AnyAsync(s => s.RoomID == id && s.EndTime >= DateTime.Now);
+            if (hasActiveShowtimes)
+            {
+                ModelState.AddModelError("Status", "Không thể ngừng hoạt động phòng đang có suất chiếu chưa kết thúc!");
+                return View(model);
+            }
+        }
+
         room.RoomName = model.RoomName;
         room.Capacity = model.Capacity;
         room.Status = model.Status;
@@ -123,6 +133,13 @@ public class RoomsController : AdminBaseController
     {
         var room = await _db.Rooms.FindAsync(id);
         if (room == null) return NotFound();
+
+        bool hasActiveShowtimes = await _db.Showtimes.AnyAsync(s => s.RoomID == id && s.EndTime >= DateTime.Now);
+        if (hasActiveShowtimes)
+        {
+            TempData["Error"] = "Không thể ngừng hoạt động vì phòng này đang có suất chiếu chưa kết thúc.";
+            return RedirectToAction(nameof(Index));
+        }
 
         // Soft delete logic
         room.Status = "Ngung hoat dong";

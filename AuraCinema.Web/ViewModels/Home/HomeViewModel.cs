@@ -6,6 +6,9 @@ public class HomeViewModel
     public List<MovieCardViewModel> NowShowing { get; set; } = new();
     public List<MovieCardViewModel> ComingSoon { get; set; } = new();
     public List<AuraCinema.Web.ViewModels.MyTickets.TicketItemViewModel> RecentTickets { get; set; } = new();
+    
+    public int TotalRooms { get; set; }
+    public int TotalSeats { get; set; }
 }
 
 public class MovieCardViewModel
@@ -18,4 +21,5 @@ public class MovieCardViewModel
     public string Status { get; set; } = string.Empty;
     public DateOnly ReleaseDate { get; set; }
     public string Director { get; set; } = string.Empty;
+    public bool HasEarlyTickets { get; set; }
 }

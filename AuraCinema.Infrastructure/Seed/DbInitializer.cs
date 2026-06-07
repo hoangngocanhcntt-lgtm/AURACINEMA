@@ -102,11 +102,11 @@ public static class DbInitializer
         if (!await db.PriceConfigs.AnyAsync())
         {
             db.PriceConfigs.AddRange(
-                new PriceConfig { ConfigType = "BASE_PRICE", ConfigCode = "BASE", ConfigName = "Giá vé cơ bản", SurchargeAmount = 70000 },
-                new PriceConfig { ConfigType = "SEAT_SURCHARGE", ConfigCode = "SEAT_VIP", ConfigName = "Phụ thu ghế VIP", SurchargeAmount = 20000 },
-                new PriceConfig { ConfigType = "SEAT_SURCHARGE", ConfigCode = "SEAT_COUPLE", ConfigName = "Phụ thu ghế Đôi", SurchargeAmount = 50000 },
-                new PriceConfig { ConfigType = "DAY_SURCHARGE", ConfigCode = "DAY_WEEKEND", ConfigName = "Phụ thu cuối tuần", SurchargeAmount = 15000 },
-                new PriceConfig { ConfigType = "DAY_SURCHARGE", ConfigCode = "DAY_HOLIDAY", ConfigName = "Phụ thu ngày lễ", SurchargeAmount = 30000 }
+                new PriceConfig { ConfigType = "Base", ConfigCode = "BASE_PRICE", ConfigName = "Giá vé thường", SurchargeAmount = 2000 },
+                new PriceConfig { ConfigType = "Surcharge", ConfigCode = "VIP_SURCHARGE", ConfigName = "Phụ thu ghế VIP", SurchargeAmount = 20000 },
+                new PriceConfig { ConfigType = "Surcharge", ConfigCode = "COUPLE_SURCHARGE", ConfigName = "Phụ thu ghế Đôi", SurchargeAmount = 50000 },
+                new PriceConfig { ConfigType = "Surcharge", ConfigCode = "WEEKEND_SURCHARGE", ConfigName = "Phụ thu cuối tuần", SurchargeAmount = 15000 },
+                new PriceConfig { ConfigType = "Surcharge", ConfigCode = "EVENING_SURCHARGE", ConfigName = "Phụ thu suất tối", SurchargeAmount = 10000 }
             );
             await db.SaveChangesAsync();
         }

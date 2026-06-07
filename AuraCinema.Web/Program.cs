@@ -47,6 +47,9 @@ builder.Services.AddScoped<AuraCinema.Services.Chat.Tools.IChatTool, AuraCinema.
 builder.Services.AddScoped<AuraCinema.Services.Chat.Tools.IChatTool, AuraCinema.Services.Chat.Tools.PromotionListTool>();
 builder.Services.AddScoped<AuraCinema.Services.Chat.Tools.IChatTool, AuraCinema.Services.Chat.Tools.PriceInfoTool>();
 builder.Services.AddScoped<AuraCinema.Services.Chat.Tools.IChatTool, AuraCinema.Services.Chat.Tools.FaqTool>();
+builder.Services.AddScoped<AuraCinema.Services.Chat.Tools.IChatTool, AuraCinema.Services.Chat.Tools.AdjacentSeatsTool>();
+builder.Services.AddScoped<AuraCinema.Services.Chat.Tools.IChatTool, AuraCinema.Services.Chat.Tools.ListServicesTool>();
+builder.Services.AddScoped<AuraCinema.Services.Chat.Tools.IChatTool, AuraCinema.Services.Chat.Tools.CreatePendingOrderTool>();
 builder.Services.AddHostedService<BookingCleanupService>();
 
 builder.Services.AddHttpClient();

@@ -39,12 +39,12 @@
                     </div>
                     <div class="ac-stat-divider"></div>
                     <div>
-                        <div class="ac-stat-number">3</div>
+                        <div class="ac-stat-number">@Model.TotalRooms</div>
                         <div class="ac-stat-label">Phòng chiếu</div>
                     </div>
                     <div class="ac-stat-divider"></div>
                     <div>
-                        <div class="ac-stat-number">300</div>
+                        <div class="ac-stat-number">@Model.TotalSeats</div>
                         <div class="ac-stat-label">Ghế ngồi</div>
                     </div>
                 </div>
@@ -197,40 +197,7 @@
 </section>
 }
 
-<!-- ═══ VÉ CỦA TÔI (GẦN ĐÂY) ═══ -->
-@if (Model.RecentTickets != null && Model.RecentTickets.Any())
-{
-<section class="ac-section pt-0">
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h2 class="ac-section-title">Vé của bạn</h2>
-                <p class="ac-section-subtitle">Những suất chiếu sắp tới</p>
-            </div>
-            <a asp-controller="MyTickets" asp-action="Index" class="ac-btn-outline btn-sm px-3">
-                Xem tất cả <i class="bi bi-arrow-right ms-1"></i>
-            </a>
-        </div>
-        <div class="row g-3">
-            @foreach (var ticket in Model.RecentTickets)
-            {
-                <div class="col-md-6 col-lg-4">
-                    <a asp-controller="MyTickets" asp-action="Detail" asp-route-id="@ticket.OrderID" class="text-decoration-none">
-                        <div class="ac-card p-3 border-ac hover-scale d-flex gap-3">
-                            <img src="@ticket.Poster" alt="@ticket.MovieTitle" class="rounded" style="width: 60px; height: 90px; object-fit: cover;" onerror="this.src='/images/placeholder-movie.jpg'" />
-                            <div class="flex-grow-1 overflow-hidden">
-                                <h6 class=" fw-bold mb-1 text-truncate">@ticket.MovieTitle</h6>
-                                <p class="text-muted small mb-1">@ticket.Showtime.ToString("HH:mm - dd/MM")</p>
-                                <p class="ac-badge m-0" style="font-size: 0.7rem;">@ticket.RoomName &bull; @ticket.SeatList</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            }
-        </div>
-    </div>
-</section>
-}
+
 
 <!-- ═══ PHIM SẮP CHIẾU ═══ -->
 @if (Model.ComingSoon.Any())

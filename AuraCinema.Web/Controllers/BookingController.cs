@@ -64,11 +64,11 @@ public class BookingController : Controller
                 MoviePoster = showtime.Movie.Poster,
                 Rows = rows,
                 SoldOrHeldSeatIds = soldOrHeldSeatIds,
-                BasePrice = configs.GetValueOrDefault("BASE_PRICE", 70000),
-                VipSurcharge = configs.GetValueOrDefault("VIP_SURCHARGE", 20000),
-                CoupleSurcharge = configs.GetValueOrDefault("COUPLE_SURCHARGE", 50000),
-                DaySurcharge = (showtime.StartTime.DayOfWeek == DayOfWeek.Saturday || showtime.StartTime.DayOfWeek == DayOfWeek.Sunday) ? configs.GetValueOrDefault("WEEKEND_SURCHARGE", 15000) : 0,
-                EveningSurcharge = (showtime.StartTime.Hour >= 18) ? configs.GetValueOrDefault("EVENING_SURCHARGE", 10000) : 0
+                BasePrice = ResolveConfig(configs, "BASE_PRICE", "BASE"),
+                VipSurcharge = ResolveConfig(configs, "VIP_SURCHARGE", "SEAT_VIP"),
+                CoupleSurcharge = ResolveConfig(configs, "COUPLE_SURCHARGE", "SEAT_COUPLE"),
+                DaySurcharge = (showtime.StartTime.DayOfWeek == DayOfWeek.Saturday || showtime.StartTime.DayOfWeek == DayOfWeek.Sunday) ? ResolveConfig(configs, "WEEKEND_SURCHARGE", "DAY_WEEKEND") : 0,
+                EveningSurcharge = (showtime.StartTime.Hour >= 18) ? ResolveConfig(configs, "EVENING_SURCHARGE", "DAY_EVENING") : 0
             };
 
             return View(vm);
@@ -497,5 +497,12 @@ public class BookingController : Controller
             "Sacombank" => "970403",
             _ => "970436"
         };
+    }
+
+    private static int ResolveConfig(Dictionary<string, int> configs, string primaryKey, string fallbackKey)
+    {
+        if (configs.TryGetValue(primaryKey, out var val)) return val;
+        if (configs.TryGetValue(fallbackKey, out var fallbackVal)) return fallbackVal;
+        return 0;
     }
 }

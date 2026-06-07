@@ -1,12 +1,12 @@
 :root {
   --aura-chat-bg:       #FFFFFF;
-  --aura-chat-header:   #0EA5E9;
-  --aura-chat-bubble-bot:  #F0F9FF;
-  --aura-chat-bubble-user: #0EA5E9;
+  --aura-chat-header:   #8B5CF6;
+  --aura-chat-bubble-bot:  #F5F3FF;
+  --aura-chat-bubble-user: #8B5CF6;
   --aura-chat-text:     #1E293B;
   --aura-chat-text-dark:#1E293B;
   --aura-chat-text-light:#FFFFFF;
-  --aura-chat-button:   #0EA5E9;
+  --aura-chat-button:   #8B5CF6;
 }
 
 #aura-chat-widget {
@@ -17,23 +17,37 @@
 }
 
 #aura-chat-bubble {
-    width: 56px;
-    height: 56px;
-    background: linear-gradient(135deg, #0EA5E9, #0284C7);
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, #6366F1, #8B5CF6, #D946EF);
     color: #fff;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 22px;
+    font-size: 30px;
     cursor: pointer;
-    box-shadow: 0 4px 20px rgba(14,165,233,0.3);
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
     transition: transform 0.3s, box-shadow 0.3s;
+    animation: floatBubble 3s ease-in-out infinite, pulseGlow 2s infinite;
 }
 
 #aura-chat-bubble:hover {
     transform: scale(1.1);
-    box-shadow: 0 6px 24px rgba(14,165,233,0.4);
+    box-shadow: 0 6px 24px rgba(139, 92, 246, 0.6);
+    animation: none;
+}
+
+@keyframes floatBubble {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes pulseGlow {
+    0% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.6); }
+    70% { box-shadow: 0 0 0 15px rgba(139, 92, 246, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); }
 }
 
 #aura-chat-panel {
@@ -52,7 +66,7 @@
 }
 
 .aura-chat-header {
-    background: linear-gradient(135deg, #0EA5E9, #0284C7);
+    background: linear-gradient(135deg, #6366F1, #8B5CF6);
     color: #fff;
     padding: 16px;
     font-weight: 600;
@@ -79,7 +93,7 @@
 
 .aura-msg-user {
     align-self: flex-end;
-    background: linear-gradient(135deg, #0EA5E9, #0284C7);
+    background: linear-gradient(135deg, #6366F1, #8B5CF6);
     color: #fff;
     border-bottom-right-radius: 4px;
 }
@@ -113,7 +127,7 @@
 
 #aura-chat-send-btn {
     border-radius: 0 20px 20px 0;
-    background: linear-gradient(135deg, #0EA5E9, #0284C7);
+    background: linear-gradient(135deg, #6366F1, #8B5CF6);
     color: #fff;
     border: 1.5px solid var(--aura-chat-button);
     font-weight: 500;

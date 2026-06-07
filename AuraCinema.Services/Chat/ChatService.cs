@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using AuraCinema.Domain.Interfaces.Services;
 using AuraCinema.Domain.Models.Chat;
@@ -33,9 +33,10 @@ public class ChatService : IChatService
         var tools = _toolRegistry.GetAllDeclarations();
         var ctx = new ChatToolContext(userId, null);
         var collectedNames = new List<string>();
+        var toolCallResults = new List<(string ToolName, string ResultJson)>();
 
         var loopCount = 0;
-        const int MAX_LOOPS = 3;
+        const int MAX_LOOPS = 8;
         var disableTools = false;
 
         try
@@ -72,7 +73,7 @@ public class ChatService : IChatService
                 if (choice.Message.ToolCalls != null && choice.Message.ToolCalls.Count > 0)
                 {
                     messages.Add(choice.Message);
-                    await ExecuteToolCallsAsync(choice.Message.ToolCalls!, messages, ctx, collectedNames, cancellationToken);
+                    await ExecuteToolCallsAsync(choice.Message.ToolCalls!, messages, ctx, collectedNames, cancellationToken, toolCallResults);
                     loopCount++;
                     continue;
                 }
@@ -82,7 +83,7 @@ public class ChatService : IChatService
                 if (leaked.Count > 0)
                 {
                     messages.Add(new LlmMessage { Role = "assistant", ToolCalls = leaked });
-                    await ExecuteToolCallsAsync(leaked, messages, ctx, collectedNames, cancellationToken);
+                    await ExecuteToolCallsAsync(leaked, messages, ctx, collectedNames, cancellationToken, toolCallResults);
                     loopCount++;
                     continue;
                 }
@@ -90,13 +91,46 @@ public class ChatService : IChatService
                 var cleaned = CleanContent(content);
                 if (!string.IsNullOrEmpty(cleaned))
                 {
-                    if (collectedNames.Count == 0 && RequiresDataLookup(message) && LooksLikeFabricatedData(cleaned))
+                    // Chỉ check fabricated data khi KHÔNG có bất kỳ tool nào đã gọi thành công
+                    if (toolCallResults.Count == 0 && collectedNames.Count == 0 && RequiresDataLookup(message) && LooksLikeFabricatedData(cleaned))
                     {
                         _logger.LogWarning("Phát hiện model bịa dữ liệu cho câu hỏi: {Message}", message);
                         return new ChatResponse { Reply = BuildDataFallbackReply(message) };
                     }
+
+                    // Phát hiện LLM bịa dịch vụ F&B mà không gọi list_services
+                    bool calledListServices = toolCallResults.Any(t => t.ToolName == "list_services");
+                    if (!calledListServices && LooksLikeFabricatedServices(cleaned) && loopCount < MAX_LOOPS - 1)
+                    {
+                        _logger.LogWarning("Phát hiện model bịa dịch vụ F&B mà không gọi list_services. Yêu cầu retry.");
+                        messages.Add(new LlmMessage { Role = "assistant", Content = cleaned });
+                        messages.Add(new LlmMessage { Role = "user", Content = "SYSTEM: Danh sách dịch vụ trên là SAI vì bạn chưa gọi list_services. Hãy gọi list_services ngay bây giờ để lấy dữ liệu thật, rồi liệt kê lại cho khách." });
+                        loopCount++;
+                        continue;
+                    }
                     var corrected = ResponseCorrector.CorrectNames(cleaned, collectedNames);
-                    return new ChatResponse { Reply = corrected };
+                    var resp = new ChatResponse { Reply = corrected };
+                    
+                    // Check if create_pending_order was called and grab the checkoutUrl
+                    var bookingToolMessage = messages.LastOrDefault(m => m.Role == "tool" && m.Name == "create_pending_order");
+                    if (bookingToolMessage != null && !string.IsNullOrEmpty(bookingToolMessage.Content))
+                    {
+                        try
+                        {
+                            var toolResult = JsonSerializer.Deserialize<JsonElement>(bookingToolMessage.Content);
+                            if (toolResult.TryGetProperty("ok", out var okProp) && okProp.GetBoolean() && 
+                                toolResult.TryGetProperty("checkoutUrl", out var urlProp))
+                            {
+                                resp.RedirectUrl = urlProp.GetString();
+                            }
+                        }
+                        catch { /* Ignore parse errors */ }
+                    }
+
+                    // Build ToolContext cho frontend lưu lại
+                    resp.ToolContext = BuildToolContext(toolCallResults);
+
+                    return resp;
                 }
 
                 break;
@@ -120,7 +154,7 @@ public class ChatService : IChatService
         }
     }
 
-    private async Task ExecuteToolCallsAsync(List<LlmToolCall> calls, List<LlmMessage> messages, ChatToolContext ctx, List<string> collectedNames, CancellationToken ct)
+    private async Task ExecuteToolCallsAsync(List<LlmToolCall> calls, List<LlmMessage> messages, ChatToolContext ctx, List<string> collectedNames, CancellationToken ct, List<(string, string)>? toolCallResults = null)
     {
         foreach (var call in calls)
         {
@@ -137,6 +171,7 @@ public class ChatService : IChatService
                 var resultJson = JsonSerializer.Serialize(result);
                 collectedNames.AddRange(ResponseCorrector.ExtractNames(call.Function.Name, resultJson));
                 messages.Add(new LlmMessage { Role = "tool", ToolCallId = call.Id, Name = call.Function.Name, Content = resultJson });
+                toolCallResults?.Add((call.Function.Name, resultJson));
             }
             catch (Exception ex)
             {
@@ -193,18 +228,145 @@ public class ChatService : IChatService
 
     private static bool LooksLikeFabricatedData(string reply)
     {
-        if (reply.Contains("1.") && reply.Contains("2.")) return true;
-        if (reply.Contains("danh sách") || reply.Contains("dưới đây là")) return true;
-        int quoteCount = reply.Count(c => c == '"' || c == '\'');
-        if (quoteCount >= 4) return true;
-        string[] commonHallucinations = { "sát thủ bóng đêm", "tình yêu trong bóng tối", "cuộc chiến không giới hạn", "đại bàng bay cao", "câu chuyện bí ẩn", "bóng ma học đường", "ngôi nhà ma ám", "2.000đ", "2000đ", "50.000đ", "45.000" };
+        // Chỉ kiểm tra các dấu hiệu bịa dữ liệu rõ ràng
+        string[] commonHallucinations = { "sát thủ bóng đêm", "tình yêu trong bóng tối", "cuộc chiến không giới hạn", "đại bàng bay cao", "câu chuyện bí ẩn", "bóng ma học đường", "ngôi nhà ma ám" };
         var lowerReply = reply.ToLowerInvariant();
         foreach (var fakeInfo in commonHallucinations) if (lowerReply.Contains(fakeInfo)) return true;
+
+        // Check numbered list + quotes heuristic — nhưng yêu cầu nhiều dấu hiệu hơn
+        bool hasNumberedList = reply.Contains("1.") && reply.Contains("2.");
+        bool hasListIntro = reply.Contains("danh sách") || reply.Contains("dưới đây là");
+        int quoteCount = reply.Count(c => c == '"' || c == '\'');
+        bool hasManyQuotes = quoteCount >= 6;
+
+        // Cần ít nhất 2 dấu hiệu để xác định là bịa
+        int signals = (hasNumberedList ? 1 : 0) + (hasListIntro ? 1 : 0) + (hasManyQuotes ? 1 : 0);
+        if (signals >= 2) return true;
+
         return false;
     }
 
     private static string BuildDataFallbackReply(string userMessage)
     {
         return "Xin lỗi bạn, hiện tại mình không thể lấy dữ liệu trực tiếp lúc này. 😅 Bạn vui lòng xem thông tin chi tiết về phim, lịch chiếu và giá vé ngay trên trang chủ của AuraCinema nhé!";
+    }
+
+    private static bool LooksLikeFabricatedServices(string text)
+    {
+        var lower = text.ToLower();
+        // Kiểm tra xem có chứa các từ khóa dịch vụ phổ biến hoặc giá tiền bịa không
+        bool hasServiceNames = lower.Contains("bắp rang bơ") || 
+                               lower.Contains("nước ngọt") || 
+                               lower.Contains("combo bắp");
+        
+        bool hasPriceFormat = System.Text.RegularExpressions.Regex.IsMatch(lower, @"\d{1,3}(\.|\,)\d{3}\s*(đ|vnd|vnđ)");
+
+        return hasServiceNames || hasPriceFormat;
+    }
+
+    /// <summary>
+    /// Xây dựng BOOKING_CONTEXT từ kết quả tool calls để frontend lưu lại.
+    /// LLM sẽ nhìn thấy context này trong history ở tin nhắn tiếp theo.
+    /// </summary>
+    private static string? BuildToolContext(List<(string ToolName, string ResultJson)> toolCallResults)
+    {
+        if (toolCallResults.Count == 0) return null;
+
+        var parts = new List<string>();
+
+        foreach (var (toolName, resultJson) in toolCallResults)
+        {
+            try
+            {
+                using var doc = JsonDocument.Parse(resultJson);
+                var root = doc.RootElement;
+
+                if (!root.TryGetProperty("ok", out var okProp) || !okProp.GetBoolean())
+                    continue;
+
+                switch (toolName)
+                {
+                    case "list_services":
+                        if (root.TryGetProperty("services", out var svcArr) && svcArr.ValueKind == JsonValueKind.Array)
+                        {
+                            var svcLines = new List<string> { "services:" };
+                            int stt = 1;
+                            foreach (var svc in svcArr.EnumerateArray())
+                            {
+                                var svcId = svc.TryGetProperty("serviceId", out var idP) ? idP.GetInt32() : 0;
+                                var svcName = svc.TryGetProperty("serviceName", out var nameP) ? nameP.GetString() : "";
+                                var svcPrice = svc.TryGetProperty("price", out var priceP) ? priceP.GetString() : "";
+                                svcLines.Add($"  {stt}→serviceId={svcId}({svcName},{svcPrice})");
+                                stt++;
+                            }
+                            parts.Add(string.Join("\n", svcLines));
+                        }
+                        break;
+
+                    case "get_available_adjacent_seats":
+                        if (root.TryGetProperty("groups", out var grpArr) && grpArr.ValueKind == JsonValueKind.Array)
+                        {
+                            var seatLines = new List<string>();
+                            // Lưu showtime info
+                            if (root.TryGetProperty("showtime", out var stInfo))
+                            {
+                                var stId = stInfo.TryGetProperty("showtimeId", out var stIdP) ? stIdP.GetInt32() : 0;
+                                seatLines.Add($"showtimeId={stId}");
+                            }
+                            seatLines.Add("seat_groups:");
+                            int grpIdx = 1;
+                            foreach (var grp in grpArr.EnumerateArray())
+                            {
+                                var label = grp.TryGetProperty("label", out var lblP) ? lblP.GetString() : "";
+                                var seatIds = new List<int>();
+                                if (grp.TryGetProperty("seatIds", out var idsP) && idsP.ValueKind == JsonValueKind.Array)
+                                {
+                                    foreach (var id in idsP.EnumerateArray())
+                                        if (id.TryGetInt32(out var sid)) seatIds.Add(sid);
+                                }
+                                seatLines.Add($"  {grpIdx}→{label}(seatIds=[{string.Join(",", seatIds)}])");
+                                grpIdx++;
+                            }
+                            parts.Add(string.Join("\n", seatLines));
+                        }
+                        break;
+
+                    case "get_showtimes":
+                        if (root.TryGetProperty("movie", out var movieEl))
+                        {
+                            var movieId = movieEl.TryGetProperty("id", out var mIdP) ? mIdP.GetInt32() : 0;
+                            var movieTitle = movieEl.TryGetProperty("title", out var mTitleP) ? mTitleP.GetString() : "";
+                            parts.Add($"movie: id={movieId}, title={movieTitle}");
+                        }
+                        // Lưu showtimeIds để LLM có thể tham chiếu khi tạo đơn
+                        if (root.TryGetProperty("groups", out var dateGroups) && dateGroups.ValueKind == JsonValueKind.Array)
+                        {
+                            var stLines = new List<string> { "showtimes:" };
+                            foreach (var dg in dateGroups.EnumerateArray())
+                            {
+                                var dayLabel = dg.TryGetProperty("dayLabel", out var dlP) ? dlP.GetString() : "";
+                                if (dg.TryGetProperty("showtimes", out var stArr) && stArr.ValueKind == JsonValueKind.Array)
+                                {
+                                    foreach (var st in stArr.EnumerateArray())
+                                    {
+                                        var stId = st.TryGetProperty("showtimeId", out var stIdP) ? stIdP.GetInt32() : 0;
+                                        var startTime = st.TryGetProperty("startTime", out var stTimeP) ? stTimeP.GetString() : "";
+                                        var endTime = st.TryGetProperty("endTime", out var etP) ? etP.GetString() : "";
+                                        var roomName = st.TryGetProperty("roomName", out var rnP) ? rnP.GetString() : "";
+                                        var available = st.TryGetProperty("availableSeats", out var avP) ? avP.GetInt32() : 0;
+                                        stLines.Add($"  {dayLabel} {startTime}-{endTime} {roomName} ({available} ghế trống) → showtimeId={stId}");
+                                    }
+                                }
+                            }
+                            if (stLines.Count > 1) // có ít nhất 1 showtime
+                                parts.Add(string.Join("\n", stLines));
+                        }
+                        break;
+                }
+            }
+            catch { /* skip */ }
+        }
+
+        return parts.Count > 0 ? "[BOOKING_CONTEXT]\n" + string.Join("\n", parts) : null;
     }
 }

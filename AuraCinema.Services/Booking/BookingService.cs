@@ -65,21 +65,27 @@ public class BookingService : IBookingService
 
         var configs = await _db.PriceConfigs.ToDictionaryAsync(c => c.ConfigCode.Trim(), c => c.SurchargeAmount);
         
-        int basePrice = configs.GetValueOrDefault("BASE_PRICE", 70000);
-        int daySurcharge = (showtime.StartTime.DayOfWeek == DayOfWeek.Saturday || showtime.StartTime.DayOfWeek == DayOfWeek.Sunday) ? configs.GetValueOrDefault("WEEKEND_SURCHARGE", 15000) : 0;
-        int eveningSurcharge = (showtime.StartTime.Hour >= 18) ? configs.GetValueOrDefault("EVENING_SURCHARGE", 10000) : 0;
+        int basePrice = ResolveConfig(configs, "BASE_PRICE", "BASE");
+        int daySurcharge = (showtime.StartTime.DayOfWeek == DayOfWeek.Saturday || showtime.StartTime.DayOfWeek == DayOfWeek.Sunday) ? ResolveConfig(configs, "WEEKEND_SURCHARGE", "DAY_WEEKEND") : 0;
+        int eveningSurcharge = (showtime.StartTime.Hour >= 18) ? ResolveConfig(configs, "EVENING_SURCHARGE", "DAY_EVENING") : 0;
         
         int totalAmount = 0;
         var details = new Dictionary<string, object>();
 
+        int doubleSeatCount = 0;
         // Ghế
         foreach (var seat in seats)
         {
             int seatPrice = basePrice + daySurcharge + eveningSurcharge;
-            if (seat.SeatType == "VIP") seatPrice += configs.GetValueOrDefault("VIP_SURCHARGE", 20000);
-            else if (seat.SeatType == "Doi") seatPrice += configs.GetValueOrDefault("COUPLE_SURCHARGE", 50000);
+            if (seat.SeatType == "VIP") seatPrice += ResolveConfig(configs, "VIP_SURCHARGE", "SEAT_VIP");
+            else if (seat.SeatType == "Doi") doubleSeatCount++;
+            
             totalAmount += seatPrice;
         }
+
+        // Add surcharge per pair of double seats
+        int couplePairs = (int)Math.Ceiling(doubleSeatCount / 2.0);
+        totalAmount += couplePairs * ResolveConfig(configs, "COUPLE_SURCHARGE", "SEAT_COUPLE");
 
         // Dịch vụ
         foreach (var svc in services)
@@ -153,15 +159,24 @@ public class BookingService : IBookingService
             var showtime = await _db.Showtimes.FindAsync(showtimeId);
             var seats = await _db.Seats.Where(s => seatIds.Contains(s.SeatID)).ToListAsync();
             var configs = await _db.PriceConfigs.ToDictionaryAsync(c => c.ConfigCode.Trim(), c => c.SurchargeAmount);
-            int basePrice = configs.GetValueOrDefault("BASE_PRICE", 70000);
-            int daySurcharge = (showtime!.StartTime.DayOfWeek == DayOfWeek.Saturday || showtime.StartTime.DayOfWeek == DayOfWeek.Sunday) ? configs.GetValueOrDefault("WEEKEND_SURCHARGE", 15000) : 0;
-            int eveningSurcharge = (showtime.StartTime.Hour >= 18) ? configs.GetValueOrDefault("EVENING_SURCHARGE", 10000) : 0;
+            int basePrice = ResolveConfig(configs, "BASE_PRICE", "BASE");
+            int daySurcharge = (showtime!.StartTime.DayOfWeek == DayOfWeek.Saturday || showtime.StartTime.DayOfWeek == DayOfWeek.Sunday) ? ResolveConfig(configs, "WEEKEND_SURCHARGE", "DAY_WEEKEND") : 0;
+            int eveningSurcharge = (showtime.StartTime.Hour >= 18) ? ResolveConfig(configs, "EVENING_SURCHARGE", "DAY_EVENING") : 0;
 
+            int doubleSeatCount = 0;
             foreach (var seat in seats)
             {
                 int seatPrice = basePrice + daySurcharge + eveningSurcharge;
-                if (seat.SeatType == "VIP") seatPrice += configs.GetValueOrDefault("VIP_SURCHARGE", 20000);
-                else if (seat.SeatType == "Doi") seatPrice += configs.GetValueOrDefault("COUPLE_SURCHARGE", 50000);
+                if (seat.SeatType == "VIP") seatPrice += ResolveConfig(configs, "VIP_SURCHARGE", "SEAT_VIP");
+                else if (seat.SeatType == "Doi") 
+                {
+                    doubleSeatCount++;
+                    // Phụ thu ghế đôi chỉ được cộng vào ghế số lẻ của cặp (VD: ghế thứ 1, 3, 5...) để tổng giá của cặp là đúng
+                    if (doubleSeatCount % 2 != 0)
+                    {
+                        seatPrice += ResolveConfig(configs, "COUPLE_SURCHARGE", "SEAT_COUPLE");
+                    }
+                }
 
                 _db.OrderSeats.Add(new OrderSeat
                 {
@@ -395,5 +410,13 @@ public class BookingService : IBookingService
 
         await _db.SaveChangesAsync();
         return (true, "Áp dụng khuyến mãi thành công.");
+    }
+
+    /// <summary>Tìm giá theo ConfigCode chính, nếu không có thì thử ConfigCode cũ (backwards compat với seed data cũ).</summary>
+    private static int ResolveConfig(Dictionary<string, int> configs, string primaryKey, string fallbackKey)
+    {
+        if (configs.TryGetValue(primaryKey, out var val)) return val;
+        if (configs.TryGetValue(fallbackKey, out var fallbackVal)) return fallbackVal;
+        return 0;
     }
 }

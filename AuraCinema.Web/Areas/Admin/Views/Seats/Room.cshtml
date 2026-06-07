@@ -45,6 +45,8 @@
                              data-id="@seat.SeatID" 
                              data-code="@seat.SeatCode"
                              data-type="@seat.SeatType"
+                             data-row="@seat.RowLabel"
+                             data-number="@seat.SeatNumber"
                              onclick="openSeatMenu(this)">
                             @seat.SeatNumber
                         </div>
@@ -142,15 +144,84 @@
     <script>
         let currentSeatId = 0;
         let currentSeatEl = null;
+        let pairingMode = false;
+        let firstSeatForPairing = null;
 
         function openSeatMenu(el) {
+            if (pairingMode) {
+                const row1 = firstSeatForPairing.dataset.row;
+                const num1 = parseInt(firstSeatForPairing.dataset.number);
+                const row2 = el.dataset.row;
+                const num2 = parseInt(el.dataset.number);
+                
+                if (el.dataset.id === firstSeatForPairing.dataset.id) {
+                    pairingMode = false;
+                    alert('Đã hủy ghép ghế đôi.');
+                    return;
+                }
+
+                if (el.dataset.type === 'Doi') {
+                    alert('Ghế này đã là ghế đôi với ghế khác, không thể ghép!');
+                    return;
+                }
+                
+                if (row1 !== row2 || Math.abs(num1 - num2) !== 1) {
+                    alert('Ghế thứ hai phải nằm kề bên trái hoặc phải ghế đầu tiên!');
+                    return;
+                }
+                
+                submitPairing(firstSeatForPairing.dataset.id, el.dataset.id, el);
+                return;
+            }
+
             currentSeatId = el.dataset.id;
             currentSeatEl = el;
             document.getElementById('modalSeatCode').innerText = "Cấu hình ghế: " + el.dataset.code;
             new bootstrap.Modal(document.getElementById('seatModal')).show();
         }
 
+        async function submitPairing(id1, id2, el2) {
+            const formData = new FormData();
+            formData.append('seat1Id', id1);
+            formData.append('seat2Id', id2);
+            formData.append('__RequestVerificationToken', document.querySelector('input[name="__RequestVerificationToken"]').value);
+
+            const res = await fetch('/Admin/Seats/PairSeats', { method: 'POST', body: formData });
+            if (res.ok) {
+                firstSeatForPairing.dataset.type = 'Doi';
+                firstSeatForPairing.className = 'admin-seat seat-doi';
+                el2.dataset.type = 'Doi';
+                el2.className = 'admin-seat seat-doi';
+                pairingMode = false;
+                firstSeatForPairing = null;
+            } else {
+                alert("Có lỗi xảy ra khi ghép ghế.");
+            }
+        }
+
         async function changeType(type) {
+            if (type === 'Doi') {
+                const row = currentSeatEl.dataset.row;
+                const num = parseInt(currentSeatEl.dataset.number);
+                
+                const leftEl = document.querySelector(`.admin-seat[data-row='${row}'][data-number='${num - 1}']`);
+                const rightEl = document.querySelector(`.admin-seat[data-row='${row}'][data-number='${num + 1}']`);
+                
+                const leftEligible = leftEl && leftEl.dataset.type !== 'Doi';
+                const rightEligible = rightEl && rightEl.dataset.type !== 'Doi';
+
+                if (!leftEligible && !rightEligible) {
+                    alert('Không có ghế thường/VIP liền kề nào để ghép đôi (hoặc ghế bên cạnh đã là ghế đôi)!');
+                    return;
+                }
+
+                bootstrap.Modal.getInstance(document.getElementById('seatModal')).hide();
+                pairingMode = true;
+                firstSeatForPairing = currentSeatEl;
+                alert('Vui lòng chọn 1 ghế bên cạnh (trái hoặc phải) để ghép thành cặp ghế đôi.');
+                return;
+            }
+
             const formData = new FormData();
             formData.append('seatId', currentSeatId);
             formData.append('type', type);
@@ -158,8 +229,18 @@
 
             const res = await fetch('/Admin/Seats/UpdateType', { method: 'POST', body: formData });
             if (res.ok) {
+                const data = await res.json();
                 currentSeatEl.dataset.type = type;
                 currentSeatEl.className = `admin-seat seat-${type.toLowerCase()}`;
+                
+                if (data.partnerId) {
+                    const pEl = document.querySelector(`.admin-seat[data-id='${data.partnerId}']`);
+                    if (pEl) {
+                        pEl.dataset.type = type;
+                        pEl.className = `admin-seat seat-${type.toLowerCase()}`;
+                    }
+                }
+
                 bootstrap.Modal.getInstance(document.getElementById('seatModal')).hide();
             }
         }

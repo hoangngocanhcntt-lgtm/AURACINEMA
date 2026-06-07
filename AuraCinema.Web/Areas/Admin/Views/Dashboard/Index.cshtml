@@ -1,136 +1,141 @@
 @model AuraCinema.Web.Areas.Admin.ViewModels.DashboardViewModel
 @{
-    ViewData["Title"] = "Tổng quan";
+    ViewData["Title"] = "Tổng quan Thống kê";
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="h4 mb-0 text-dark fw-bold">Thống kê & Báo cáo</h2>
     <div>
-        <button class="btn btn-outline-secondary btn-sm bg-white"><i class="bi bi-calendar3 me-2"></i>7 ngày qua</button>
-        <button class="btn ac-btn-primary btn-sm ms-2"><i class="bi bi-download me-2"></i>Xuất báo cáo</button>
+        <button id="btnExportPdf" class="btn ac-btn-primary btn-sm ms-2"><i class="bi bi-download me-2"></i>Xuất báo cáo PDF</button>
     </div>
 </div>
 
-<!-- KPI Scorecards -->
-<div class="row g-4 mb-4">
-    <div class="col-sm-6 col-xl-3">
-        <div class="ac-card p-3 d-flex align-items-center border-0 shadow-sm">
-            <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-3 me-3">
-                <i class="bi bi-currency-dollar fs-4"></i>
+<!-- Bộ lọc thời gian -->
+<div class="ac-card p-3 mb-4 border-0 shadow-sm">
+    <form id="filterForm" method="get" action="@Url.Action("Index", "Dashboard", new { area = "Admin" })">
+        <div class="row align-items-end g-3">
+            <div class="col-md-3">
+                <label class="form-label small text-muted mb-1">Từ ngày</label>
+                <input type="date" class="form-control form-control-sm" name="startDate" id="startDate" value="@Model.StartDate.ToString("yyyy-MM-dd")" />
             </div>
-            <div>
-                <p class="text-muted small mb-1">Tổng doanh thu</p>
-                <h5 class="fw-bold mb-0 text-dark">@Model.TotalRevenue.ToString("N0")đ</h5>
+            <div class="col-md-3">
+                <label class="form-label small text-muted mb-1">Đến ngày</label>
+                <input type="date" class="form-control form-control-sm" name="endDate" id="endDate" value="@Model.EndDate.ToString("yyyy-MM-dd")" />
             </div>
-        </div>
-    </div>
-    <div class="col-sm-6 col-xl-3">
-        <div class="ac-card p-3 d-flex align-items-center border-0 shadow-sm">
-            <div class="bg-success bg-opacity-10 text-success p-3 rounded-3 me-3">
-                <i class="bi bi-ticket-perforated fs-4"></i>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-outline-primary btn-sm w-100">Áp dụng</button>
             </div>
-            <div>
-                <p class="text-muted small mb-1">Vé đã bán</p>
-                <h5 class="fw-bold mb-0 text-dark">@Model.TotalTicketsSold.ToString("N0")</h5>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-6 col-xl-3">
-        <div class="ac-card p-3 d-flex align-items-center border-0 shadow-sm">
-            <div class="bg-warning bg-opacity-10 text-warning p-3 rounded-3 me-3">
-                <i class="bi bi-cup-straw fs-4"></i>
-            </div>
-            <div>
-                <p class="text-muted small mb-1">Đơn bắp nước</p>
-                <h5 class="fw-bold mb-0 text-dark">@Model.TotalConcessionOrders.ToString("N0")</h5>
+            <div class="col-md-4 text-end">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-sm @(Model.RangeType == "today" ? "btn-primary" : "btn-outline-secondary")" onclick="setQuickFilter('today')">Hôm nay</button>
+                    <button type="button" class="btn btn-sm @(Model.RangeType == "thisWeek" ? "btn-primary" : "btn-outline-secondary")" onclick="setQuickFilter('thisWeek')">Tuần này</button>
+                    <button type="button" class="btn btn-sm @(Model.RangeType == "thisMonth" ? "btn-primary" : "btn-outline-secondary")" onclick="setQuickFilter('thisMonth')">Tháng này</button>
+                    <button type="button" class="btn btn-sm @(Model.RangeType == "thisYear" ? "btn-primary" : "btn-outline-secondary")" onclick="setQuickFilter('thisYear')">Năm nay</button>
+                </div>
+                <input type="hidden" name="rangeType" id="rangeType" value="@Model.RangeType" />
             </div>
         </div>
-    </div>
-    <div class="col-sm-6 col-xl-3">
-        <div class="ac-card p-3 d-flex align-items-center border-0 shadow-sm">
-            <div class="bg-info bg-opacity-10 text-info p-3 rounded-3 me-3">
-                <i class="bi bi-people fs-4"></i>
-            </div>
-            <div>
-                <p class="text-muted small mb-1">Tỷ lệ lấp đầy</p>
-                <h5 class="fw-bold mb-0 text-dark">@Model.RoomOccupancyRate%</h5>
-            </div>
-        </div>
-    </div>
+    </form>
 </div>
 
-<!-- Charts Row 1 -->
-<div class="row g-4 mb-4">
-    <div class="col-lg-8">
-        <div class="ac-card p-4 h-100 border-0 shadow-sm">
-            <h6 class="text-dark fw-bold mb-3">Biến động doanh thu</h6>
-            <div style="height: 300px;">
-                <canvas id="lineChart"></canvas>
-            </div>
-        </div>
+<div id="pdfExportArea">
+    <!-- Tiêu đề báo cáo khi in -->
+    <div id="pdfHeader" class="d-none text-center mb-4">
+        <h2>BÁO CÁO THỐNG KÊ DOANH THU AURA CINEMA</h2>
+        <p>Từ ngày: @Model.StartDate.ToString("dd/MM/yyyy") - Đến ngày: @Model.EndDate.ToString("dd/MM/yyyy")</p>
     </div>
-    <div class="col-lg-4">
-        <div class="ac-card p-4 h-100 border-0 shadow-sm">
-            <h6 class="text-dark fw-bold mb-3">Cơ cấu doanh thu</h6>
-            <div style="height: 300px;">
-                <canvas id="donutChart"></canvas>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- Charts Row 2 -->
-<div class="row g-4 mb-4">
-    <div class="col-lg-4">
-        <div class="ac-card p-4 h-100 border-0 shadow-sm">
-            <h6 class="text-dark fw-bold mb-3">Top 5 Phim thịnh hành</h6>
-            <div style="height: 300px;">
-                <canvas id="barChart"></canvas>
+    <!-- KPI Scorecards -->
+    <div class="row g-4 mb-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="ac-card p-3 d-flex align-items-center border-0 shadow-sm">
+                <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-3 me-3">
+                    <i class="bi bi-currency-dollar fs-4"></i>
+                </div>
+                <div>
+                    <p class="text-muted small mb-1">Tổng doanh thu</p>
+                    <h5 class="fw-bold mb-0 text-dark">@Model.TotalRevenue.ToString("N0")đ</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="ac-card p-3 d-flex align-items-center border-0 shadow-sm">
+                <div class="bg-success bg-opacity-10 text-success p-3 rounded-3 me-3">
+                    <i class="bi bi-ticket-perforated fs-4"></i>
+                </div>
+                <div>
+                    <p class="text-muted small mb-1">Vé đã bán</p>
+                    <h5 class="fw-bold mb-0 text-dark">@Model.TotalTicketsSold.ToString("N0")</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="ac-card p-3 d-flex align-items-center border-0 shadow-sm">
+                <div class="bg-warning bg-opacity-10 text-warning p-3 rounded-3 me-3">
+                    <i class="bi bi-cup-straw fs-4"></i>
+                </div>
+                <div>
+                    <p class="text-muted small mb-1">Doanh thu bắp nước</p>
+                    <h5 class="fw-bold mb-0 text-dark">@Model.TotalConcessionRevenue.ToString("N0")đ</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="ac-card p-3 d-flex align-items-center border-0 shadow-sm">
+                <div class="bg-info bg-opacity-10 text-info p-3 rounded-3 me-3">
+                    <i class="bi bi-people fs-4"></i>
+                </div>
+                <div>
+                    <p class="text-muted small mb-1">Tỷ lệ lấp đầy (Ước tính)</p>
+                    <h5 class="fw-bold mb-0 text-dark">@Model.RoomOccupancyRate%</h5>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-lg-4">
-        <div class="ac-card p-4 h-100 border-0 shadow-sm">
-            <h6 class="text-dark fw-bold mb-3">Lượng khách theo khung giờ</h6>
-            <div style="height: 300px;">
-                <canvas id="columnChart"></canvas>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="ac-card p-4 h-100 border-0 shadow-sm">
-            <h6 class="text-dark fw-bold mb-3">Phương thức thanh toán</h6>
-            <div style="height: 300px;">
-                <canvas id="pieChart"></canvas>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- Charts Row 3 -->
-<div class="row g-4">
-    <div class="col-lg-12">
-        <div class="ac-card p-4 border-0 shadow-sm">
-            <h6 class="text-dark fw-bold mb-3">Sử dụng mã khuyến mãi (Phễu chuyển đổi)</h6>
-            <div class="d-flex align-items-center justify-content-center" style="height: 200px;">
-                <div class="w-75 text-center">
-                    <div class="mb-3">
-                        <div class="text-muted small mb-1">Tổng số đơn hàng (@Model.PromotionUsage.TotalOrders)</div>
-                        <div class="progress" style="height: 30px; border-radius: 15px; background-color: #f0f0f0;">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 100%">100%</div>
-                        </div>
-                    </div>
-                    <div>
-                        @{ 
-                            var promoPercent = Model.PromotionUsage.TotalOrders > 0 
-                                ? Math.Round((double)Model.PromotionUsage.OrdersWithPromoCode / Model.PromotionUsage.TotalOrders * 100) 
-                                : 0; 
-                        }
-                        <div class="text-muted small mb-1">Sử dụng khuyến mãi (@Model.PromotionUsage.OrdersWithPromoCode)</div>
-                        <div class="progress mx-auto" style="height: 30px; border-radius: 15px; background-color: #f0f0f0; width: @(promoPercent < 20 ? 20 : promoPercent)%">
-                            <div class="progress-bar bg-info" role="progressbar" style="width: 100%">@promoPercent%</div>
-                        </div>
-                    </div>
+    <!-- Charts Row 1 -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-8">
+            <div class="ac-card p-4 h-100 border-0 shadow-sm">
+                <h6 class="text-dark fw-bold mb-3">Biến động doanh thu theo ngày</h6>
+                <div style="height: 300px;">
+                    <canvas id="lineChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="ac-card p-4 h-100 border-0 shadow-sm">
+                <h6 class="text-dark fw-bold mb-3">Tỷ trọng doanh thu theo phim</h6>
+                <div style="height: 300px;">
+                    <canvas id="donutChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row 2 -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-4">
+            <div class="ac-card p-4 h-100 border-0 shadow-sm">
+                <h6 class="text-dark fw-bold mb-3">Top phim theo doanh thu</h6>
+                <div style="height: 300px;">
+                    <canvas id="barChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="ac-card p-4 h-100 border-0 shadow-sm">
+                <h6 class="text-dark fw-bold mb-3">Lượng khách theo khung giờ</h6>
+                <div style="height: 300px;">
+                    <canvas id="columnChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="ac-card p-4 h-100 border-0 shadow-sm">
+                <h6 class="text-dark fw-bold mb-3">Doanh thu theo dịch vụ F&B</h6>
+                <div style="height: 300px;">
+                    <canvas id="pieChart"></canvas>
                 </div>
             </div>
         </div>
@@ -139,12 +144,23 @@
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script>
+        function setQuickFilter(type) {
+            document.getElementById('rangeType').value = type;
+            document.getElementById('startDate').value = '';
+            document.getElementById('endDate').value = '';
+            document.getElementById('filterForm').submit();
+        }
+
+        document.getElementById('startDate').addEventListener('change', function() { document.getElementById('rangeType').value = 'custom'; });
+        document.getElementById('endDate').addEventListener('change', function() { document.getElementById('rangeType').value = 'custom'; });
+
         // Global Chart Defaults for Light Theme
         Chart.defaults.color = '#555555';
         Chart.defaults.borderColor = '#eeeeee';
 
-        const chartColors = ['#0047AB', '#0d6efd', '#10b981', '#f59e0b', '#8b5cf6'];
+        const chartColors = ['#0047AB', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#0d6efd'];
 
         // 1. Line Chart (Revenue Over Time)
         new Chart(document.getElementById('lineChart'), {
@@ -167,32 +183,33 @@
             }
         });
 
-        // 2. Donut Chart (Revenue Structure)
+        // 2. Pie Chart (Revenue By Movie)
         new Chart(document.getElementById('donutChart'), {
             type: 'doughnut',
             data: {
-                labels: ['Vé phim', 'Bắp nước'],
+                labels: @Html.Raw(Json.Serialize(Model.RevenueByMovie.Labels)),
                 datasets: [{
-                    data: [@Model.RevenueStructure.TicketRevenue, @Model.RevenueStructure.ConcessionRevenue],
-                    backgroundColor: ['#0047AB', '#0d6efd'],
+                    data: @Html.Raw(Json.Serialize(Model.RevenueByMovie.Data)),
+                    backgroundColor: chartColors,
                     borderWidth: 0
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                cutout: '75%'
+                cutout: '60%',
+                plugins: { legend: { position: 'bottom', labels: { boxWidth: 12 } } }
             }
         });
 
-        // 3. Horizontal Bar Chart (Top Movies)
+        // 3. Horizontal Bar Chart (Top Movies By Revenue)
         new Chart(document.getElementById('barChart'), {
             type: 'bar',
             data: {
-                labels: @Html.Raw(Json.Serialize(Model.TopMovies.Labels)),
+                labels: @Html.Raw(Json.Serialize(Model.TopMoviesByRevenue.Labels)),
                 datasets: [{
-                    label: 'Số vé',
-                    data: @Html.Raw(Json.Serialize(Model.TopMovies.Data)),
+                    label: 'Doanh thu (VNĐ)',
+                    data: @Html.Raw(Json.Serialize(Model.TopMoviesByRevenue.Data)),
                     backgroundColor: chartColors,
                     borderRadius: 4
                 }]
@@ -224,21 +241,50 @@
             }
         });
 
-        // 5. Pie Chart (Payment Methods)
+        // 5. Pie Chart (Concession Sales replacing Payment Methods)
         new Chart(document.getElementById('pieChart'), {
             type: 'pie',
             data: {
-                labels: ['PayOS', 'Tiền mặt', 'Momo'],
+                labels: @Html.Raw(Json.Serialize(Model.PaymentMethods.Labels)),
                 datasets: [{
-                    data: [@Model.PaymentMethods.PayOS, @Model.PaymentMethods.Cash, @Model.PaymentMethods.Momo],
-                    backgroundColor: ['#0047AB', '#f59e0b', '#8b5cf6'],
+                    data: @Html.Raw(Json.Serialize(Model.PaymentMethods.Data)),
+                    backgroundColor: chartColors,
                     borderWidth: 0
                 }]
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: false
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom', labels: { boxWidth: 12 } } }
             }
+        });
+
+        // HTML to PDF logic
+        document.getElementById('btnExportPdf').addEventListener('click', function() {
+            // Show header for PDF
+            document.getElementById('pdfHeader').classList.remove('d-none');
+            
+            var element = document.getElementById('pdfExportArea');
+            var opt = {
+                margin:       10,
+                filename:     'BaoCaoDoanhThu_AuraCinema.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
+            };
+            
+            // Disable button during generation
+            var btn = this;
+            var originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Đang xuất...';
+            btn.disabled = true;
+
+            html2pdf().set(opt).from(element).save().then(function() {
+                // Restore UI
+                document.getElementById('pdfHeader').classList.add('d-none');
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            });
         });
     </script>
 }

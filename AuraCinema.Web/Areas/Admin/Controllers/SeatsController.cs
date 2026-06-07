@@ -35,8 +35,41 @@ public class SeatsController : AdminBaseController
         var seat = await _db.Seats.FindAsync(seatId);
         if (seat == null) return NotFound();
 
+        int? partnerId = null;
+        if (seat.SeatType == "Doi" && type != "Doi")
+        {
+            var partner = await _db.Seats.FirstOrDefaultAsync(s => 
+                s.RoomID == seat.RoomID && 
+                s.RowLabel == seat.RowLabel && 
+                s.SeatType == "Doi" && 
+                (s.SeatNumber == seat.SeatNumber - 1 || s.SeatNumber == seat.SeatNumber + 1));
+            
+            if (partner != null)
+            {
+                partner.SeatType = type;
+                partnerId = partner.SeatID;
+            }
+        }
+
         seat.SeatType = type;
         await _db.SaveChangesAsync();
+
+        return Json(new { success = true, partnerId = partnerId });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> PairSeats(int seat1Id, int seat2Id)
+    {
+        var seat1 = await _db.Seats.FindAsync(seat1Id);
+        var seat2 = await _db.Seats.FindAsync(seat2Id);
+
+        if (seat1 != null && seat2 != null)
+        {
+            seat1.SeatType = "Doi";
+            seat2.SeatType = "Doi";
+            await _db.SaveChangesAsync();
+        }
 
         return Ok();
     }

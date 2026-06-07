@@ -32,33 +32,45 @@ public class GeminiClient : ILlmClient
 
     public async Task<LlmResponse> GenerateAsync(LlmRequest request, CancellationToken cancellationToken = default)
     {
-        var apiKey = _keyRotator.GetNextKey();
-        if (string.IsNullOrEmpty(apiKey))
+        int maxRetries = _keyRotator.TotalKeyCount;
+        for (int attempt = 0; attempt < maxRetries; attempt++)
         {
-            throw new RateLimitedException("Tất cả API key đang bị rate limit.");
-        }
+            var apiKey = _keyRotator.GetNextKey();
+            if (string.IsNullOrEmpty(apiKey))
+            {
+                throw new RateLimitedException("Tất cả API key đang bị rate limit.");
+            }
 
-        var geminiReq = MapToGeminiRequest(request);
-        var url = $"https://generativelanguage.googleapis.com/v1beta/models/{request.Model}:generateContent?key={apiKey}";
+            var geminiReq = MapToGeminiRequest(request);
+            var url = $"https://generativelanguage.googleapis.com/v1beta/models/{request.Model}:generateContent?key={apiKey}";
 
-        var response = await _httpClient.PostAsJsonAsync(url, geminiReq, _jsonOptions, cancellationToken);
-        
-        if (!response.IsSuccessStatusCode)
-        {
+            var response = await _httpClient.PostAsJsonAsync(url, geminiReq, _jsonOptions, cancellationToken);
+            
+            if (response.IsSuccessStatusCode)
+            {
+                var geminiResp = await response.Content.ReadFromJsonAsync<GeminiResponse>(_jsonOptions, cancellationToken);
+                return MapFromGeminiResponse(geminiResp!);
+            }
+
             var error = await response.Content.ReadAsStringAsync(cancellationToken);
             _logger.LogError("Gemini API Error: {StatusCode} {Error}", response.StatusCode, error);
             
             if (response.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
             {
                 _keyRotator.MarkRateLimited(apiKey, TimeSpan.FromSeconds(60));
-                throw new RateLimitedException("Gemini Rate Limit");
+                continue; // Retry with next key
             }
             
-            throw new Exception($"Gemini API returned {response.StatusCode}");
+            if (response.StatusCode >= System.Net.HttpStatusCode.InternalServerError)
+            {
+                // Wait briefly and try another key just in case it's a regional issue with that key/project
+                continue;
+            }
+            
+            throw new Exception($"Gemini API returned {response.StatusCode}: {error}");
         }
 
-        var geminiResp = await response.Content.ReadFromJsonAsync<GeminiResponse>(_jsonOptions, cancellationToken);
-        return MapFromGeminiResponse(geminiResp!);
+        throw new RateLimitedException("Gemini Rate Limit - all keys exhausted.");
     }
 
     private GeminiRequest MapToGeminiRequest(LlmRequest request)

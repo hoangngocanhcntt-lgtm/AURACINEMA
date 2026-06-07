@@ -92,6 +92,14 @@ public class ShowtimesController : AdminBaseController
             return View(model);
         }
 
+        var room = await _db.Rooms.FindAsync(model.RoomID);
+        if (room == null || room.Status != "Hoat dong")
+        {
+            ModelState.AddModelError("RoomID", "Phòng chiếu không tồn tại hoặc đã ngừng hoạt động, không thể xếp lịch.");
+            await PopulateLists(model);
+            return View(model);
+        }
+
         var movie = await _db.Movies.FindAsync(model.MovieID);
         if (movie == null)
         {
@@ -163,6 +171,14 @@ public class ShowtimesController : AdminBaseController
 
         var s = await _db.Showtimes.FindAsync(id);
         if (s == null) return NotFound();
+
+        var room = await _db.Rooms.FindAsync(model.RoomID);
+        if (room == null || room.Status != "Hoat dong")
+        {
+            ModelState.AddModelError("RoomID", "Phòng chiếu không tồn tại hoặc đã ngừng hoạt động, không thể xếp lịch.");
+            await PopulateLists(model);
+            return View(model);
+        }
 
         var movie = await _db.Movies.FindAsync(model.MovieID);
         if (movie == null)

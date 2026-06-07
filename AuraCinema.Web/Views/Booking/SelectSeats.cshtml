@@ -21,8 +21,8 @@
                 </div>
 
                 <!-- Seats -->
-                <div class="seat-map-container overflow-auto pb-4">
-                    <div class="d-flex flex-column align-items-center gap-2" style="min-width: max-content;">
+                <div class="seat-map-container overflow-auto pb-4 text-center">
+                    <div class="d-inline-flex flex-column align-items-start gap-2 text-start" style="min-width: max-content;">
                         @foreach (var row in Model.Rows)
                         {
                             <div class="d-flex align-items-center gap-2">
@@ -44,8 +44,7 @@
                                              data-type="@seat.SeatType"
                                              title="@row.RowLabel@seat.SeatNumber - @seat.SeatType"
                                              @(isUnavailable ? "" : "onclick=toggleSeat(this)")>
-                                            @if (seat.SeatType == "Doi") { <i class="bi bi-heart-fill small"></i> }
-                                            else { <span>@seat.SeatNumber</span> }
+                                            <span>@seat.SeatNumber</span>
                                         </div>
                                     }
                                 </div>
@@ -67,7 +66,7 @@
                         <span class="small text-muted">VIP</span>
                     </div>
                     <div class="d-flex align-items-center gap-2">
-                        <div class="ac-seat couple" style="width: 40px; height: 20px; line-height: 20px;"><i class="bi bi-heart-fill" style="font-size:0.6rem;"></i></div>
+                        <div class="ac-seat couple" style="width: 20px; height: 20px; line-height: 20px;"></div>
                         <span class="small text-muted">Ghế Đôi</span>
                     </div>
                     <div class="d-flex align-items-center gap-2">
@@ -112,12 +111,21 @@
                 </div>
             </div>
         </div>
-    </div>
 </div>
 
+    <style>
+        .ac-seat.couple {
+            background-color: #e83e8c !important; /* Màu hồng */
+            color: white;
+            border-color: #e83e8c;
+        }
+        .ac-seat.couple.selected {
+            background: #c82333 !important; /* Đỏ sậm khi được chọn, đè lên gradient */
+            border-color: #bd2130 !important;
+            box-shadow: 0 4px 20px rgba(200,35,51,0.4) !important;
+        }
+    </style>
 
-
-@section Scripts {
     <script>
         const config = {
             basePrice: @Model.BasePrice,
@@ -129,23 +137,79 @@
         
         let selectedSeats = [];
 
-        function toggleSeat(element) {
-            const id = parseInt(element.dataset.id);
-            const label = element.dataset.label;
-            const type = element.dataset.type;
+        function getPartnerSeat(element) {
+            const type = element.getAttribute('data-type');
+            if (type !== 'Doi') return null;
 
+            // Lấy tất cả các ghế đôi trong cùng hàng (loại trừ các element ở phần chú thích không có data-label)
+            const label = element.getAttribute('data-label');
+            const rowLabel = label.replace(/[0-9]/g, '');
+            const allDoubleSeats = Array.from(document.querySelectorAll(`.ac-seat.couple:not(.sold)`))
+                                        .filter(s => {
+                                            const l = s.getAttribute('data-label');
+                                            return l && l.replace(/[0-9]/g, '') === rowLabel;
+                                        });
+            
+            // Sắp xếp theo số ghế
+            allDoubleSeats.sort((a, b) => {
+                const numA = parseInt(a.getAttribute('data-label').replace(/[^0-9]/g, ''));
+                const numB = parseInt(b.getAttribute('data-label').replace(/[^0-9]/g, ''));
+                return numA - numB;
+            });
+
+            // Tìm vị trí của ghế hiện tại
+            const myIndex = allDoubleSeats.findIndex(s => s === element);
+            if (myIndex === -1) return null;
+
+            // Nếu index chẵn thì đối tác là index+1, nếu lẻ thì đối tác là index-1
+            const partnerIndex = (myIndex % 2 === 0) ? myIndex + 1 : myIndex - 1;
+            
+            if (partnerIndex >= 0 && partnerIndex < allDoubleSeats.length) {
+                return allDoubleSeats[partnerIndex];
+            }
+            return null;
+        }
+
+        function toggleSeat(element) {
+            const id = parseInt(element.getAttribute('data-id'));
+            const label = element.getAttribute('data-label');
+            const type = element.getAttribute('data-type');
+            
+            const partnerEl = getPartnerSeat(element);
+            const isCouple = type === 'Doi';
             const index = selectedSeats.findIndex(s => s.id === id);
             
             if (index > -1) {
+                // Deselect
                 selectedSeats.splice(index, 1);
                 element.classList.remove('selected');
+                
+                if (partnerEl) {
+                    const partnerId = parseInt(partnerEl.getAttribute('data-id'));
+                    const pIndex = selectedSeats.findIndex(s => s.id === partnerId);
+                    if (pIndex > -1) selectedSeats.splice(pIndex, 1);
+                    partnerEl.classList.remove('selected');
+                }
             } else {
-                if (selectedSeats.length >= 8) {
+                // Select
+                const seatsToAdd = 1 + (partnerEl ? 1 : 0);
+                if (selectedSeats.length + seatsToAdd > 8) {
                     alert("Bạn chỉ được chọn tối đa 8 ghế.");
                     return;
                 }
+                
                 selectedSeats.push({ id, label, type });
                 element.classList.add('selected');
+                
+                if (partnerEl) {
+                    const partnerId = parseInt(partnerEl.getAttribute('data-id'));
+                    selectedSeats.push({ 
+                        id: partnerId, 
+                        label: partnerEl.getAttribute('data-label'), 
+                        type: partnerEl.getAttribute('data-type') 
+                    });
+                    partnerEl.classList.add('selected');
+                }
             }
 
             updateSummary();
@@ -158,12 +222,17 @@
 
             // Calculate price
             let total = 0;
+            let doubleCount = 0;
             selectedSeats.forEach(s => {
                 let price = config.basePrice + config.daySurcharge + config.eveningSurcharge;
                 if (s.type === 'VIP') price += config.vipSurcharge;
-                else if (s.type === 'Doi') price += config.coupleSurcharge;
+                else if (s.type === 'Doi') doubleCount++;
                 total += price;
             });
+
+            // Add surcharge for couple seats (one surcharge per pair)
+            let couplePairs = Math.ceil(doubleCount / 2);
+            total += couplePairs * config.coupleSurcharge;
 
             document.getElementById('totalPrice').innerText = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(total);
 

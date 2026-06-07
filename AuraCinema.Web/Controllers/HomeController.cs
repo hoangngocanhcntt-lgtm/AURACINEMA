@@ -12,6 +12,7 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
+
         var movies = await _db.Movies
             .Where(m => m.Status == "Dang chieu" || m.Status == "Sap chieu")
             .OrderByDescending(m => m.ReleaseDate)
@@ -24,15 +25,29 @@ public class HomeController : Controller
                 Duration    = m.Duration,
                 Status      = m.Status,
                 ReleaseDate = m.ReleaseDate,
-                Director    = m.Director
+                Director    = m.Director,
+                HasEarlyTickets = m.Showtimes.Any(s => s.StartTime > DateTime.Now)
             })
             .ToListAsync();
 
+        var featuredMovies = movies
+            .Where(m => m.Status == "Sap chieu" && m.HasEarlyTickets)
+            .ToList();
+
+        if (featuredMovies.Count < 3)
+        {
+            featuredMovies.AddRange(movies
+                .Where(m => m.Status == "Dang chieu")
+                .Take(3 - featuredMovies.Count));
+        }
+
         var vm = new HomeViewModel
         {
-            FeaturedMovies = movies.Where(m => m.Status == "Dang chieu").Take(5).ToList(),
+            FeaturedMovies = featuredMovies.Take(3).ToList(),
             NowShowing     = movies.Where(m => m.Status == "Dang chieu").ToList(),
-            ComingSoon     = movies.Where(m => m.Status == "Sap chieu").ToList()
+            ComingSoon     = movies.Where(m => m.Status == "Sap chieu").ToList(),
+            TotalRooms     = await _db.Rooms.CountAsync(),
+            TotalSeats     = await _db.Seats.CountAsync()
         };
 
         if (User.Identity?.IsAuthenticated == true)
@@ -77,8 +92,24 @@ public class HomeController : Controller
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error() => View(new AuraCinema.Web.Models.ErrorViewModel
+    public IActionResult Error()
     {
-        RequestId = System.Diagnostics.Activity.Current?.Id ?? HttpContext.TraceIdentifier
-    });
+        return View(new AuraCinema.Web.Models.ErrorViewModel { RequestId = System.Diagnostics.Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    [HttpGet("/fix")]
+    public IActionResult FixPrices([FromServices] AuraCinema.Infrastructure.Data.AppDbContext db)
+    {
+        var configs = db.PriceConfigs.ToList();
+        foreach(var c in configs)
+        {
+            if (c.ConfigCode == "BASE_PRICE") c.SurchargeAmount = 2000;
+            if (c.ConfigCode == "VIP_SURCHARGE") c.SurchargeAmount = 500;
+            if (c.ConfigCode == "COUPLE_SURCHARGE") c.SurchargeAmount = 1000;
+            if (c.ConfigCode == "WEEKEND_SURCHARGE") c.SurchargeAmount = 1000;
+            if (c.ConfigCode == "EVENING_SURCHARGE") c.SurchargeAmount = 1000;
+        }
+        db.SaveChanges();
+        return Json(configs);
+    }
 }

@@ -44,6 +44,15 @@ public static class ResponseCorrector
                 case "list_promotions":
                     ExtractFromArray(root, "promotions", "title", names);
                     break;
+
+                case "list_services":
+                    ExtractFromArray(root, "services", "serviceName", names);
+                    break;
+
+                case "get_available_adjacent_seats":
+                    // Extract seat group labels (e.g. "D1-D3") to mark that real data was used
+                    ExtractFromArray(root, "groups", "label", names);
+                    break;
             }
         }
         catch { /* ignore parse errors */ }

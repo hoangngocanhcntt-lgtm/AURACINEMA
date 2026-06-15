@@ -63,7 +63,8 @@ public class BookingService : IBookingService
         var svcIds = selectedServices.Where(s => s.Quantity > 0).Select(s => s.ServiceID).ToList();
         var services = await _db.Services.Where(s => svcIds.Contains(s.ServiceID)).ToListAsync();
 
-        var configs = await _db.PriceConfigs.ToDictionaryAsync(c => c.ConfigCode.Trim(), c => c.SurchargeAmount);
+        var configsList = await _db.PriceConfigs.ToListAsync();
+        var configs = configsList.ToDictionary(c => c.ConfigCode.Trim(), c => c.ActiveSurchargeAmount);
         
         int basePrice = ResolveConfig(configs, "BASE_PRICE", "BASE");
         int daySurcharge = (showtime.StartTime.DayOfWeek == DayOfWeek.Saturday || showtime.StartTime.DayOfWeek == DayOfWeek.Sunday) ? ResolveConfig(configs, "WEEKEND_SURCHARGE", "DAY_WEEKEND") : 0;
@@ -156,17 +157,19 @@ public class BookingService : IBookingService
             await _db.SaveChangesAsync();
 
             // 3. Lưu OrderSeats
-            var showtime = await _db.Showtimes.FindAsync(showtimeId);
+            var showtime = await _db.Showtimes.Include(s => s.Movie).FirstOrDefaultAsync(s => s.ShowtimeID == showtimeId);
             var seats = await _db.Seats.Where(s => seatIds.Contains(s.SeatID)).ToListAsync();
-            var configs = await _db.PriceConfigs.ToDictionaryAsync(c => c.ConfigCode.Trim(), c => c.SurchargeAmount);
+            var configsList = await _db.PriceConfigs.ToListAsync();
+            var configs = configsList.ToDictionary(c => c.ConfigCode.Trim(), c => c.ActiveSurchargeAmount);
             int basePrice = ResolveConfig(configs, "BASE_PRICE", "BASE");
             int daySurcharge = (showtime!.StartTime.DayOfWeek == DayOfWeek.Saturday || showtime.StartTime.DayOfWeek == DayOfWeek.Sunday) ? ResolveConfig(configs, "WEEKEND_SURCHARGE", "DAY_WEEKEND") : 0;
             int eveningSurcharge = (showtime.StartTime.Hour >= 18) ? ResolveConfig(configs, "EVENING_SURCHARGE", "DAY_EVENING") : 0;
+            int earlySurcharge = (showtime.Movie.Status == "Sap chieu") ? ResolveConfig(configs, "EARLY_SURCHARGE", "EARLY_SURCHARGE") : 0;
 
             int doubleSeatCount = 0;
             foreach (var seat in seats)
             {
-                int seatPrice = basePrice + daySurcharge + eveningSurcharge;
+                int seatPrice = basePrice + daySurcharge + eveningSurcharge + earlySurcharge;
                 if (seat.SeatType == "VIP") seatPrice += ResolveConfig(configs, "VIP_SURCHARGE", "SEAT_VIP");
                 else if (seat.SeatType == "Doi") 
                 {

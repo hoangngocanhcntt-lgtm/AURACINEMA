@@ -132,7 +132,8 @@
             vipSurcharge: @Model.VipSurcharge,
             coupleSurcharge: @Model.CoupleSurcharge,
             daySurcharge: @Model.DaySurcharge,
-            eveningSurcharge: @Model.EveningSurcharge
+            eveningSurcharge: @Model.EveningSurcharge,
+            earlySurcharge: @Model.EarlySurcharge
         };
         
         let selectedSeats = [];
@@ -224,7 +225,7 @@
             let total = 0;
             let doubleCount = 0;
             selectedSeats.forEach(s => {
-                let price = config.basePrice + config.daySurcharge + config.eveningSurcharge;
+                let price = config.basePrice + config.daySurcharge + config.eveningSurcharge + config.earlySurcharge;
                 if (s.type === 'VIP') price += config.vipSurcharge;
                 else if (s.type === 'Doi') doubleCount++;
                 total += price;

@@ -53,7 +53,8 @@ public class BookingController : Controller
                     }).ToList()
                 }).ToList();
 
-            var configs = await _db.PriceConfigs.ToDictionaryAsync(c => c.ConfigCode.Trim(), c => c.SurchargeAmount);
+            var configsList = await _db.PriceConfigs.ToListAsync();
+            var configs = configsList.ToDictionary(c => c.ConfigCode.Trim(), c => c.ActiveSurchargeAmount);
 
             var vm = new SelectSeatsViewModel
             {
@@ -68,7 +69,8 @@ public class BookingController : Controller
                 VipSurcharge = ResolveConfig(configs, "VIP_SURCHARGE", "SEAT_VIP"),
                 CoupleSurcharge = ResolveConfig(configs, "COUPLE_SURCHARGE", "SEAT_COUPLE"),
                 DaySurcharge = (showtime.StartTime.DayOfWeek == DayOfWeek.Saturday || showtime.StartTime.DayOfWeek == DayOfWeek.Sunday) ? ResolveConfig(configs, "WEEKEND_SURCHARGE", "DAY_WEEKEND") : 0,
-                EveningSurcharge = (showtime.StartTime.Hour >= 18) ? ResolveConfig(configs, "EVENING_SURCHARGE", "DAY_EVENING") : 0
+                EveningSurcharge = (showtime.StartTime.Hour >= 18) ? ResolveConfig(configs, "EVENING_SURCHARGE", "DAY_EVENING") : 0,
+                EarlySurcharge = (showtime.Movie.Status == "Sap chieu") ? ResolveConfig(configs, "EARLY_SURCHARGE", "EARLY_SURCHARGE") : 0
             };
 
             return View(vm);

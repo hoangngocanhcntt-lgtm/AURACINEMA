@@ -132,3 +132,8 @@
     border: 1.5px solid var(--aura-chat-button);
     font-weight: 500;
 }
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}

@@ -20,7 +20,8 @@
 
                 <div class="mb-3">
                     <label asp-for="RoomCode" class="form-label text-secondary small fw-bold"></label>
-                    <input asp-for="RoomCode" class="form-control border-light-subtle shadow-sm bg-light" readonly />
+                    <input value="@Model.RoomCode" class="form-control border-light-subtle shadow-sm bg-light" disabled="disabled" style="pointer-events:none;" />
+                    <input type="hidden" asp-for="RoomCode" />
                 </div>
 
                 <div class="mb-3">

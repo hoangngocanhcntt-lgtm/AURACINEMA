@@ -1,0 +1,12 @@
+D:\AURACINEMA\AuraCinema.Domain\bin\Debug\net9.0\AuraCinema.Domain.deps.json
+D:\AURACINEMA\AuraCinema.Domain\bin\Debug\net9.0\AuraCinema.Domain.dll
+D:\AURACINEMA\AuraCinema.Domain\bin\Debug\net9.0\AuraCinema.Domain.pdb
+D:\AURACINEMA\AuraCinema.Domain\obj\Debug\net9.0\AuraCinema.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\AURACINEMA\AuraCinema.Domain\obj\Debug\net9.0\AuraCinema.Domain.AssemblyInfoInputs.cache
+D:\AURACINEMA\AuraCinema.Domain\obj\Debug\net9.0\AuraCinema.Domain.AssemblyInfo.cs
+D:\AURACINEMA\AuraCinema.Domain\obj\Debug\net9.0\AuraCinema.Domain.csproj.CoreCompileInputs.cache
+D:\AURACINEMA\AuraCinema.Domain\obj\Debug\net9.0\AuraCinema.Domain.sourcelink.json
+D:\AURACINEMA\AuraCinema.Domain\obj\Debug\net9.0\AuraCinema.Domain.dll
+D:\AURACINEMA\AuraCinema.Domain\obj\Debug\net9.0\refint\AuraCinema.Domain.dll
+D:\AURACINEMA\AuraCinema.Domain\obj\Debug\net9.0\AuraCinema.Domain.pdb
+D:\AURACINEMA\AuraCinema.Domain\obj\Debug\net9.0\ref\AuraCinema.Domain.dll

@@ -19,7 +19,7 @@ public class PriceConfigsController : AdminBaseController
 
     public async Task<IActionResult> Index()
     {
-        var requiredCodes = new[] { "BASE_PRICE", "WEEKEND_SURCHARGE", "EVENING_SURCHARGE", "VIP_SURCHARGE", "COUPLE_SURCHARGE" };
+        var requiredCodes = new[] { "BASE_PRICE", "WEEKEND_SURCHARGE", "EVENING_SURCHARGE", "VIP_SURCHARGE", "COUPLE_SURCHARGE", "EARLY_SURCHARGE" };
         var configs = await _db.PriceConfigs.Where(c => requiredCodes.Contains(c.ConfigCode)).ToListAsync();
 
         bool hasChanges = false;
@@ -71,8 +71,9 @@ public class PriceConfigsController : AdminBaseController
                 var config = await _db.PriceConfigs.FirstOrDefaultAsync(c => c.ConfigCode.Trim() == item.ConfigCode.Trim());
                 if (config != null)
                 {
-                    // Nếu giá trị thay đổi so với giá cũ
-                    if (config.SurchargeAmount != item.Amount)
+                    // Nếu giá trị thay đổi so với giá đang hiển thị trên form
+                    int currentValue = config.NewSurchargeAmount ?? config.SurchargeAmount;
+                    if (currentValue != item.Amount)
                     {
                         if (!globalEffectiveDate.HasValue || globalEffectiveDate.Value.Date < minValidDate)
                         {
@@ -80,7 +81,7 @@ public class PriceConfigsController : AdminBaseController
                         }
                         else 
                         {
-                            config.SurchargeAmount = Math.Max(0, item.Amount);
+                            config.NewSurchargeAmount = Math.Max(0, item.Amount);
                             config.EffectiveDate = globalEffectiveDate.Value.Date;
                         }
                     }
@@ -121,6 +122,7 @@ public class PriceConfigsController : AdminBaseController
             "EVENING_SURCHARGE" => "Phụ thu tối",
             "VIP_SURCHARGE" => "Phụ thu ghế VIP",
             "COUPLE_SURCHARGE" => "Phụ thu ghế couple",
+            "EARLY_SURCHARGE" => "Phụ thu suất chiếu sớm",
             _ => code
         };
     }

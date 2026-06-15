@@ -87,7 +87,7 @@ async function sendChatMessage() {
     const loadingDiv = document.createElement('div');
     loadingDiv.className = 'aura-msg aura-msg-bot';
     loadingDiv.id = 'aura-chat-loading';
-    loadingDiv.innerHTML = '<i class="fas fa-ellipsis-h fa-beat"></i>';
+    loadingDiv.innerHTML = '<i class="bi bi-three-dots" style="animation: pulse 1s infinite;"></i>';
     container.appendChild(loadingDiv);
     scrollToBottom();
 

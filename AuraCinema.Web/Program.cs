@@ -80,7 +80,10 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    try { await DbInitializer.SeedAsync(db); }
+    try { 
+        await DbInitializer.SeedAsync(db); 
+        await DbInitializer.SeedNewMoviesAndShowtimes(db);
+    }
     catch (Exception ex) { Log.Warning(ex, "Seed skipped — DB may not be ready"); }
 }
 
@@ -104,5 +107,14 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapGet("/runseed", async (AppDbContext db) => {
+    await DbInitializer.SeedNewMoviesAndShowtimes(db);
+    return "Seed OK";
+});
+
+app.MapGet("/testdb", async (AppDbContext db) => {
+    return await db.Movies.Select(m => m.Title).ToListAsync();
+});
 
 app.Run();

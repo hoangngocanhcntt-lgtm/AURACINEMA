@@ -42,8 +42,8 @@
                     <th>Khách hàng</th>
                     <th>Phim & Suất chiếu</th>
                     <th>Tổng tiền</th>
-                    <th>Trạng thái</th>
-                    <th class="text-end pe-4">Thao tác</th>
+                    <th style="white-space:nowrap;min-width:120px;">Trạng thái</th>
+                    <th class="text-end pe-4" style="white-space:nowrap;min-width:100px;">Thao tác</th>
                 </tr>
             </thead>
             <tbody>
@@ -64,7 +64,7 @@
                         <td>
                             <div class="fw-bold text-dark">@item.FinalAmount.ToString("N0") VNĐ</div>
                         </td>
-                        <td>
+                        <td style="white-space:nowrap;">
                             @switch (item.Status)
                             {
                                 case "Da thanh toan":
@@ -94,7 +94,7 @@
                                     break;
                             }
                         </td>
-                        <td class="text-end pe-4">
+                        <td class="text-end pe-4" style="white-space:nowrap;">
                             <a asp-action="Details" asp-route-id="@item.OrderID" class="btn btn-sm btn-outline-primary">
                                 <i class="bi bi-eye me-1"></i>Chi tiết
                             </a>

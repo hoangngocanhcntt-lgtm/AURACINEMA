@@ -204,6 +204,9 @@ namespace AuraCinema.Infrastructure.Migrations
                     b.Property<DateTime?>("EffectiveDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("NewSurchargeAmount")
+                        .HasColumnType("int");
+
                     b.Property<int>("SurchargeAmount")
                         .HasColumnType("int");
 

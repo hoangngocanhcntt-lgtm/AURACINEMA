@@ -18,7 +18,7 @@ public class PriceInfoTool : IChatTool
 
     public string Name => "get_price_config";
 
-    public string Description => "Lấy bảng giá vé hiện hành: giá gốc và các phụ thu (VIP, Couple, cuối tuần, suất tối). Trả về giá đã format sẵn dạng VND.";
+    public string Description => "Lấy bảng giá vé hiện hành: giá gốc và các phụ thu (VIP, Couple, cuối tuần, suất tối, suất chiếu sớm). Trả về giá đã format sẵn dạng VND.";
 
     public object Schema => new
     {
@@ -39,6 +39,7 @@ public class PriceInfoTool : IChatTool
             int coupleSurcharge = Resolve(configs, "COUPLE_SURCHARGE", "SEAT_COUPLE");
             int weekendSurcharge = Resolve(configs, "WEEKEND_SURCHARGE", "DAY_WEEKEND");
             int eveningSurcharge = Resolve(configs, "EVENING_SURCHARGE", "DAY_EVENING");
+            int earlySurcharge = Resolve(configs, "EARLY_SURCHARGE", "EARLY_SURCHARGE");
 
             return new
             {
@@ -48,12 +49,14 @@ public class PriceInfoTool : IChatTool
                 coupleSurcharge = FormatVnd(coupleSurcharge),
                 weekendSurcharge = FormatVnd(weekendSurcharge),
                 eveningSurcharge = FormatVnd(eveningSurcharge),
+                earlySurcharge = FormatVnd(earlySurcharge),
                 notes = new[]
                 {
                     "Giá gốc áp cho ghế Thường, ngày thường, suất trước 18h.",
                     "Cuối tuần (T7, CN): cộng thêm phụ thu cuối tuần.",
                     "Suất chiếu từ 18h: cộng thêm phụ thu suất tối.",
-                    "Ghế VIP và ghế Couple có phụ thu riêng cộng thêm vào giá gốc."
+                    "Ghế VIP và ghế Couple có phụ thu riêng cộng thêm vào giá gốc.",
+                    "Suất chiếu sớm (phim ở trạng thái sắp chiếu): cộng thêm phụ thu suất chiếu sớm."
                 },
                 instruction = "QUAN TRỌNG: Trả lời khách CHÍNH XÁC các con số trên, KHÔNG được thay đổi hay làm tròn."
             };

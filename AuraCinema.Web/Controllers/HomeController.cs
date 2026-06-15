@@ -12,6 +12,8 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
+        var now = DateTime.Now;
+        var next4Days = now.AddDays(4);
 
         var movies = await _db.Movies
             .Where(m => m.Status == "Dang chieu" || m.Status == "Sap chieu")
@@ -26,12 +28,13 @@ public class HomeController : Controller
                 Status      = m.Status,
                 ReleaseDate = m.ReleaseDate,
                 Director    = m.Director,
-                HasEarlyTickets = m.Showtimes.Any(s => s.StartTime > DateTime.Now)
+                HasEarlyTickets = m.Showtimes.Any(s => s.StartTime > now && s.StartTime <= next4Days)
             })
             .ToListAsync();
 
         var featuredMovies = movies
             .Where(m => m.Status == "Sap chieu" && m.HasEarlyTickets)
+            .Take(3)
             .ToList();
 
         if (featuredMovies.Count < 3)
@@ -43,7 +46,7 @@ public class HomeController : Controller
 
         var vm = new HomeViewModel
         {
-            FeaturedMovies = featuredMovies.Take(3).ToList(),
+            FeaturedMovies = featuredMovies,
             NowShowing     = movies.Where(m => m.Status == "Dang chieu").ToList(),
             ComingSoon     = movies.Where(m => m.Status == "Sap chieu").ToList(),
             TotalRooms     = await _db.Rooms.CountAsync(),

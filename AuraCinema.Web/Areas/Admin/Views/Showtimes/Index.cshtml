@@ -45,8 +45,8 @@
                     <th>Phim</th>
                     <th>Phòng</th>
                     <th>Thời gian</th>
-                    <th>Trạng thái</th>
-                    <th class="text-end pe-4">Thao tác</th>
+                    <th style="white-space:nowrap;min-width:120px;">Trạng thái</th>
+                    <th class="text-end pe-4" style="white-space:nowrap;min-width:100px;">Thao tác</th>
                 </tr>
             </thead>
             <tbody>
@@ -67,11 +67,11 @@
                             <div class="small text-muted">@item.StartTime.ToString("dd/MM/yyyy")</div>
                             <div class="fw-bold text-dark">
                                 <i class="bi bi-clock me-1 text-primary"></i>@item.StartTime.ToString("HH:mm") 
-                                <span class="mx-1 text-muted">→</span> 
+                                <span class="mx-1 text-muted"><i class="bi bi-arrow-right"></i></span> 
                                 <i class="bi bi-clock-fill me-1 text-secondary"></i>@item.EndTime.ToString("HH:mm")
                             </div>
                         </td>
-                        <td>
+                        <td style="white-space:nowrap;">
                             @switch (item.Status)
                             {
                                 case "Đã lên lịch":
@@ -94,8 +94,8 @@
                                     break;
                             }
                         </td>
-                        <td class="text-end pe-4">
-                            <div class="btn-group">
+                        <td class="text-end pe-4" style="white-space:nowrap;">
+                            <div class="d-flex flex-nowrap justify-content-end gap-1">
                                 @if (item.Status != "Đang mở bán" && item.Status != "Đang chiếu")
                                 {
                                     <a asp-action="Edit" asp-route-id="@item.ShowtimeID" class="btn btn-sm btn-outline-secondary" title="Sửa">
@@ -104,7 +104,7 @@
                                     <form asp-action="Delete" asp-route-id="@item.ShowtimeID" method="post" 
                                           onsubmit="return confirm('Bạn có chắc chắn muốn XÓA suất chiếu này?');" class="d-inline">
                                         @Html.AntiForgeryToken()
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Xóa suất">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Xóa">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </form>

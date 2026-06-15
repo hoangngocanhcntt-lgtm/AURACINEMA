@@ -106,8 +106,14 @@ public static class DbInitializer
                 new PriceConfig { ConfigType = "Surcharge", ConfigCode = "VIP_SURCHARGE", ConfigName = "Phụ thu ghế VIP", SurchargeAmount = 20000 },
                 new PriceConfig { ConfigType = "Surcharge", ConfigCode = "COUPLE_SURCHARGE", ConfigName = "Phụ thu ghế Đôi", SurchargeAmount = 50000 },
                 new PriceConfig { ConfigType = "Surcharge", ConfigCode = "WEEKEND_SURCHARGE", ConfigName = "Phụ thu cuối tuần", SurchargeAmount = 15000 },
-                new PriceConfig { ConfigType = "Surcharge", ConfigCode = "EVENING_SURCHARGE", ConfigName = "Phụ thu suất tối", SurchargeAmount = 10000 }
+                new PriceConfig { ConfigType = "Surcharge", ConfigCode = "EVENING_SURCHARGE", ConfigName = "Phụ thu suất tối", SurchargeAmount = 10000 },
+                new PriceConfig { ConfigType = "Surcharge", ConfigCode = "EARLY_SURCHARGE", ConfigName = "Phụ thu suất chiếu sớm", SurchargeAmount = 20000 }
             );
+            await db.SaveChangesAsync();
+        }
+        else if (!await db.PriceConfigs.AnyAsync(c => c.ConfigCode == "EARLY_SURCHARGE"))
+        {
+            db.PriceConfigs.Add(new PriceConfig { ConfigType = "Surcharge", ConfigCode = "EARLY_SURCHARGE", ConfigName = "Phụ thu suất chiếu sớm", SurchargeAmount = 20000 });
             await db.SaveChangesAsync();
         }
 
@@ -330,5 +336,80 @@ public static class DbInitializer
         }
 
         await db.SaveChangesAsync();
+    } // End of SeedAsync
+
+    public static async Task SeedNewMoviesAndShowtimes(AppDbContext db)
+    {
+        var newMovies = new List<Movie>();
+        
+        // 2 Dang chieu
+        if (!await db.Movies.AnyAsync(m => m.Title == "Dune: Part Two"))
+        {
+            var m1 = new Movie { MovieCode = CodeGenerator.GenerateMovieCode(), Title = "Dune: Part Two", Genre = "Sci-Fi", Director = "Denis Villeneuve", Actors = "Timothée Chalamet", Duration = 166, ReleaseDate = new DateOnly(2024,3,1), Poster = "https://m.media-amazon.com/images/M/MV5BODdjMjM3ZGItMTRhNy00OTg0LWI0NmQtMTRlODkzY2JjNjI5XkEyXkFqcGdeQXVyMDc5ODIzMw@@._V1_.jpg", Trailer = "https://www.youtube.com/watch?v=Way9Dexny3w", Status = "Dang chieu" };
+            db.Movies.Add(m1);
+            newMovies.Add(m1);
+        }
+        if (!await db.Movies.AnyAsync(m => m.Title == "Kung Fu Panda 4"))
+        {
+            var m2 = new Movie { MovieCode = CodeGenerator.GenerateMovieCode(), Title = "Kung Fu Panda 4", Genre = "Animation", Director = "Mike Mitchell", Actors = "Jack Black", Duration = 94, ReleaseDate = new DateOnly(2024,3,8), Poster = "https://m.media-amazon.com/images/M/MV5BZDU1MTdkMmItYmI1OS00NDhmLWI0ZDAtYzJlNzBhMWUwNDkxXkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_.jpg", Trailer = "https://www.youtube.com/watch?v=_inKs4eeHiI", Status = "Dang chieu" };
+            db.Movies.Add(m2);
+            newMovies.Add(m2);
+        }
+
+        // 3 Sap chieu
+        if (!await db.Movies.AnyAsync(m => m.Title == "Deadpool & Wolverine"))
+        {
+            var m3 = new Movie { MovieCode = CodeGenerator.GenerateMovieCode(), Title = "Deadpool & Wolverine", Genre = "Action", Director = "Shawn Levy", Actors = "Ryan Reynolds", Duration = 120, ReleaseDate = new DateOnly(2026,7,26), Poster = "https://m.media-amazon.com/images/M/MV5BZTk5ODY0ZTItYzhjZi00YTdkLTg1NWQtYTFhMDhmOTlmMmJiXkEyXkFqcGdeQXVyMDc5ODIzMw@@._V1_.jpg", Trailer = "https://www.youtube.com/watch?v=73_1biuggHI", Status = "Sap chieu" };
+            db.Movies.Add(m3);
+            newMovies.Add(m3);
+        }
+        if (!await db.Movies.AnyAsync(m => m.Title == "Inside Out 2"))
+        {
+            var m4 = new Movie { MovieCode = CodeGenerator.GenerateMovieCode(), Title = "Inside Out 2", Genre = "Animation", Director = "Kelsey Mann", Actors = "Amy Poehler", Duration = 100, ReleaseDate = new DateOnly(2026,6,28), Poster = "https://m.media-amazon.com/images/M/MV5BYTc1MWQ0Y2QtZWE3MS00NzBmLWE0NjEtODdjMTE2NDlmODljXkEyXkFqcGdeQXVyMDc5ODIzMw@@._V1_.jpg", Trailer = "https://www.youtube.com/watch?v=L4DlxERKTU", Status = "Sap chieu" };
+            db.Movies.Add(m4);
+            newMovies.Add(m4);
+        }
+        if (!await db.Movies.AnyAsync(m => m.Title == "Despicable Me 4"))
+        {
+            var m5 = new Movie { MovieCode = CodeGenerator.GenerateMovieCode(), Title = "Despicable Me 4", Genre = "Animation", Director = "Chris Renaud", Actors = "Steve Carell", Duration = 95, ReleaseDate = new DateOnly(2026,7,3), Poster = "https://m.media-amazon.com/images/M/MV5BODQ2ZmE5ZGEtZWJiYy00ZjUxLThjNWEtNjU5MDVkZDJhYTNiXkEyXkFqcGdeQXVyMTUzMTg2ODkz._V1_.jpg", Trailer = "https://www.youtube.com/watch?v=qQlr9-rF32A", Status = "Sap chieu" };
+            db.Movies.Add(m5);
+            newMovies.Add(m5);
+        }
+        
+        await db.SaveChangesAsync();
+
+        var allMovies = await db.Movies.ToListAsync();
+        var rooms = await db.Rooms.ToListAsync();
+        var random = new Random();
+
+        var endDate = new DateTime(2026, 6, 20);
+        var currentDate = DateTime.Today; 
+        
+        while (currentDate <= endDate)
+        {
+            foreach (var room in rooms)
+            {
+                var times = new[] { 10, 15, 20 };
+                foreach (var hour in times)
+                {
+                    var stStart = currentDate.AddHours(hour);
+                    if (!await db.Showtimes.AnyAsync(s => s.RoomID == room.RoomID && s.StartTime == stStart))
+                    {
+                        var movie = allMovies[random.Next(allMovies.Count)];
+                        db.Showtimes.Add(new Showtime {
+                            ShowtimeCode = CodeGenerator.GenerateShowtimeCode(),
+                            MovieID = movie.MovieID,
+                            RoomID = room.RoomID,
+                            StartTime = stStart,
+                            EndTime = stStart.AddMinutes(movie.Duration),
+                            Status = movie.Status
+                        });
+                    }
+                }
+            }
+            currentDate = currentDate.AddDays(1);
+        }
+        await db.SaveChangesAsync();
     }
 }
+

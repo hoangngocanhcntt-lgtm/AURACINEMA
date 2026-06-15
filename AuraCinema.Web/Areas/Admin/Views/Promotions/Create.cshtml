@@ -19,7 +19,8 @@
 
                 <div class="mb-3">
                     <label asp-for="PromoCode" class="form-label text-secondary small fw-bold"></label>
-                    <input asp-for="PromoCode" class="form-control border-light-subtle shadow-sm bg-light" placeholder="Hệ thống tự sinh..." readonly />
+                    <input value="@Model.PromoCode" class="form-control border-light-subtle shadow-sm bg-light" placeholder="Hệ thống tự sinh..." disabled="disabled" style="pointer-events:none;" />
+                    <input type="hidden" asp-for="PromoCode" />
                 </div>
 
                 <div class="mb-3">

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AuraCinema.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+552740e8189fc8a217a2681304bc603bacedb70f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0d9336d32f2c1214b0d0d078ea45cdfd803efe43")]
 [assembly: System.Reflection.AssemblyProductAttribute("AuraCinema.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AuraCinema.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

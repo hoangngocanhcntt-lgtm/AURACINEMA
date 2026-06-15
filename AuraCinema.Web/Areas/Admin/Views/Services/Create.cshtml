@@ -24,7 +24,8 @@
 
                 <div class="mb-3">
                     <label asp-for="ServiceCode" class="form-label text-secondary small fw-bold"></label>
-                    <input asp-for="ServiceCode" class="form-control border-light-subtle shadow-sm bg-light" readonly />
+                    <input value="@Model.ServiceCode" class="form-control border-light-subtle shadow-sm bg-light" disabled="disabled" style="pointer-events:none;" />
+                    <input type="hidden" asp-for="ServiceCode" />
                 </div>
 
                 <div class="mb-3">

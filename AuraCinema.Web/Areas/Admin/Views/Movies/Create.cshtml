@@ -16,8 +16,8 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <label asp-for="MovieCode" class="form-label text-secondary small fw-bold"></label>
-                    <input asp-for="MovieCode" class="form-control border-light-subtle shadow-sm bg-light" placeholder="Hệ thống tự sinh..." readonly />
-                    <span asp-validation-for="MovieCode" class="text-danger small"></span>
+                    <input value="@Model.MovieCode" class="form-control border-light-subtle shadow-sm bg-light" placeholder="Hệ thống tự sinh..." disabled="disabled" style="pointer-events:none;" />
+                    <input type="hidden" asp-for="MovieCode" />
                 </div>
                 <div class="mb-3">
                     <label asp-for="Title" class="form-label text-secondary small fw-bold"></label>
@@ -65,12 +65,10 @@
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="Status" class="form-label text-secondary small fw-bold"></label>
-                    <select asp-for="Status" class="form-select border-light-subtle shadow-sm">
-                        <option value="Dang chieu">Đang chiếu</option>
-                        <option value="Sap chieu">Sắp chiếu</option>
-                        <option value="Ngung chieu">Ngừng chiếu</option>
-                    </select>
+                    <label class="form-label text-secondary small fw-bold">Trạng thái</label>
+                    <input id="statusDisplay" class="form-control border-light-subtle shadow-sm bg-light" disabled="disabled" style="pointer-events:none;" value="Tự động xác định theo ngày công chiếu" />
+                    <input type="hidden" asp-for="Status" id="statusHidden" />
+                    <small class="text-muted">Trạng thái được tự động xác định dựa theo ngày công chiếu.</small>
                 </div>
 
                 <div class="mb-3">
@@ -108,5 +106,28 @@
                 reader.readAsDataURL(e.target.files[0]);
             }
         });
+
+        function updateStatus() {
+            var dateInput = document.getElementById('ReleaseDate');
+            var statusDisplay = document.getElementById('statusDisplay');
+            var statusHidden = document.getElementById('statusHidden');
+            if (!dateInput || !dateInput.value) {
+                statusDisplay.value = 'Chưa xác định (chưa chọn ngày)';
+                statusHidden.value = 'Sap chieu';
+                return;
+            }
+            var releaseDate = new Date(dateInput.value);
+            var today = new Date();
+            today.setHours(0, 0, 0, 0);
+            if (releaseDate > today) {
+                statusDisplay.value = 'Sắp chiếu';
+                statusHidden.value = 'Sap chieu';
+            } else {
+                statusDisplay.value = 'Đang chiếu';
+                statusHidden.value = 'Dang chieu';
+            }
+        }
+        document.getElementById('ReleaseDate').addEventListener('change', updateStatus);
+        updateStatus();
     </script>
 }
